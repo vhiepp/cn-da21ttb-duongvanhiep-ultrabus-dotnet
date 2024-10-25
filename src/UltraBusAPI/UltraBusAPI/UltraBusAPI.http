@@ -1,0 +1,6 @@
+@UltraBusAPI_HostAddress = http://localhost:5200
+
+GET {{UltraBusAPI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
