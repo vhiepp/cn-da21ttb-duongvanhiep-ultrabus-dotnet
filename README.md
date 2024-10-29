@@ -7,6 +7,9 @@
 - Sđt: <a href="https://zalo.me/0373496609" target="_blank"><b>0373496609</b></a>
 ### Giảng viên hướng dẫn
 - Thầy: **ThS. Phạm Minh Đương**
+
+<img src="https://img.ithub.vn/led-rgb.gif" width="100%">
+
 ### Tóm tắt đề tài
 Đề tài xây dựng một hệ thống cho hãng xe khách, bao gồm các chức năng quản lý cho nội bộ và chức năng dành cho khách hàng. Một số chức năng chính cụ thể như sau:
 - **Về phía khách hàng:**
