@@ -8,7 +8,7 @@
 ### Giảng viên hướng dẫn
 - Thầy: **ThS. Phạm Minh Đương**
 ### Tóm tắt đề tài
-- Mô tả: Đề tài xây dựng một hệ thống cho hãng xe khách, bao gồm các chức năng quản lý cho nội bộ và chức năng dành cho khách hàng. Một số chức năng chính cụ thể như sau:
+Đề tài xây dựng một hệ thống cho hãng xe khách, bao gồm các chức năng quản lý cho nội bộ và chức năng dành cho khách hàng. Một số chức năng chính cụ thể như sau:
 - Về phía khách hàng:
   + Tra cứu và đặt vé xe: khách hàng có thể lên trang chủ hệ thống tra cứu chuyến xe, lịch trình, sau đó có thể đặt vé xe phù hợp với nhu cầu.
   + Xem dữ liệu cá nhân như: các chuyến xe đã đi, vé đã mua,…
