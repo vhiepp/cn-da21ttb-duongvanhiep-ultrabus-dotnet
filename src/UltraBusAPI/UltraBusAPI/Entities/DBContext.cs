@@ -8,6 +8,7 @@ namespace UltraBusAPI.Entities
         {
         }
 
+
         public DbSet<User> Users { get; set; }
 
     }
