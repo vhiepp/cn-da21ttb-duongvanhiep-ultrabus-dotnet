@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Diagnostics.CodeAnalysis;
 
-namespace UltraBusAPI.Entities
+namespace UltraBusAPI.Datas
 {
     public enum GenderType
     {
@@ -33,5 +33,9 @@ namespace UltraBusAPI.Entities
 
         [AllowNull]
         public string PhoneNumber { get; set; }
+
+        [AllowNull]
+        public Guid RoleId { get; set; }
+        public Role Role { get; set; }
     }
 }
