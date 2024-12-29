@@ -37,5 +37,11 @@ namespace UltraBusAPI.Datas
         [AllowNull]
         public Guid RoleId { get; set; }
         public Role Role { get; set; }
+
+        public User()
+        {
+            Role = new Role() { Name = "Customer" };
+            FirstName = "";
+        }
     }
 }

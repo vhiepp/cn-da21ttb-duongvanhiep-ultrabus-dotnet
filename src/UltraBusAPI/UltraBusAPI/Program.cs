@@ -1,7 +1,9 @@
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
+using UltraBusAPI.Configurations;
 using UltraBusAPI.Datas;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace UltraBusAPI
 {
@@ -11,41 +13,17 @@ namespace UltraBusAPI
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // Add services to the container.
-
-            builder.Services.AddControllers();
-
             builder.Services.AddDbContext<MyDBContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-
+            // Add services to the container.
+            builder.Services.AddControllers();
+            // Add Repository
+            RepositoryConfig.AddRepositorys(builder.Services);
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen(option =>
-            {
-                option.SwaggerDoc("v1", new OpenApiInfo { Title = "Demo API", Version = "v1" });
-                option.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
-                {
-                    In = ParameterLocation.Header,
-                    Description = "Please enter a valid token",
-                    Name = "Authorization",
-                    Type = SecuritySchemeType.Http,
-                    BearerFormat = "JWT",
-                    Scheme = "Bearer"
-                });
-                option.AddSecurityRequirement(new OpenApiSecurityRequirement
-                {
-                    {
-                        new OpenApiSecurityScheme
-                        {
-                            Reference = new OpenApiReference
-                            {
-                                Type=ReferenceType.SecurityScheme,
-                                Id="Bearer"
-                            }
-                        },
-                        new string[]{}
-                    }
-                });
-            });
+            // Add Swagger
+            SwaggerConfig.AddSwaggerGen(builder.Services);
+            // Add Jwt Config
+            JwtConfig.AddJwtConfig(builder.Services, builder.Configuration);
 
             var app = builder.Build();
 
@@ -57,7 +35,6 @@ namespace UltraBusAPI
             }
 
             app.UseAuthorization();
-
 
             app.MapControllers();
 
