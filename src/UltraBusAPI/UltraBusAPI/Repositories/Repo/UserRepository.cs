@@ -1,5 +1,5 @@
-﻿using UltraBusAPI.Datas;
-using UltraBusAPI.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using UltraBusAPI.Datas;
 
 namespace UltraBusAPI.Repositories.Repo
 {
@@ -12,34 +12,57 @@ namespace UltraBusAPI.Repositories.Repo
             this._context = _context;
         }
 
-        public User? FindByEmail(string email)
+        public async Task AddUser(User user)
         {
-            return _context.Users.FirstOrDefault(x => x.Email == email);
+            await _context.Users.AddAsync(user);
+            await _context.SaveChangesAsync();
         }
 
-        public User? FindById(Guid id)
+        public void DeleteUser(User user)
         {
-            return _context.Users.FirstOrDefault(x => x.Id == id);
+            _context.Users.Remove(user);
+            _context.SaveChanges();
         }
 
-        public User? FindByPhone(string phone)
+        public async Task<User?> FindByEmail(string email)
         {
-            return _context.Users.FirstOrDefault(x => x.PhoneNumber == phone);
+            return await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
         }
 
-        public List<User> GetByEmail(string email)
+        public async Task<User?> FindById(Guid id)
         {
-            return _context.Users.Where(x => x.Email.Contains(email)).ToList();
+            return await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
         }
 
-        public List<User> GetByName(string name)
+        public async Task<User?> FindByPhone(string phone)
         {
-            return _context.Users.Where(x => x.FirstName.Contains(name) || x.LastName.Contains(name)).ToList();
+           return await _context.Users.FirstOrDefaultAsync(u => u.PhoneNumber == phone);
         }
 
-        public List<User> GetByPhone(string phone)
+        public async Task<List<User>> GetAll()
         {
-            return _context.Users.Where(x => x.PhoneNumber.Contains(phone)).ToList();
+            return await _context.Users.ToListAsync();
+        }
+
+        public async Task<List<User>> GetByEmail(string email)
+        {
+            return await _context.Users.Where(u => u.Email.Contains(email)).ToListAsync();
+        }
+
+        public async Task<List<User>> GetByName(string name)
+        {
+            return await _context.Users.Where(u => u.FirstName.Contains(name) || u.LastName.Contains(name)).ToListAsync();
+        }
+
+        public async Task<List<User>> GetByPhone(string phone)
+        {
+            return await _context.Users.Where(u => u.PhoneNumber.Contains(phone)).ToListAsync();
+        }
+
+        public void UpdateUser(User user)
+        {
+            _context.Users.Update(user);
+            _context.SaveChanges();
         }
     }
 }

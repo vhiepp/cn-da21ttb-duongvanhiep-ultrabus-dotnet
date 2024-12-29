@@ -4,16 +4,24 @@ namespace UltraBusAPI.Repositories
 {
     public interface IUserRepository
     {
-        public User? FindById(Guid id);
-            
-        public User? FindByEmail(string email);
+        public Task<User?> FindById(Guid id);
 
-        public User? FindByPhone(string phone);
+        public Task<User?> FindByEmail(string email);
 
-        public List<User> GetByName(string name);
+        public Task<User?> FindByPhone(string phone);
 
-        public List<User> GetByEmail(string email);
+        public Task<List<User>> GetAll();
 
-        public List<User> GetByPhone(string phone);
+        public Task<List<User>> GetByName(string name);
+
+        public Task<List<User>> GetByEmail(string email);
+
+        public Task<List<User>> GetByPhone(string phone);
+
+        public Task AddUser(User user);
+
+        public void UpdateUser(User user);
+
+        public void DeleteUser(User user);
     }
 }

@@ -8,6 +8,7 @@ namespace UltraBusAPI.Configurations
         public static void AddRepositorys(IServiceCollection services)
         {
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IRoleRepository, RoleRepository>();
         }
     }
 }
