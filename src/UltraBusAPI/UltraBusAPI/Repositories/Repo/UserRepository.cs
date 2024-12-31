@@ -10,8 +10,8 @@ namespace UltraBusAPI.Repositories.Repo
 
         public UserRepository(MyDBContext context) : base(context)
         {
-            this._context = context;
-            this._dbSet = context.Set<User>();
+            _context = context;
+            _dbSet = context.Set<User>();
         }
 
         public async Task<User?> FindByEmail(string email)

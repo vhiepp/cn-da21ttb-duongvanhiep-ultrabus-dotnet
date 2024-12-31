@@ -2,11 +2,16 @@
 {
     public interface IBaseRepository<T> where T : class
     {
-        public Task<T?> FindById(Guid id);
-        public Task<T?> FindById(int id);
-        public Task Add(T entity);
-        public Task Update(T entity);
-        public Task DeleteById(Guid id);
-        public Task DeleteById(int id);
+        public Task<T?> FindByIdAsync(Guid id);
+
+        public Task<T?> FindByIdAsync(int id);
+
+        public Task AddAsync(T entity);
+
+        public Task UpdateAsync(T entity);
+
+        public Task DeleteByIdAsync(Guid id);
+
+        public Task DeleteByIdAsync(int id);
     }
 }

@@ -10,8 +10,8 @@ namespace UltraBusAPI.Repositories.Repo
 
         public RoleRepository(MyDBContext context) : base(context)
         {
-            this._context = context;
-            this._dbSet = context.Set<Role>();
+            _context = context;
+            _dbSet = context.Set<Role>();
         }
 
         public async Task<Role?> FindByName(string name)

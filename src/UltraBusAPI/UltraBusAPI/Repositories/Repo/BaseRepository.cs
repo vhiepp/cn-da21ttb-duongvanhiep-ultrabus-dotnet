@@ -8,21 +8,21 @@ namespace UltraBusAPI.Repositories.Repo
         private readonly MyDBContext _context;
         private readonly DbSet<T> _dbSet;
 
-
         public BaseRepository(MyDBContext context)
         {
             _context = context;
             _dbSet = context.Set<T>();
         }
-        public async Task Add(T entity)
+
+        public async Task AddAsync(T entity)
         {
             await _dbSet.AddAsync(entity);
             await _context.SaveChangesAsync();
         }
 
-        public async Task DeleteById(Guid id)
+        public async Task DeleteByIdAsync(Guid id)
         {
-            var entity = await FindById(id);
+            var entity = await FindByIdAsync(id);
             if (entity != null)
             {
                 _dbSet.Remove(entity);
@@ -30,9 +30,9 @@ namespace UltraBusAPI.Repositories.Repo
             }
         }
 
-        public async Task DeleteById(int id)
+        public async Task DeleteByIdAsync(int id)
         {
-            var entity = await FindById(id);
+            var entity = await FindByIdAsync(id);
             if (entity != null)
             {
                 _dbSet.Remove(entity);
@@ -40,17 +40,17 @@ namespace UltraBusAPI.Repositories.Repo
             }
         }
 
-        public async Task<T?> FindById(Guid id)
+        public async Task<T?> FindByIdAsync(Guid id)
         {
             return await _dbSet.FindAsync(id);
         }
 
-        public async Task<T?> FindById(int id)
+        public async Task<T?> FindByIdAsync(int id)
         {
             return await _dbSet.FindAsync(id);
         }
 
-        public async Task Update(T entity)
+        public async Task UpdateAsync(T entity)
         {
             _dbSet.Update(entity);
             await _context.SaveChangesAsync();
