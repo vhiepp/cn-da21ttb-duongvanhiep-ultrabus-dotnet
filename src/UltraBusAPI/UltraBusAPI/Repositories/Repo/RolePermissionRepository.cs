@@ -14,17 +14,17 @@ namespace UltraBusAPI.Repositories.Repo
             _dbSet = context.Set<RolePermission>();
         }
 
-        public async Task<List<RolePermission>> GetPermissionsAsync(Guid permissionId)
+        public async Task<List<RolePermission>> GetPermissionsAsync(int permissionId)
         {
             return await _dbSet.Where(rp => rp.PermissionId == permissionId).ToListAsync();
         }
 
-        public async Task<RolePermission?> GetRolePermissionAsync(Guid roleId, Guid permissionId)
+        public async Task<RolePermission?> GetRolePermissionAsync(int roleId, int permissionId)
         {
             return await _dbSet.FirstOrDefaultAsync(rp => rp.RoleId == roleId && rp.PermissionId == permissionId);
         }
 
-        public async Task<List<RolePermission>> GetRolesAsync(Guid roleId)
+        public async Task<List<RolePermission>> GetRolesAsync(int roleId)
         {
             return await _dbSet.Where(rp => rp.RoleId == roleId).ToListAsync();
         }

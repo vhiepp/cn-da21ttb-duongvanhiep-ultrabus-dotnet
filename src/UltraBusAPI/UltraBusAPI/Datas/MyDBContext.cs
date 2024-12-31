@@ -13,19 +13,22 @@ namespace UltraBusAPI.Datas
         public DbSet<Role> Roles { get; set; }
         public DbSet<Permission> Permissions { get; set; }
         public DbSet<RolePermission> RolePermissions { get; set; }
+        public DbSet<Province> Provinces { get; set; }
+        public DbSet<District> Districts { get; set; }
+        public DbSet<Ward> Wards { get; set; }
         #endregion
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
-            // User - Role(One - to - Many)
+            //User - Role(One - to - Many)
             modelBuilder.Entity<User>()
                 .HasOne(u => u.Role)
                 .WithMany(r => r.Users)
                 .HasForeignKey(u => u.RoleId);
 
-            // RolePermissions (Many-to-Many)
+            //RolePermissions(Many - to - Many)
             modelBuilder.Entity<RolePermission>()
                 .HasKey(rp => new { rp.RoleId, rp.PermissionId });
             modelBuilder.Entity<RolePermission>()
@@ -36,6 +39,29 @@ namespace UltraBusAPI.Datas
                 .HasOne(rp => rp.Permission)
                 .WithMany(p => p.RolePermissions)
                 .HasForeignKey(rp => rp.PermissionId);
+
+            modelBuilder.Entity<User>()
+                .HasOne(u => u.Ward)
+                .WithMany(w => w.Users)
+                .HasForeignKey(u => u.WardId);
+            modelBuilder.Entity<User>()
+                .HasOne(u => u.District)
+                .WithMany(d => d.Users)
+                .HasForeignKey(u => u.DistrictId);
+            modelBuilder.Entity<User>()
+                .HasOne(u => u.Province)
+                .WithMany(p => p.Users)
+                .HasForeignKey(u => u.ProvinceId);
+
+            modelBuilder.Entity<Ward>()
+                .HasOne(w => w.District)
+                .WithMany(d => d.Wards)
+                .HasForeignKey(w => w.DistrictId);
+
+            modelBuilder.Entity<District>()
+                .HasOne(d => d.Province)
+                .WithMany(p => p.Districts)
+                .HasForeignKey(d => d.ProvinceId);
         }
     }
 }

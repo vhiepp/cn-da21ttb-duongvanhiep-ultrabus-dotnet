@@ -8,7 +8,7 @@ namespace UltraBusAPI.Datas
     public class Role
     {
         [Key]
-        public Guid Id { get; set; }
+        public int Id { get; set; }
 
         [Required]
         [MaxLength(50)]

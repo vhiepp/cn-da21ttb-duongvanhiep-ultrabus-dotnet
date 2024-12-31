@@ -26,6 +26,8 @@ namespace UltraBusAPI
             JwtConfig.AddJwtConfig(builder.Services, builder.Configuration);
 
             var app = builder.Build();
+            // Add public folder
+            FileConfig.AddPublicFolder(app);
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
