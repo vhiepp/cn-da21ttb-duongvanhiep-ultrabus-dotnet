@@ -18,6 +18,9 @@ namespace UltraBusAPI.Datas
         public int Id { get; set; }
 
         [Required]
+        public string UserName { get; set; }
+
+        [Required]
         [MaxLength(50)]
         public string? FirstName { get; set; }
 
@@ -62,6 +65,7 @@ namespace UltraBusAPI.Datas
         {
             Role = new Role() { Name = "Customer" };
             FirstName = "";
+            UserName = "";
             Ward = new Ward();
             District = new District();
             Province = new Province();

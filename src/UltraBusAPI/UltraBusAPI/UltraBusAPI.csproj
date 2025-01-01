@@ -21,7 +21,6 @@
 
   <ItemGroup>
     <Folder Include="Datas\Seeders\" />
-    <Folder Include="Services\" />
     <Folder Include="Storages\Public\" />
   </ItemGroup>
 
