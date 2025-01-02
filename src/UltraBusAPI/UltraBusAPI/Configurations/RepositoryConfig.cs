@@ -1,5 +1,7 @@
 ﻿using UltraBusAPI.Repositories;
 using UltraBusAPI.Repositories.Repo;
+using UltraBusAPI.Services;
+using UltraBusAPI.Services.Sers;
 
 namespace UltraBusAPI.Configurations
 {
@@ -9,6 +11,7 @@ namespace UltraBusAPI.Configurations
         {
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IRoleRepository, RoleRepository>();
+            services.AddScoped<IRolePermissionRepository, RolePermissionRepository>();
         }
     }
 }

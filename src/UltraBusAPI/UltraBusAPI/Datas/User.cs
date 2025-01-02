@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Diagnostics.CodeAnalysis;
+using UltraBusAPI.Models;
 
 namespace UltraBusAPI.Datas
 {
@@ -21,8 +22,10 @@ namespace UltraBusAPI.Datas
         public string UserName { get; set; }
 
         [Required]
+        public string Password { get; set; }
+
         [MaxLength(50)]
-        public string? FirstName { get; set; }
+        public string? FirstName { get; set; } = string.Empty;
 
         [AllowNull]
         public string? LastName { get; set; }
@@ -40,35 +43,31 @@ namespace UltraBusAPI.Datas
         [AllowNull]
         public int? RoleId { get; set; }
 
-        public Role Role { get; set; }
+        public Role? Role { get; set; } = null;
 
         public bool IsSuperAdmin { get; set; } = false;
 
-        public bool IsCustomer { get; set; } = false;
+        public bool IsCustomer { get; set; } = true;
 
         [AllowNull]
-        public int? WardId { get; set; }
-        public Ward Ward { get; set; }
+        public int? WardId { get; set; } = null;
+        public Ward? Ward { get; set; } = null;
 
         [AllowNull]
-        public int? DistrictId { get; set; }
-        public District District { get; set; }
+        public int? DistrictId { get; set; } = null;
+        public District? District { get; set; } = null;
 
         [AllowNull]
-        public int? ProvinceId { get; set; }
-        public Province Province { get; set; }
+        public int? ProvinceId { get; set; } = null;
+        public Province? Province { get; set; } = null;
 
         [AllowNull]
         public string? Address { get; set; }
 
         public User()
         {
-            Role = new Role() { Name = "Customer" };
-            FirstName = "";
             UserName = "";
-            Ward = new Ward();
-            District = new District();
-            Province = new Province();
+            Password = "";
         }
     }
 }

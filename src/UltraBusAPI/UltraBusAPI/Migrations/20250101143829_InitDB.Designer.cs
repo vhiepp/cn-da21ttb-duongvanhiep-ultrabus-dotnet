@@ -12,8 +12,8 @@ using UltraBusAPI.Datas;
 namespace UltraBusAPI.Migrations
 {
     [DbContext(typeof(MyDBContext))]
-    [Migration("20241231211911_InitDatabase")]
-    partial class InitDatabase
+    [Migration("20250101143829_InitDB")]
+    partial class InitDB
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -51,7 +51,8 @@ namespace UltraBusAPI.Migrations
                     b.Property<string>("NameEnglish")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("ProvinceId")
+                    b.Property<int?>("ProvinceId")
+                        .IsRequired()
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -73,9 +74,11 @@ namespace UltraBusAPI.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("KeyName")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -165,7 +168,6 @@ namespace UltraBusAPI.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("FirstName")
-                        .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
@@ -182,6 +184,10 @@ namespace UltraBusAPI.Migrations
                     b.Property<string>("LastName")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("PhoneNumber")
                         .HasColumnType("nvarchar(max)");
 
@@ -190,6 +196,10 @@ namespace UltraBusAPI.Migrations
 
                     b.Property<int?>("RoleId")
                         .HasColumnType("int");
+
+                    b.Property<string>("UserName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("WardId")
                         .HasColumnType("int");
@@ -215,7 +225,8 @@ namespace UltraBusAPI.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("DistrictId")
+                    b.Property<int?>("DistrictId")
+                        .IsRequired()
                         .HasColumnType("int");
 
                     b.Property<string>("FullName")

@@ -1,4 +1,5 @@
 ﻿using UltraBusAPI.Attributes;
+using UltraBusAPI.Models;
 
 namespace UltraBusAPI.Middlewares
 {
@@ -23,7 +24,10 @@ namespace UltraBusAPI.Middlewares
                         .Where(c => c.Type == "Permission")
                         .Select(c => c.Value);
 
-                    if (!userPermissions.Contains(permissionAttribute.Permission))
+                    if (
+                        !userPermissions.Contains(permissionAttribute.Permission) &&
+                        !userPermissions.Contains(RoleDefaultTypes.SuperAdmin.KeyName)
+                    )
                     {
                         context.Response.StatusCode = StatusCodes.Status403Forbidden;
                         await context.Response.WriteAsync("Forbidden: You don't have permission to access this resource.");

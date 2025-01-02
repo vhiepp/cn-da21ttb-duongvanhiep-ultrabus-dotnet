@@ -27,9 +27,9 @@ namespace UltraBusAPI.Datas
         public double? Longitude { get; set; }
 
         [Required]
-        public int ProvinceId { get; set; }
+        public int? ProvinceId { get; set; }
 
-        public Province Province { get; set; } = null!;
+        public Province? Province { get; set; } = null;
 
         public ICollection<Ward> Wards { get; set; } = new List<Ward>();
         public ICollection<User> Users { get; set; } = new List<User>();

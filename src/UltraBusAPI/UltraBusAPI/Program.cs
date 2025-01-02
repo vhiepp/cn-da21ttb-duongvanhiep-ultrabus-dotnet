@@ -1,9 +1,9 @@
-
+﻿
 using Microsoft.EntityFrameworkCore;
-using Microsoft.OpenApi.Models;
 using UltraBusAPI.Configurations;
 using UltraBusAPI.Datas;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+using UltraBusAPI.Datas.Seeders;
+using UltraBusAPI.Middlewares;
 
 namespace UltraBusAPI
 {
@@ -18,6 +18,8 @@ namespace UltraBusAPI
             builder.Services.AddControllers();
             // Add Repository
             RepositoryConfig.AddRepositorys(builder.Services);
+            // Add Services
+            ServiceConfig.AddServices(builder.Services);
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             // Add Swagger
@@ -28,7 +30,6 @@ namespace UltraBusAPI
             var app = builder.Build();
             // Add public folder
             FileConfig.AddPublicFolder(app);
-
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
@@ -37,6 +38,11 @@ namespace UltraBusAPI
             }
 
             app.UseAuthorization();
+
+            app.UseMiddleware<PermissionMiddleware>();
+
+            // Gọi Seeder
+            //AddressSeeder.SeedData(app.Services);
 
             app.MapControllers();
 

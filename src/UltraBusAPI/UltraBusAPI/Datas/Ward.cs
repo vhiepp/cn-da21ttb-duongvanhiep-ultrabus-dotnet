@@ -27,8 +27,8 @@ namespace UltraBusAPI.Datas
         public double? Longitude { get; set; }
 
         [Required]
-        public int DistrictId { get; set; }
-        public District District { get; set; } = null!;
+        public int? DistrictId { get; set; }
+        public District? District { get; set; } = null;
 
         public ICollection<User> Users { get; set; } = new List<User>();
     }

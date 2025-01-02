@@ -9,25 +9,25 @@ namespace UltraBusAPI.Datas
         public int Id { get; set; }
 
         [AllowNull]
-        public string? Name { get; set; }
+        public string? Name { get; set; } = null;
 
         [AllowNull]
-        public string? NameEnglish { get; set; }
+        public string? NameEnglish { get; set; } = null;
 
         [AllowNull]
-        public string? FullName { get; set; }
+        public string? FullName { get; set; } = null;
 
         [AllowNull]
-        public string? FullNameEnglish { get; set; }
+        public string? FullNameEnglish { get; set; } = null;
 
         [AllowNull]
-        public double? Latitude { get; set; }
+        public double? Latitude { get; set; } = null;
 
         [AllowNull]
-        public double? Longitude { get; set; }
+        public double? Longitude { get; set; } = null;
 
-        public ICollection<District> Districts { get; set; } = new List<District>();
+        public ICollection<District>? Districts { get; set; } = new List<District>();
 
-        public ICollection<User> Users { get; set; } = new List<User>();
+        public ICollection<User>? Users { get; set; } = new List<User>();
     }
 }
