@@ -81,6 +81,7 @@ namespace UltraBusAPI.Controllers
         }
 
         [HttpPost("forgot-password")]
+        [Permission("iweowe")]
         public IActionResult ForgotPassword()
         {
             return Ok();

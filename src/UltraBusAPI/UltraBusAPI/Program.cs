@@ -2,7 +2,6 @@
 using Microsoft.EntityFrameworkCore;
 using UltraBusAPI.Configurations;
 using UltraBusAPI.Datas;
-using UltraBusAPI.Datas.Seeders;
 using UltraBusAPI.Middlewares;
 
 namespace UltraBusAPI
@@ -42,7 +41,7 @@ namespace UltraBusAPI
             app.UseMiddleware<PermissionMiddleware>();
 
             // Gọi Seeder
-            //AddressSeeder.SeedData(app.Services);
+            SeederConfig.Run(app.Services);
 
             app.MapControllers();
 

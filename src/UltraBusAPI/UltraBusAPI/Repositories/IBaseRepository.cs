@@ -6,6 +6,8 @@
 
         public Task<T?> FindByIdAsync(int id);
 
+        public Task<List<T>> GetAllAsync();
+
         public Task AddAsync(T entity);
 
         public Task UpdateAsync(T entity);

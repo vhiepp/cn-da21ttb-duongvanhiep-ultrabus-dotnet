@@ -12,5 +12,10 @@ namespace UltraBusAPI.Repositories.Repo
             _context = context;
             _dbSet = _context.Set<Ward>();
         }
+
+        public async Task<List<Ward>> GetWardByDistrictId(int districtId)
+        {
+            return await _dbSet.Where(x => x.DistrictId == districtId).ToListAsync();
+        }
     }
 }
