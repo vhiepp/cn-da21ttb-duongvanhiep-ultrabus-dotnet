@@ -31,6 +31,44 @@ namespace UltraBusAPI.Services.Sers
             }).ToList();
         }
 
+        public async Task<ProvinceModel?> GetProvinceById(int id)
+        {
+            var province = await _provinceRepository.FindByIdAsync(id);
+            if (province == null)
+            {
+                return null;
+            }
+            return new ProvinceModel
+            {
+                Id = province.Id,
+                Name = province.Name,
+                NameEnglish = province.NameEnglish,
+                FullName = province.FullName,
+                FullNameEnglish = province.FullNameEnglish,
+                Latitude = province.Latitude,
+                Longitude = province.Longitude
+            };
+        }
+
+        public async Task<DistrictModel?> GetDistrictById(int id)
+        {
+            var district = await _districtRepository.FindByIdAsync(id);
+            if (district == null)
+            {
+                return null;
+            }
+            return new DistrictModel
+            {
+                Id = district.Id,
+                Name = district.Name,
+                NameEnglish = district.NameEnglish,
+                FullName = district.FullName,
+                FullNameEnglish = district.FullNameEnglish,
+                Latitude = district.Latitude,
+                Longitude = district.Longitude
+            };
+        }
+
         public async Task<List<DistrictModel>> GetDistrictByProvinceId(int provinceId)
         {
             var districts = await _districtRepository.GetDistrictByProvinceId(provinceId);

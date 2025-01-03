@@ -1,4 +1,5 @@
-﻿using Microsoft.OpenApi.Models;
+﻿using Microsoft.Extensions.Options;
+using Microsoft.OpenApi.Models;
 
 namespace UltraBusAPI.Configurations
 {
@@ -9,6 +10,7 @@ namespace UltraBusAPI.Configurations
             services.AddSwaggerGen(option =>
             {
                 option.SwaggerDoc("v1", new OpenApiInfo { Title = "UltraBus API", Version = "v1" });
+
                 option.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 {
                     In = ParameterLocation.Header,

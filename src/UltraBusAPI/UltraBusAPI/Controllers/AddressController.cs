@@ -27,6 +27,32 @@ namespace UltraBusAPI.Controllers
                 Message = "Get all provinces successfully"
             });
         }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetById(int id)
+        {
+            var province = await _addressService.GetProvinceById(id);
+
+            return Ok(new ApiResponse()
+            {
+                Success = true,
+                Data = province,
+                Message = "Get province by id successfully"
+            });
+        }
+
+        [HttpGet("{id}/districts")]
+        public async Task<IActionResult> GetDistrictsByProvinceId(int id)
+        {
+            var districts = await _addressService.GetDistrictByProvinceId(id);
+
+            return Ok(new ApiResponse()
+            {
+                Success = true,
+                Data = districts,
+                Message = "Get districts by province id successfully"
+            });
+        }
     }
 
     [Route("api/districts")]
@@ -40,16 +66,29 @@ namespace UltraBusAPI.Controllers
             _addressService = addressService;
         }
 
-        [HttpGet("{provinceId}")]
-        public async Task<IActionResult> GetByProvinceId(int provinceId)
+        [HttpGet("{districtId}")]  
+        public async Task<IActionResult> GetByDistrictId(int districtId)
         {
-            var districts = await _addressService.GetDistrictByProvinceId(provinceId);
+            var district = await _addressService.GetDistrictById(districtId);
 
             return Ok(new ApiResponse()
             {
                 Success = true,
-                Data = districts,
-                Message = "Get districts by province id successfully"
+                Data = district,
+                Message = "Get district by Id successfully"
+            });
+        }
+
+        [HttpGet("{districtId}/wards")]
+        public async Task<IActionResult> GetWardsByDistrictId(int districtId)
+        {
+            var wards = await _addressService.GetWardByDistrictId(districtId);
+
+            return Ok(new ApiResponse()
+            {
+                Success = true,
+                Data = wards,
+                Message = "Get wards by district id successfully"
             });
         }
     }

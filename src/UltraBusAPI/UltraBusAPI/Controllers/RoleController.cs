@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using UltraBusAPI.Attributes;
 using UltraBusAPI.Models;
 using UltraBusAPI.Services;
 
@@ -16,6 +17,7 @@ namespace UltraBusAPI.Controllers
         }
 
         [HttpGet]
+        [Permission("SuperAdmin")]
         public async Task<IActionResult> GetAll()
         {
             var result = await _roleService.GetAll();
@@ -30,15 +32,42 @@ namespace UltraBusAPI.Controllers
         }
 
         [HttpGet("{id}")]
-        public IActionResult Get(int id)
+        [Permission("SuperAdmin")]
+        public async Task<IActionResult> Get(int id)
         {
-            return Ok();
+            var result = await _roleService.GetById(id);
+            if (result == null)
+            {
+                return NotFound(
+                    new ApiResponse()
+                    {
+                        Message = "Role not found",
+                        Success = false
+                    }
+                );
+            }
+            return Ok(
+                new ApiResponse()
+                {
+                    Message = "Get role successfully",
+                    Success = true,
+                    Data = result
+                }
+            );
         }
 
         [HttpPost]
-        public IActionResult Create()
+        [Permission("SuperAdmin")]
+        public async Task<IActionResult> Create(CreateRoleModel createRoleModel)
         {
-            return Ok();
+            await _roleService.CreateRoleGroup(createRoleModel);
+            return Ok(
+                new ApiResponse()
+                {
+                    Message = "Create role successfully",
+                    Success = true
+                }
+            );
         }
 
         [HttpPut("{id}")]
@@ -51,6 +80,33 @@ namespace UltraBusAPI.Controllers
         public IActionResult Delete(int id)
         {
             return Ok();
+        }
+    }
+
+    [Route("api/permissions")]
+    [ApiController]
+    public class PermissionController : ControllerBase
+    {
+        public readonly IRoleService _roleService;
+
+        public PermissionController(IRoleService roleService)
+        {
+            _roleService = roleService;
+        }
+
+        [HttpGet]
+        [Permission("SuperAdmin")]
+        public async Task<IActionResult> GetAll()
+        {
+            var result = await _roleService.GetAllPermission();
+            return Ok(
+                new ApiResponse()
+                {
+                    Message = "Get all permissions successfully",
+                    Success = true,
+                    Data = result
+                }
+            );
         }
     }
 }

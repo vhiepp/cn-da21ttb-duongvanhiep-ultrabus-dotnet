@@ -15,7 +15,7 @@ namespace UltraBusAPI.Datas
         public required string Name { get; set; }
 
         // List of Permissions in the Role
-        public ICollection<RolePermission> RolePermissions { get; set; } = new List<RolePermission>();
-        public ICollection<User> Users { get; set; } = new List<User>();
+        public ICollection<RolePermission>? RolePermissions { get; set; }
+        public ICollection<User>? Users { get; set; }
     }
 }

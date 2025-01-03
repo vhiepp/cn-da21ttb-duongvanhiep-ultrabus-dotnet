@@ -30,7 +30,11 @@ namespace UltraBusAPI.Middlewares
                     )
                     {
                         context.Response.StatusCode = StatusCodes.Status403Forbidden;
-                        await context.Response.WriteAsync("Forbidden: You don't have permission to access this resource.");
+                        await context.Response.WriteAsJsonAsync(new ApiResponse()
+                        {
+                            Message = "You don't have permission to access this resource",
+                            Success = false
+                        });
                         return;
                     }
                 }
