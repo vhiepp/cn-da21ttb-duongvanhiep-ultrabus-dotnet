@@ -5,6 +5,7 @@
         public Task<T?> FindByIdAsync(Guid id);
 
         public Task<T?> FindByIdAsync(int id);
+        public Task<T?> FindByIdAsync(int? id);
 
         public Task<List<T>> GetAllAsync();
 

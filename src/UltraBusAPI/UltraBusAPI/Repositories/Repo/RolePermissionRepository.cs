@@ -14,6 +14,13 @@ namespace UltraBusAPI.Repositories.Repo
             _dbSet = context.Set<RolePermission>();
         }
 
+        public async Task DeleteByRoleId(int roleId)
+        {
+            var rolePermissions = await _dbSet.Where(rp => rp.RoleId == roleId).ToListAsync();
+            _dbSet.RemoveRange(rolePermissions);
+            await _context.SaveChangesAsync();
+        }
+
         public async Task<List<RolePermission>> GetPermissionsAsync(int permissionId)
         {
             return await _dbSet.Where(rp => rp.PermissionId == permissionId).ToListAsync();

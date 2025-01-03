@@ -71,15 +71,27 @@ namespace UltraBusAPI.Controllers
         }
 
         [HttpPut("{id}")]
-        public IActionResult Update(int id)
+        [Permission("SuperAdmin")]
+        public async Task<IActionResult> Update(int id, CreateRoleModel roleModel)
         {
-            return Ok();
+            await _roleService.Update(id, roleModel);
+            return Ok(new ApiResponse()
+            {
+                Success = true,
+                Message = "Update role successfully"
+            });
         }
 
         [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
+        [Permission("SuperAdmin")]
+        public async Task<IActionResult> Delete(int id)
         {
-            return Ok();
+            await _roleService.Delete(id);
+            return Ok(new ApiResponse()
+            {
+                Success = true,
+                Message = "Delete role successfully"
+            });
         }
     }
 

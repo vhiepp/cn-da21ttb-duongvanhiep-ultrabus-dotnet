@@ -50,8 +50,12 @@ namespace UltraBusAPI.Models
     public class ProfileModel
     {
         public string? Email { get; set; } = string.Empty;
+
         public string? FirstName { get; set; } = string.Empty;
+
         public string? LastName { get; set; } = string.Empty;
+
+        public string FullName => $"{LastName} {FirstName}";
 
         public GenderType Gender { get; set; } = GenderType.Other;
 
@@ -64,5 +68,11 @@ namespace UltraBusAPI.Models
         public int? ProvinceId { get; set; } = null;
 
         public string? Address { get; set; } = string.Empty;
+
+        public bool IsSuperAdmin { get; set; } = false;
+
+        public bool IsCustomer { get; set; } = false;
+
+        public int? RoleId { get; set; } = null;
     }
 }

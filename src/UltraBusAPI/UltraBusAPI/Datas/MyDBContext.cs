@@ -31,10 +31,12 @@ namespace UltraBusAPI.Datas
             //RolePermissions(Many - to - Many)
             modelBuilder.Entity<RolePermission>()
                 .HasKey(rp => new { rp.RoleId, rp.PermissionId });
+
             modelBuilder.Entity<RolePermission>()
                 .HasOne(rp => rp.Role)
                 .WithMany(r => r.RolePermissions)
                 .HasForeignKey(rp => rp.RoleId);
+
             modelBuilder.Entity<RolePermission>()
                 .HasOne(rp => rp.Permission)
                 .WithMany(p => p.RolePermissions)
@@ -44,10 +46,12 @@ namespace UltraBusAPI.Datas
                 .HasOne(u => u.Ward)
                 .WithMany(w => w.Users)
                 .HasForeignKey(u => u.WardId);
+
             modelBuilder.Entity<User>()
                 .HasOne(u => u.District)
                 .WithMany(d => d.Users)
                 .HasForeignKey(u => u.DistrictId);
+
             modelBuilder.Entity<User>()
                 .HasOne(u => u.Province)
                 .WithMany(p => p.Users)

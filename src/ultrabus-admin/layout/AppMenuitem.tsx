@@ -8,8 +8,12 @@ import { CSSTransition } from 'react-transition-group';
 import { MenuContext } from './context/menucontext';
 import { AppMenuItemProps } from '@/types';
 import { usePathname, useSearchParams } from 'next/navigation';
+import { fetcher } from '@/functions';
+import useSWR from 'swr';
+import { profileApi } from '@/apis/auth-api';
 
 const AppMenuitem = (props: AppMenuItemProps) => {
+    const { data, error } = useSWR(profileApi, fetcher);
     const pathname = usePathname();
     const searchParams = useSearchParams();
     const { activeMenu, setActiveMenu } = useContext(MenuContext);
@@ -54,6 +58,27 @@ const AppMenuitem = (props: AppMenuItemProps) => {
             </ul>
         </CSSTransition>
     );
+
+    // console.log(item);
+
+    if (!data) return null;
+
+    if (item?.is_admin && data && data.is_admin == 0) {
+        return null;
+    }
+
+    if (data && data.role_id != 0 && item?.permission) {
+        const menuPermissions = item.permission.split(',');
+        const userPermissions = data.role.permissions.map((permission) => permission.permission_key);
+
+        // console.log('menuPermissions', menuPermissions);
+        // console.log('userPermissions', userPermissions);
+
+        const hasPermission = menuPermissions.some((permission) => userPermissions.includes(permission));
+        if (!hasPermission) {
+            return null;
+        }
+    }
 
     return (
         <li className={classNames({ 'layout-root-menuitem': props.root, 'active-menuitem': active })}>

@@ -24,9 +24,24 @@ namespace UltraBusAPI.Repositories.Repo
             return await _dbSet.FirstOrDefaultAsync(u => u.PhoneNumber == phone);
         }
 
+        public async Task<User?> FindByUserName(string userName)
+        {
+            return await _dbSet.FirstOrDefaultAsync(u => u.UserName == userName);
+        }
+
+        public async Task<User?> FindAdminById(int id)
+        {
+            return await _dbSet.FirstOrDefaultAsync(u => u.Id == id && u.IsSuperAdmin == false && u.IsCustomer == false);
+        }
+
         public async Task<List<User>> GetAll()
         {
             return await _dbSet.ToListAsync();
+        }
+
+        public async Task<List<User>> GetAllAdmin()
+        {
+            return await _dbSet.Where(u => u.IsSuperAdmin == false && u.IsCustomer == false).ToListAsync();
         }
 
         public async Task<List<User>> GetByEmail(string email)

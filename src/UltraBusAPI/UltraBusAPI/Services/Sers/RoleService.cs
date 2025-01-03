@@ -1,4 +1,6 @@
-﻿using UltraBusAPI.Datas;
+﻿using Microsoft.AspNetCore.Http.HttpResults;
+using System.Data;
+using UltraBusAPI.Datas;
 using UltraBusAPI.Models;
 using UltraBusAPI.Repositories;
 
@@ -26,7 +28,8 @@ namespace UltraBusAPI.Services.Sers
         {
             var role = new Role()
             {
-                Name = roleModel.Name
+                Name = roleModel.Name,
+                Description = roleModel.Description
             };
             await _roleRepository.AddAsync(role);
             foreach (var permissionId in roleModel.PermissionIds)
@@ -40,9 +43,10 @@ namespace UltraBusAPI.Services.Sers
             }
         }
 
-        public Task Delete(int id)
+        public async Task Delete(int id)
         {
-            throw new NotImplementedException();
+            await _rolePermissionRepository.DeleteByRoleId(id);
+            await _roleRepository.DeleteByIdAsync(id);
         }
 
         public async Task<List<RoleModel>> GetAll()
@@ -51,7 +55,8 @@ namespace UltraBusAPI.Services.Sers
             return roles.Select(r => new RoleModel()
             {
                 Id = r.Id,
-                Name = r.Name
+                Name = r.Name,
+                Description = r.Description
             }).ToList();
         }
 
@@ -91,13 +96,53 @@ namespace UltraBusAPI.Services.Sers
             {
                 Id = role.Id,                
                 Name = role.Name,
+                Description = role.Description,
                 Permissions = permissions
             };
         }
 
-        public Task Update(Role role)
+        public async Task<List<PermissionModel>> GetPermissionByRoleId(int roleId)
         {
-            throw new NotImplementedException();
+            var role = await _roleRepository.FindByIdAsync(roleId);
+            if (role == null)
+            {
+                return [];
+            }
+            var rolePermissions = await _rolePermissionRepository.GetRolesAsync(role.Id);
+            var permissions = new List<PermissionModel>();
+            foreach (var item in rolePermissions)
+            {
+                var per = await _permissionRepository.FindByIdAsync(item.PermissionId);
+                if (per != null)
+                    permissions.Add(new PermissionModel
+                    {
+                        Id = per.Id,
+                        Name = per.Name,
+                        KeyName = per.KeyName,
+                        Description = per.Description
+                    });
+            }
+            return permissions;
+        }
+
+        public async Task Update(int roleId, CreateRoleModel roleModel)
+        {
+            await _roleRepository.UpdateAsync(new Role()
+            {
+                Id = roleId,
+                Name = roleModel.Name,
+                Description = roleModel.Description
+            });
+            await _rolePermissionRepository.DeleteByRoleId(roleId);
+            foreach (var permissionId in roleModel.PermissionIds)
+            {
+                var rolePermission = new RolePermission()
+                {
+                    RoleId = roleId,
+                    PermissionId = permissionId
+                };
+                await _rolePermissionRepository.AddAsync(rolePermission);
+            }
         }
     }
 }

@@ -1,17 +1,25 @@
 'use client';
-import React, { useState, createContext } from 'react';
+import React, { useState, createContext, useEffect } from 'react';
 import { LayoutState, ChildContainerProps, LayoutConfig, LayoutContextProps } from '@/types';
 export const LayoutContext = createContext({} as LayoutContextProps);
 
 export const LayoutProvider = ({ children }: ChildContainerProps) => {
-    const [layoutConfig, setLayoutConfig] = useState<LayoutConfig>({
+    let initLayoutConfig: LayoutConfig = {
         ripple: false,
         inputStyle: 'outlined',
         menuMode: 'static',
-        colorScheme: 'light',
+        colorScheme: 'dark',
         theme: 'lara-light-indigo',
         scale: 14
-    });
+    };
+    if (typeof window !== 'undefined') {
+        const localStorageLayoutConfig = JSON.parse(localStorage.getItem('layout-config'));
+        if (localStorageLayoutConfig) {
+            initLayoutConfig = localStorageLayoutConfig;
+        }
+    }
+    const [layoutConfig, setLayoutConfig] = useState<LayoutConfig>(initLayoutConfig);
+    // console.log('Layout config 1', layoutConfig);
 
     const [layoutState, setLayoutState] = useState<LayoutState>({
         staticMenuDesktopInactive: false,
@@ -21,6 +29,10 @@ export const LayoutProvider = ({ children }: ChildContainerProps) => {
         staticMenuMobileActive: false,
         menuHoverActive: false
     });
+
+    useEffect(() => {
+        localStorage.setItem('layout-config', JSON.stringify(layoutConfig));
+    }, [layoutConfig]);
 
     const onMenuToggle = () => {
         if (isOverlay()) {

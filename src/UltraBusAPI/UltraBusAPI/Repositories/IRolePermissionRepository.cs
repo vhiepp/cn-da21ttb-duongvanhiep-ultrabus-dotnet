@@ -9,5 +9,7 @@ namespace UltraBusAPI.Repositories
         public Task<List<RolePermission>> GetPermissionsAsync(int permissionId);
 
         public Task<RolePermission?> GetRolePermissionAsync(int roleId, int permissionId);
+
+        public Task DeleteByRoleId(int roleId);
     }
 }

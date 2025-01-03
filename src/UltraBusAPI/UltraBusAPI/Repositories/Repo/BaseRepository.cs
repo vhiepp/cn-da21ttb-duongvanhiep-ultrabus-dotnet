@@ -50,6 +50,15 @@ namespace UltraBusAPI.Repositories.Repo
             return await _dbSet.FindAsync(id);
         }
 
+        public async Task<T?> FindByIdAsync(int? id)
+        {
+            if (id == null)
+            {
+                return null;
+            }
+            return await _dbSet.FindAsync(id);
+        }
+
         public async Task<List<T>> GetAllAsync()
         {
             return await _dbSet.ToListAsync();

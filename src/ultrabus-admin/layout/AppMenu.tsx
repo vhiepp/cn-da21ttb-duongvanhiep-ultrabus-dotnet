@@ -5,12 +5,20 @@ import AppMenuitem from './AppMenuitem';
 import { LayoutContext } from './context/layoutcontext';
 import { MenuProvider } from './context/menucontext';
 import Link from 'next/link';
+import { fetcher } from '@/functions';
+import useSWR from 'swr';
+import { profileApi } from '@/apis/auth-api';
 import { AppMenuItem } from '@/types';
 
-const AppMenu = () => {
-    const { layoutConfig } = useContext(LayoutContext);
+interface AppMenuItemCustom extends AppMenuItem {
+    permission?: string;
+}
 
-    const model: AppMenuItem[] = [
+const AppMenu = () => {
+    // const { layoutConfig } = useContext(LayoutContext);
+    const { data, error } = useSWR(profileApi, fetcher);
+
+    const model = [
         {
             label: 'Home',
             items: [
@@ -18,41 +26,133 @@ const AppMenu = () => {
                     label: 'Dashboard',
                     icon: 'pi pi-fw pi-home',
                     to: '/'
-                },
+                }
             ]
         },
         {
-            label: 'HPK VIETNAM',
+            label: 'Super Admin',
+            // is_admin: true,
             items: [
                 {
-                    label: 'Quyền admin',
+                    label: 'Nhóm quyền',
                     icon: 'pi pi-fw pi-lock',
-                    to: '/admin',
+                    // permission: 'super_admin',
                     items: [
-                        { label: 'Danh sách quyền', icon: 'pi pi-fw pi-list', to: '/admin' },
-                        { label: 'Thêm mới quyền', icon: 'pi pi-fw pi-plus', to: '/admin' },
+                        { label: 'Danh sách quyền', icon: 'pi pi-fw pi-list', to: '/admin/role-groups' },
+                        { label: 'Thêm mới quyền', icon: 'pi pi-fw pi-plus', to: '/admin/role-groups/create' }
                     ]
                 },
                 {
-                    label: 'Admin quản lý',
+                    label: 'User admin',
                     icon: 'pi pi-fw pi-user',
-                    to: '/admin',
+                    // permission: 'super_admin',
                     items: [
-                        { label: 'Danh sách admin', icon: 'pi pi-fw pi-list', to: '/admin' },
-                        { label: 'Thêm mới admin', icon: 'pi pi-fw pi-plus', to: '/admin' },
+                        { label: 'Danh sách admin', icon: 'pi pi-fw pi-list', to: '/admin/user-admin' },
+                        { label: 'Thêm mới admin', icon: 'pi pi-fw pi-plus', to: '/admin/user-admin/create' }
                     ]
-                },
-                {
-                    label: 'Quản lý doanh nghiệp',
-                    icon: 'pi pi-fw pi-briefcase',
-                    to: '/admin',
-                    items: [
-                        { label: 'Danh sách doanh nghiệp', icon: 'pi pi-fw pi-list', to: '/admin' },
-                        { label: 'Thêm mới doanh nghiệp', icon: 'pi pi-fw pi-plus', to: '/admin' },
-                    ]
-                },
+                }
             ]
         },
+        // {
+        //     label: 'Hệ thống',
+        //     permission: '',
+        //     items: [
+        //         {
+        //             label: 'Cài đặt hệ thống',
+        //             icon: 'pi pi-fw pi-cog',
+        //             to: '/admin',
+        //             items: [
+        //                 // { label: 'Danh sách khách hàng', icon: 'pi pi-fw pi-list', to: '/admin' },
+        //                 // { label: '', icon: 'pi pi-fw pi-list', to: '/admin' },
+        //                 { label: 'Ngày thông báo hóa đơn', icon: 'pi pi-fw pi-bell', to: '/admin' },
+        //                 { label: 'Ngày chốt hóa đơn', icon: 'pi pi-fw pi-calendar-minus', to: '/admin' }
+        //             ]
+        //         },
+        //         {
+        //             label: 'Gửi thông báo',
+        //             icon: 'pi pi-fw pi-bell',
+        //             to: '/admin',
+        //             items: [
+        //                 { label: 'Danh sách thông báo', icon: 'pi pi-fw pi-list', to: '/admin' },
+        //                 { label: 'Thêm mới thông báo', icon: 'pi pi-fw pi-plus', to: '/admin' }
+        //             ]
+        //         }
+        //     ]
+        // },
+        // {
+        //     label: 'Điện dân dụng',
+        //     permission: '',
+        //     items: [
+        //         {
+        //             label: 'Dữ liệu khách hàng',
+        //             icon: 'pi pi-fw pi-users',
+        //             items: [
+        //                 { label: 'Danh sách khách hàng', icon: 'pi pi-fw pi-list', to: '/electric/customers' },
+        //                 { label: 'Import dữ liệu khách hàng', icon: 'pi pi-fw pi-database', to: '/admin' }
+        //             ]
+        //         }
+        //     ]
+        // },
+        // {
+        //     label: 'Nước sinh hoạt',
+        //     permission: '',
+        //     items: [
+        //         {
+        //             label: 'Dữ liệu khách hàng',
+        //             icon: 'pi pi-fw pi-users',
+        //             items: [
+        //                 { label: 'Danh sách khách hàng', icon: 'pi pi-fw pi-list', to: '/water/customers' },
+        //                 { label: 'Import dữ liệu khách hàng', icon: 'pi pi-fw pi-database', to: '/admin' }
+        //             ]
+        //         }
+        //     ]
+        // },
+        // {
+        //     label: 'Điện mặt trời',
+        //     permission: '',
+        //     items: [
+        //         {
+        //             label: 'Dữ liệu khách hàng',
+        //             icon: 'pi pi-fw pi-users',
+        //             to: '/admin',
+        //             items: [{ label: 'Danh sách khách hàng', icon: 'pi pi-fw pi-list', to: '/solar-power/customers' }]
+        //         },
+        //         {
+        //             label: 'Đăng ký lắp điện mặt trời',
+        //             icon: 'pi pi-fw pi-building',
+        //             to: '/solar-power/register'
+        //             // items: [
+        //             //     { label: 'Danh sách khách hàng', icon: 'pi pi-fw pi-list', to: '/admin' },
+        //             //     { label: 'Import dữ liệu khách hàng', icon: 'pi pi-fw pi-plus', to: '/admin' },
+        //             // ]
+        //         }
+        //     ]
+        // },
+        // {
+        //     label: 'Khác',
+        //     permission: '',
+        //     items: [
+        //         {
+        //             label: 'Tin tức',
+        //             icon: 'pi pi-fw pi-book',
+        //             to: '/admin',
+        //             items: [
+        //                 { label: 'Danh sách tin tức', icon: 'pi pi-fw pi-list', to: '/admin' },
+        //                 { label: 'Thêm mới tin tức', icon: 'pi pi-fw pi-plus', to: '/admin' }
+        //             ]
+        //         },
+        //         {
+        //             label: 'Đơn đặt hàng',
+        //             icon: 'pi pi-fw pi-server',
+        //             to: '/admin',
+        //             items: [
+        //                 { label: 'Đơn đặt hàng', icon: 'pi pi-fw pi-shopping-cart', to: '/admin' },
+        //                 { label: 'Danh sách sản phẩm', icon: 'pi pi-fw pi-list', to: '/products' },
+        //                 { label: 'Thêm mới sản phẩm', icon: 'pi pi-fw pi-plus', to: '/admin' }
+        //             ]
+        //         }
+        //     ]
+        // },
         {
             label: 'UI Components',
             items: [
@@ -212,14 +312,20 @@ const AppMenu = () => {
     return (
         <MenuProvider>
             <ul className="layout-menu">
-                {model.map((item, i) => {
-                    return !item?.seperator ? <AppMenuitem item={item} root={true} index={i} key={item.label} /> : <li className="menu-separator"></li>;
-                })}
-
-                <Link href="https://blocks.primereact.org" target="_blank" style={{ cursor: 'pointer' }}>
-                    <img alt="Prime Blocks" className="w-full mt-3" src={`/layout/images/banner-primeblocks${layoutConfig.colorScheme === 'light' ? '' : '-dark'}.png`} />
-                </Link>
+                {data &&
+                    model.map((item, i) => {
+                        // @ts-ignore
+                        return !item?.seperator ? <AppMenuitem item={item} root={true} index={i} key={item.label} /> : <li className="menu-separator"></li>;
+                    })}
             </ul>
+            {!data && (
+                <div className="h-full">
+                    <div style={{ height: '48%' }}></div>
+                    <div className="flex justify-content-center">
+                        <i className="pi pi-spin pi-spinner" style={{ fontSize: '2rem' }}></i>
+                    </div>
+                </div>
+            )}
         </MenuProvider>
     );
 };

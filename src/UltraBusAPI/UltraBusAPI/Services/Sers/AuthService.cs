@@ -80,15 +80,6 @@ namespace UltraBusAPI.Services.Sers
             {
                 claims.Add(new Claim("Permission", RoleDefaultTypes.Customer.KeyName));
             }
-            if (user.RoleId.HasValue)
-            {
-                claims.Add(new Claim("RoleId", user.RoleId.Value.ToString()));
-                List<RolePermission> permissions = user.Role.RolePermissions.ToList();
-                foreach (var permission in permissions)
-                {
-                    claims.Add(new Claim("Permission", permission.Permission.KeyName + ""));
-                }
-            }
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings["Secret"] + ""));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
@@ -118,7 +109,8 @@ namespace UltraBusAPI.Services.Sers
 
         public async Task<object> Login(SignInModel signIn)
         {
-            var user = await _userRepository.FindByPhone(signIn.UserName);
+            var user = await _userRepository.FindByUserName(signIn.UserName);
+            //Console.WriteLine(user);
             if (user == null)
             {
                 return await Task.FromResult(new Dictionary<string, string> { { "UserName", "User not found" } });
@@ -138,6 +130,9 @@ namespace UltraBusAPI.Services.Sers
                 DistrictId = user.DistrictId,
                 ProvinceId = user.ProvinceId,
                 Gender = user.Gender,
+                IsSuperAdmin = user.IsSuperAdmin,
+                IsCustomer = user.IsCustomer,
+                RoleId = user.RoleId
             };
             return await Task.FromResult(new { AccessToken = GenerateJwtToken(user), Profile = profile });
         }
@@ -159,6 +154,10 @@ namespace UltraBusAPI.Services.Sers
                 WardId = user.WardId,
                 DistrictId = user.DistrictId,
                 ProvinceId = user.ProvinceId,
+                Gender = user.Gender,
+                IsSuperAdmin = user.IsSuperAdmin,
+                IsCustomer = user.IsCustomer,
+                RoleId = user.RoleId
             };
             return await Task.FromResult(profile);
         }

@@ -1,5 +1,11 @@
+"use client";
 import { Metadata } from 'next';
 import Layout from '../../layout/layout';
+import { useRouter } from 'next/navigation';
+import { fetcher } from '@/functions';
+import useSWR from 'swr';
+import { profileApi } from '@/apis/auth-api';
+import { useEffect } from 'react';
 
 interface AppLayoutProps {
     children: React.ReactNode;
@@ -24,5 +30,21 @@ export const metadata: Metadata = {
 };
 
 export default function AppLayout({ children }: AppLayoutProps) {
+    const router = useRouter();
+    const { data, error } = useSWR(profileApi, fetcher);
+
+
+    useEffect(() => {
+        if (error) {
+            router.push('/auth/login');
+        }
+    }, [data, error]);
+
+    // if (!data) {
+    //     return <Layout>Loading...</Layout>;
+    // }
+
+    // console.log('Profile data', data);
+
     return <Layout>{children}</Layout>;
 }

@@ -13,10 +13,15 @@ namespace UltraBusAPI.Controllers
     public class AuthController : ControllerBase
     {
         public readonly IAuthService _authService;
+        public readonly IRoleService _roleService;
+        public readonly IUserService _userService;
 
-        public AuthController(IAuthService authService)
+
+        public AuthController(IAuthService authService, IRoleService roleService, IUserService userService)
         {
             _authService = authService;
+            _roleService = roleService;
+            _userService = userService;
         }
 
         [HttpPost("login")]
@@ -146,6 +151,83 @@ namespace UltraBusAPI.Controllers
         public IActionResult UpdateProfile()
         {
             return Ok();
+        }
+
+        [HttpGet("permissions")]
+        [Authorize]
+        public async Task<IActionResult> GetPermissions()
+        {
+            var claimUserId = User.FindFirst("Id");
+            if (claimUserId == null)
+            {
+                return Ok(
+                    new ApiResponse()
+                    {
+                        Message = "User not found",
+                        Success = false
+                    }
+                );
+            }
+            var userId = int.Parse(claimUserId.Value);
+            var user = await _userService.FindById(userId);
+            if (user == null)
+            {
+                return Ok(
+                    new ApiResponse()
+                    {
+                        Message = "User not found",
+                        Success = false
+                    }
+                );
+            }
+            if (user.IsCustomer)
+            {
+                return Ok(
+                    new ApiResponse()
+                    {
+                        Message = "Permission denied",
+                        Success = false
+                    }
+                );
+            }
+            if (user.IsSuperAdmin)
+            {
+                return Ok(
+                    new ApiResponse()
+                    {
+                        Message = "You are SuperAdmin",
+                        Success = true,
+                        Data = new List<PermissionModel> {
+                            new PermissionModel()
+                            {
+                                Id = 0,
+                                Name = "Super Admin",
+                                KeyName = "SuperAdmin",
+                                Description = "SuperAdmin"
+                            }
+                        }
+                    }
+                );
+            }
+            if (user.RoleId == null)
+            {
+                return Ok(
+                    new ApiResponse()
+                    {
+                        Message = "Role not found",
+                        Success = false
+                    }
+                );
+            }
+            var permissions = await _roleService.GetPermissionByRoleId(user.RoleId.Value);
+            return Ok(
+                new ApiResponse()
+                {
+                    Message = "Get permissions successfully",
+                    Success = true,
+                    Data = permissions
+                }
+            );
         }
     }
 }

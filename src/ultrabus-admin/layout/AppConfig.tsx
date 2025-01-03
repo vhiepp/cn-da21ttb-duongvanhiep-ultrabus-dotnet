@@ -6,7 +6,7 @@ import { InputSwitch, InputSwitchChangeEvent } from 'primereact/inputswitch';
 import { RadioButton, RadioButtonChangeEvent } from 'primereact/radiobutton';
 import { Sidebar } from 'primereact/sidebar';
 import { classNames } from 'primereact/utils';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { use, useContext, useEffect, useState } from 'react';
 import { AppConfigProps, LayoutConfig, LayoutState } from '@/types';
 import { LayoutContext } from './context/layoutcontext';
 
@@ -14,6 +14,12 @@ const AppConfig = (props: AppConfigProps) => {
     const [scales] = useState([12, 13, 14, 15, 16]);
     const { layoutConfig, setLayoutConfig, layoutState, setLayoutState } = useContext(LayoutContext);
     const { setRipple, changeTheme } = useContext(PrimeReactContext);
+
+    useEffect(() => {
+        // console.log("Change theme", layoutConfig.theme);
+        changeTheme?.("lara-light-indigo", layoutConfig.theme, 'theme-css');
+        setRipple?.(layoutConfig.ripple as boolean);
+    }, []);
 
     const onConfigButtonClick = () => {
         setLayoutState((prevState: LayoutState) => ({ ...prevState, configSidebarVisible: true }));

@@ -25,6 +25,8 @@ namespace UltraBusAPI
             SwaggerConfig.AddSwaggerGen(builder.Services);
             // Add Jwt Config
             JwtConfig.AddJwtConfig(builder.Services, builder.Configuration);
+            // Add Cors Config
+            CorsConfig.AddCorsConfig(builder.Services);
 
             var app = builder.Build();
             // Add public folder
@@ -35,6 +37,8 @@ namespace UltraBusAPI
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
+
+            app.UseCors("AllowAll");
 
             app.UseAuthorization();
 

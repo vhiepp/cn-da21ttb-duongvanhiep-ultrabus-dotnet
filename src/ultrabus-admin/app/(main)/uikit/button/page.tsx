@@ -2,8 +2,8 @@
 import React, { useState } from 'react';
 import { SplitButton } from 'primereact/splitbutton';
 import { Button } from 'primereact/button';
-import styles from './index.module.scss';
 import { classNames } from 'primereact/utils';
+import styles from '@/app/(main)/uikit/button/index.module.scss';
 
 const ButtonDemo = () => {
     const [loading1, setLoading1] = useState(false);

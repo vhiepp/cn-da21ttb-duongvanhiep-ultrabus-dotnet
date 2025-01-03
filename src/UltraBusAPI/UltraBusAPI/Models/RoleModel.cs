@@ -11,6 +11,7 @@ namespace UltraBusAPI.Models
     {
         public int Id { get; set; }
         public string? Name { get; set; }
+        public string? Description { get; set; } = null;
         public List<PermissionModel>? Permissions { get; set; } = [];
     }
 
@@ -18,12 +19,14 @@ namespace UltraBusAPI.Models
     {
         public int Id { get; set; }
         public string? Name { get; set; }
+        public string? KeyName { get; set; } = null;
         public string? Description { get; set; }
     }
 
     public class CreateRoleModel
     {
         public required string Name { get; set; }
+        public string? Description { get; set; }
         public required List<int> PermissionIds { get; set; } = [];
     }
 }
