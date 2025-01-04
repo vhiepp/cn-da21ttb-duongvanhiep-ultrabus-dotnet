@@ -101,8 +101,8 @@ const AppMenu = () => {
                     icon: 'pi pi-fw pi-ticket',
                     permission: 'TicketManager',
                     items: [
-                        { label: 'Danh sách xe', icon: 'pi pi-fw pi-list', to: '' },
-                        { label: 'Thêm mới xe', icon: 'pi pi-fw pi-plus', to: '' }
+                        { label: 'Danh sách vé xe', icon: 'pi pi-fw pi-list', to: '' },
+                        { label: 'Thêm mới vé xe', icon: 'pi pi-fw pi-plus', to: '' }
                     ]
                 },
                 {
@@ -110,8 +110,8 @@ const AppMenu = () => {
                     icon: 'pi pi-fw pi-users',
                     permission: 'CustomerManager',
                     items: [
-                        { label: 'Danh sách trạm dừng', icon: 'pi pi-fw pi-list', to: '' },
-                        { label: 'Thêm mới trạm dừng', icon: 'pi pi-fw pi-plus', to: '' }
+                        { label: 'Danh sách khách hàng', icon: 'pi pi-fw pi-list', to: '' },
+                        { label: 'Thêm mới khách hàng', icon: 'pi pi-fw pi-plus', to: '' }
                     ]
                 },
                 {

@@ -4,8 +4,8 @@ namespace UltraBusAPI.Models
 {
     public static class RoleDefaultTypes
     {
-        public static Permission SuperAdmin = new Permission { Name = "Super Admin", KeyName = "SuperAdmin" };
-        public static Permission Customer = new Permission { Name = "Khách hàng", KeyName = "Customer" };
+        public static Permission SuperAdmin = new Permission { Name = "Super Admin", KeyName = "SuperAdmin", Description = "Quyền quản trị cao nhất" };
+        public static Permission Customer = new Permission { Name = "Khách hàng", KeyName = "Customer", Description = "Quyền khách hàng" };
     }
     public class RoleModel
     {

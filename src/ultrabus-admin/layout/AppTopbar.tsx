@@ -57,7 +57,7 @@ const AppTopbar = forwardRef<AppTopbarRef>((props, ref) => {
                     <i className="pi pi-user"></i>
                     <span>Profile</span>
                 </button> */}
-                <Chip label={data?.fullName + (data?.isSuperAdmin ? ' (SuperAdmin)' : '')} className="pl-3" image={`/demo/images/avatar/default.png`} />
+                <Chip label={data?.fullName + (data?.role && ` (${data.role.name})`)} className="pl-3" image={`/demo/images/avatar/default.png`} />
                 <button type="button" onClick={handleLogout} className="p-link layout-topbar-button">
                     <i className="pi pi-sign-out"></i>
                     <span>Đăng xuất</span>

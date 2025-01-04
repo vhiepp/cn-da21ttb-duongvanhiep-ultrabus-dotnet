@@ -1,13 +1,13 @@
 import React from "react";
-import SEO from "../common/seo";
-import BlogDetails from "../components/blog-details";
-import Wrapper from "../layout/wrapper";
+import SEO from "@/common/seo";
+import Wrapper from "@/layout/wrapper";
+import Developing from "@/components/dev/developing";
 
 const index = () => {
   return (
     <Wrapper>
-      <SEO pageTitle={"Softec - Data analytics"} />
-      <BlogDetails />
+      <SEO pageTitle={"Bài viết"} />
+      <Developing padding={"50vh"} />
     </Wrapper>
   );
 };

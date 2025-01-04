@@ -13,11 +13,13 @@ namespace UltraBusAPI.Services.Sers
     {
         private readonly IConfiguration _configuration;
         private readonly IUserRepository _userRepository;
+        private readonly IRoleRepository _roleRepository;
 
-        public AuthService(IConfiguration configuration, IUserRepository userRepository)
+        public AuthService(IConfiguration configuration, IUserRepository userRepository, IRoleRepository roleRepository)
         {
             _configuration = configuration;
             _userRepository = userRepository;
+            _roleRepository = roleRepository;
         }
 
         public async Task<object> RegisterCustomer(SignUpModel signUp)
@@ -119,21 +121,7 @@ namespace UltraBusAPI.Services.Sers
             {
                 return await Task.FromResult(new Dictionary<string, string> { { "Password", "Password is incorrect" } });
             }
-            var profile = new ProfileModel
-            {
-                FirstName = user.FirstName,
-                LastName = user.LastName,
-                Email = user.Email,
-                PhoneNumber = user.PhoneNumber,
-                Address = user.Address,
-                WardId = user.WardId,
-                DistrictId = user.DistrictId,
-                ProvinceId = user.ProvinceId,
-                Gender = user.Gender,
-                IsSuperAdmin = user.IsSuperAdmin,
-                IsCustomer = user.IsCustomer,
-                RoleId = user.RoleId
-            };
+            var profile = await GetProfile(user);
             return await Task.FromResult(new { AccessToken = GenerateJwtToken(user), Profile = profile });
         }
 
@@ -143,6 +131,45 @@ namespace UltraBusAPI.Services.Sers
             if (user == null)
             {
                 return await Task.FromResult(new Dictionary<string, string> { { "User", "User not found" } });
+            }
+            return await GetProfile(user);
+        }
+    
+        private async Task<ProfileModel> GetProfile(User user)
+        {
+            RoleModel? roleModel = null;
+            if (user.IsSuperAdmin)
+            {
+                roleModel = new RoleModel
+                {
+                    Id = 0,
+                    Name = RoleDefaultTypes.SuperAdmin.Name,
+                    Description = RoleDefaultTypes.SuperAdmin.Description
+                };
+            }
+            else
+            if (user.IsCustomer)
+            {
+                roleModel = new RoleModel
+                {
+                    Id = 0,
+                    Name = RoleDefaultTypes.Customer.Name,
+                    Description = RoleDefaultTypes.Customer.Description
+                };
+            }
+            else
+            if (user.RoleId != null)
+            {
+                var role = await _roleRepository.FindByIdAsync(user.RoleId.Value);
+                if (role != null)
+                {
+                    roleModel = new RoleModel
+                    {
+                        Id = role.Id,
+                        Name = role.Name,
+                        Description = role.Description
+                    };
+                }
             }
             var profile = new ProfileModel
             {
@@ -157,9 +184,10 @@ namespace UltraBusAPI.Services.Sers
                 Gender = user.Gender,
                 IsSuperAdmin = user.IsSuperAdmin,
                 IsCustomer = user.IsCustomer,
-                RoleId = user.RoleId
+                RoleId = user.RoleId,
+                Role = roleModel
             };
-            return await Task.FromResult(profile);
+            return profile;
         }
     }
 }

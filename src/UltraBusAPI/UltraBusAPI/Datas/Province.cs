@@ -26,8 +26,10 @@ namespace UltraBusAPI.Datas
         [AllowNull]
         public double? Longitude { get; set; } = null;
 
-        public ICollection<District>? Districts { get; set; } = new List<District>();
+        public ICollection<District>? Districts { get; set; } = null;
 
-        public ICollection<User>? Users { get; set; } = new List<User>();
+        public ICollection<User>? Users { get; set; } = null;
+
+        public ICollection<BusStation>? BusStations { get; set; } = null;
     }
 }

@@ -31,7 +31,8 @@ namespace UltraBusAPI.Datas
 
         public Province? Province { get; set; } = null;
 
-        public ICollection<Ward> Wards { get; set; } = new List<Ward>();
-        public ICollection<User> Users { get; set; } = new List<User>();
+        public ICollection<Ward>? Wards { get; set; } = null;
+        public ICollection<User>? Users { get; set; } = null;
+        public ICollection<BusStation>? BusStations { get; set; } = null;
     }
 }

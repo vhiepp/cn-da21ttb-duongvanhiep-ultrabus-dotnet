@@ -22,6 +22,120 @@ namespace UltraBusAPI.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("UltraBusAPI.Datas.Bus", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("BrandName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("BusType")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("Floor")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SeatArrangement")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("SeatCount")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Buses");
+                });
+
+            modelBuilder.Entity("UltraBusAPI.Datas.BusRoute", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int?>("BusId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("EndStationId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("EndTime")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double?>("Price")
+                        .HasColumnType("float");
+
+                    b.Property<int?>("StartStationId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("StartTime")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Stations")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BusId");
+
+                    b.HasIndex("EndStationId");
+
+                    b.HasIndex("StartStationId");
+
+                    b.ToTable("BusRoutes");
+                });
+
+            modelBuilder.Entity("UltraBusAPI.Datas.BusStation", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Address")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("DistrictId")
+                        .HasColumnType("int");
+
+                    b.Property<double?>("Latitude")
+                        .HasColumnType("float");
+
+                    b.Property<double?>("Longitude")
+                        .HasColumnType("float");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("ProvinceId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("WardId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DistrictId");
+
+                    b.HasIndex("ProvinceId");
+
+                    b.HasIndex("WardId");
+
+                    b.ToTable("BusStations");
+                });
+
             modelBuilder.Entity("UltraBusAPI.Datas.District", b =>
                 {
                     b.Property<int>("Id")
@@ -254,6 +368,48 @@ namespace UltraBusAPI.Migrations
                     b.ToTable("Wards");
                 });
 
+            modelBuilder.Entity("UltraBusAPI.Datas.BusRoute", b =>
+                {
+                    b.HasOne("UltraBusAPI.Datas.Bus", "Bus")
+                        .WithMany("BusRoutes")
+                        .HasForeignKey("BusId");
+
+                    b.HasOne("UltraBusAPI.Datas.BusStation", "EndStation")
+                        .WithMany("EndBusRoutes")
+                        .HasForeignKey("EndStationId");
+
+                    b.HasOne("UltraBusAPI.Datas.BusStation", "StartStation")
+                        .WithMany("StartBusRoutes")
+                        .HasForeignKey("StartStationId");
+
+                    b.Navigation("Bus");
+
+                    b.Navigation("EndStation");
+
+                    b.Navigation("StartStation");
+                });
+
+            modelBuilder.Entity("UltraBusAPI.Datas.BusStation", b =>
+                {
+                    b.HasOne("UltraBusAPI.Datas.District", "District")
+                        .WithMany("BusStations")
+                        .HasForeignKey("DistrictId");
+
+                    b.HasOne("UltraBusAPI.Datas.Province", "Province")
+                        .WithMany("BusStations")
+                        .HasForeignKey("ProvinceId");
+
+                    b.HasOne("UltraBusAPI.Datas.Ward", "Ward")
+                        .WithMany("BusStations")
+                        .HasForeignKey("WardId");
+
+                    b.Navigation("District");
+
+                    b.Navigation("Province");
+
+                    b.Navigation("Ward");
+                });
+
             modelBuilder.Entity("UltraBusAPI.Datas.District", b =>
                 {
                     b.HasOne("UltraBusAPI.Datas.Province", "Province")
@@ -322,8 +478,22 @@ namespace UltraBusAPI.Migrations
                     b.Navigation("District");
                 });
 
+            modelBuilder.Entity("UltraBusAPI.Datas.Bus", b =>
+                {
+                    b.Navigation("BusRoutes");
+                });
+
+            modelBuilder.Entity("UltraBusAPI.Datas.BusStation", b =>
+                {
+                    b.Navigation("EndBusRoutes");
+
+                    b.Navigation("StartBusRoutes");
+                });
+
             modelBuilder.Entity("UltraBusAPI.Datas.District", b =>
                 {
+                    b.Navigation("BusStations");
+
                     b.Navigation("Users");
 
                     b.Navigation("Wards");
@@ -336,6 +506,8 @@ namespace UltraBusAPI.Migrations
 
             modelBuilder.Entity("UltraBusAPI.Datas.Province", b =>
                 {
+                    b.Navigation("BusStations");
+
                     b.Navigation("Districts");
 
                     b.Navigation("Users");
@@ -350,6 +522,8 @@ namespace UltraBusAPI.Migrations
 
             modelBuilder.Entity("UltraBusAPI.Datas.Ward", b =>
                 {
+                    b.Navigation("BusStations");
+
                     b.Navigation("Users");
                 });
 #pragma warning restore 612, 618

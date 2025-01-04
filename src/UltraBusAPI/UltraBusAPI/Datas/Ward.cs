@@ -31,5 +31,8 @@ namespace UltraBusAPI.Datas
         public District? District { get; set; } = null;
 
         public ICollection<User> Users { get; set; } = new List<User>();
+
+        public ICollection<BusStation> BusStations { get; set; } = new List<BusStation>();
+
     }
 }

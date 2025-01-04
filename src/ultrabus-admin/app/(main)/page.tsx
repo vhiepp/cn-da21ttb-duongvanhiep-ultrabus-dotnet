@@ -368,7 +368,7 @@ const Dashboard = () => {
                         </li>
                     </ul>
                 </div>
-                <div
+                {/* <div
                     className="px-4 py-5 shadow-2 flex flex-column md:flex-row md:align-items-center justify-content-between mb-3"
                     style={{
                         borderRadius: '1rem',
@@ -384,7 +384,7 @@ const Dashboard = () => {
                             Get Started
                         </Link>
                     </div>
-                </div>
+                </div> */}
             </div>
         </div>
     );

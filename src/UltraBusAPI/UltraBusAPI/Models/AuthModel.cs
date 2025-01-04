@@ -74,5 +74,7 @@ namespace UltraBusAPI.Models
         public bool IsCustomer { get; set; } = false;
 
         public int? RoleId { get; set; } = null;
+
+        public RoleModel? Role { get; set; } = null;
     }
 }
