@@ -96,7 +96,7 @@ export interface AppMenuItem extends MenuModel {
     replaceUrl?: boolean;
     command?: ({ originalEvent, item }: CommandProps) => void;
     permission?: string;
-    is_admin?: boolean;
+    is_superadmin?: boolean;
 }
 
 export interface AppMenuItemProps {
@@ -106,5 +106,4 @@ export interface AppMenuItemProps {
     root?: boolean;
     className?: string;
     permission?: string;
-
 }

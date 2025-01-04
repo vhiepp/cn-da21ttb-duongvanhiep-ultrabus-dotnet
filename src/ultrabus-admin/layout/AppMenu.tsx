@@ -31,130 +31,100 @@ const AppMenu = () => {
         },
         {
             label: 'Super Admin',
-            // is_admin: true,
+            is_superadmin: true,
+            permission: 'SuperAdmin',
             items: [
                 {
                     label: 'Nhóm quyền',
                     icon: 'pi pi-fw pi-lock',
-                    // permission: 'super_admin',
                     items: [
                         { label: 'Danh sách quyền', icon: 'pi pi-fw pi-list', to: '/admin/role-groups' },
                         { label: 'Thêm mới quyền', icon: 'pi pi-fw pi-plus', to: '/admin/role-groups/create' }
                     ]
                 },
                 {
-                    label: 'User admin',
+                    label: 'User quản trị',
                     icon: 'pi pi-fw pi-user',
-                    // permission: 'super_admin',
                     items: [
-                        { label: 'Danh sách admin', icon: 'pi pi-fw pi-list', to: '/admin/user-admin' },
-                        { label: 'Thêm mới admin', icon: 'pi pi-fw pi-plus', to: '/admin/user-admin/create' }
+                        { label: 'Danh sách quản trị', icon: 'pi pi-fw pi-list', to: '/admin/user-admin' },
+                        { label: 'Thêm mới quản trị', icon: 'pi pi-fw pi-plus', to: '/admin/user-admin/create' }
                     ]
                 }
             ]
         },
-        // {
-        //     label: 'Hệ thống',
-        //     permission: '',
-        //     items: [
-        //         {
-        //             label: 'Cài đặt hệ thống',
-        //             icon: 'pi pi-fw pi-cog',
-        //             to: '/admin',
-        //             items: [
-        //                 // { label: 'Danh sách khách hàng', icon: 'pi pi-fw pi-list', to: '/admin' },
-        //                 // { label: '', icon: 'pi pi-fw pi-list', to: '/admin' },
-        //                 { label: 'Ngày thông báo hóa đơn', icon: 'pi pi-fw pi-bell', to: '/admin' },
-        //                 { label: 'Ngày chốt hóa đơn', icon: 'pi pi-fw pi-calendar-minus', to: '/admin' }
-        //             ]
-        //         },
-        //         {
-        //             label: 'Gửi thông báo',
-        //             icon: 'pi pi-fw pi-bell',
-        //             to: '/admin',
-        //             items: [
-        //                 { label: 'Danh sách thông báo', icon: 'pi pi-fw pi-list', to: '/admin' },
-        //                 { label: 'Thêm mới thông báo', icon: 'pi pi-fw pi-plus', to: '/admin' }
-        //             ]
-        //         }
-        //     ]
-        // },
-        // {
-        //     label: 'Điện dân dụng',
-        //     permission: '',
-        //     items: [
-        //         {
-        //             label: 'Dữ liệu khách hàng',
-        //             icon: 'pi pi-fw pi-users',
-        //             items: [
-        //                 { label: 'Danh sách khách hàng', icon: 'pi pi-fw pi-list', to: '/electric/customers' },
-        //                 { label: 'Import dữ liệu khách hàng', icon: 'pi pi-fw pi-database', to: '/admin' }
-        //             ]
-        //         }
-        //     ]
-        // },
-        // {
-        //     label: 'Nước sinh hoạt',
-        //     permission: '',
-        //     items: [
-        //         {
-        //             label: 'Dữ liệu khách hàng',
-        //             icon: 'pi pi-fw pi-users',
-        //             items: [
-        //                 { label: 'Danh sách khách hàng', icon: 'pi pi-fw pi-list', to: '/water/customers' },
-        //                 { label: 'Import dữ liệu khách hàng', icon: 'pi pi-fw pi-database', to: '/admin' }
-        //             ]
-        //         }
-        //     ]
-        // },
-        // {
-        //     label: 'Điện mặt trời',
-        //     permission: '',
-        //     items: [
-        //         {
-        //             label: 'Dữ liệu khách hàng',
-        //             icon: 'pi pi-fw pi-users',
-        //             to: '/admin',
-        //             items: [{ label: 'Danh sách khách hàng', icon: 'pi pi-fw pi-list', to: '/solar-power/customers' }]
-        //         },
-        //         {
-        //             label: 'Đăng ký lắp điện mặt trời',
-        //             icon: 'pi pi-fw pi-building',
-        //             to: '/solar-power/register'
-        //             // items: [
-        //             //     { label: 'Danh sách khách hàng', icon: 'pi pi-fw pi-list', to: '/admin' },
-        //             //     { label: 'Import dữ liệu khách hàng', icon: 'pi pi-fw pi-plus', to: '/admin' },
-        //             // ]
-        //         }
-        //     ]
-        // },
-        // {
-        //     label: 'Khác',
-        //     permission: '',
-        //     items: [
-        //         {
-        //             label: 'Tin tức',
-        //             icon: 'pi pi-fw pi-book',
-        //             to: '/admin',
-        //             items: [
-        //                 { label: 'Danh sách tin tức', icon: 'pi pi-fw pi-list', to: '/admin' },
-        //                 { label: 'Thêm mới tin tức', icon: 'pi pi-fw pi-plus', to: '/admin' }
-        //             ]
-        //         },
-        //         {
-        //             label: 'Đơn đặt hàng',
-        //             icon: 'pi pi-fw pi-server',
-        //             to: '/admin',
-        //             items: [
-        //                 { label: 'Đơn đặt hàng', icon: 'pi pi-fw pi-shopping-cart', to: '/admin' },
-        //                 { label: 'Danh sách sản phẩm', icon: 'pi pi-fw pi-list', to: '/products' },
-        //                 { label: 'Thêm mới sản phẩm', icon: 'pi pi-fw pi-plus', to: '/admin' }
-        //             ]
-        //         }
-        //     ]
-        // },
+        {
+            label: 'Hệ thống',
+            items: [
+                {
+                    label: 'Xe khách',
+                    icon: 'pi pi-fw pi-car',
+                    permission: 'CarManager',
+                    items: [
+                        { label: 'Danh sách xe', icon: 'pi pi-fw pi-list', to: '' },
+                        { label: 'Thêm mới xe', icon: 'pi pi-fw pi-plus', to: '' }
+                    ]
+                },
+                {
+                    label: 'Trạm dừng',
+                    icon: 'pi pi-fw pi-map-marker',
+                    permission: 'StationManager',
+                    items: [
+                        { label: 'Danh sách trạm dừng', icon: 'pi pi-fw pi-list', to: '' },
+                        { label: 'Thêm mới trạm dừng', icon: 'pi pi-fw pi-plus', to: '' }
+                    ]
+                },
+                {
+                    label: 'Tuyến đường',
+                    icon: 'pi pi-fw pi-share-alt',
+                    permission: 'RouteManager',
+                    items: [
+                        { label: 'Danh sách tuyến đường', icon: 'pi pi-fw pi-list', to: '' },
+                        { label: 'Thêm mới tuyến đường', icon: 'pi pi-fw pi-plus', to: '' }
+                    ]
+                },
+                {
+                    label: 'Chuyến đi',
+                    icon: 'pi pi-fw pi-map',
+                    permission: 'TripManager',
+                    items: [
+                        { label: 'Danh sách chuyến đi', icon: 'pi pi-fw pi-list', to: '' },
+                        { label: 'Thêm mới chuyến đi', icon: 'pi pi-fw pi-plus', to: '' }
+                    ]
+                }
+            ]
+        },
+        {
+            label: 'Khách hàng',
+            items: [
+                {
+                    label: 'Vé đặt chỗ',
+                    icon: 'pi pi-fw pi-ticket',
+                    permission: 'TicketManager',
+                    items: [
+                        { label: 'Danh sách xe', icon: 'pi pi-fw pi-list', to: '' },
+                        { label: 'Thêm mới xe', icon: 'pi pi-fw pi-plus', to: '' }
+                    ]
+                },
+                {
+                    label: 'Khách hàng',
+                    icon: 'pi pi-fw pi-users',
+                    permission: 'CustomerManager',
+                    items: [
+                        { label: 'Danh sách trạm dừng', icon: 'pi pi-fw pi-list', to: '' },
+                        { label: 'Thêm mới trạm dừng', icon: 'pi pi-fw pi-plus', to: '' }
+                    ]
+                },
+                {
+                    label: 'Đánh giá phản hồi',
+                    icon: 'pi pi-fw pi-comments',
+                    permission: 'FeedbackManager',
+                    items: [{ label: 'Danh sách phản hồi', icon: 'pi pi-fw pi-list', to: '' }]
+                }
+            ]
+        },
         {
             label: 'UI Components',
+            is_superadmin: true,
             items: [
                 { label: 'Form Layout', icon: 'pi pi-fw pi-id-card', to: '/uikit/formlayout' },
                 { label: 'Input', icon: 'pi pi-fw pi-check-square', to: '/uikit/input' },
@@ -176,6 +146,7 @@ const AppMenu = () => {
         },
         {
             label: 'Prime Blocks',
+            is_superadmin: true,
             items: [
                 { label: 'Free Blocks', icon: 'pi pi-fw pi-eye', to: '/blocks', badge: 'NEW' },
                 { label: 'All Blocks', icon: 'pi pi-fw pi-globe', url: 'https://blocks.primereact.org', target: '_blank' }
@@ -183,6 +154,7 @@ const AppMenu = () => {
         },
         {
             label: 'Utilities',
+            is_superadmin: true,
             items: [
                 { label: 'PrimeIcons', icon: 'pi pi-fw pi-prime', to: '/utilities/icons' },
                 { label: 'PrimeFlex', icon: 'pi pi-fw pi-desktop', url: 'https://primeflex.org/', target: '_blank' }
@@ -192,6 +164,7 @@ const AppMenu = () => {
             label: 'Pages',
             icon: 'pi pi-fw pi-briefcase',
             to: '/pages',
+            is_superadmin: true,
             items: [
                 {
                     label: 'Landing',
@@ -243,6 +216,7 @@ const AppMenu = () => {
         },
         {
             label: 'Hierarchy',
+            is_superadmin: true,
             items: [
                 {
                     label: 'Submenu 1',
@@ -287,6 +261,7 @@ const AppMenu = () => {
         },
         {
             label: 'Get Started',
+            is_superadmin: true,
             items: [
                 {
                     label: 'Documentation',

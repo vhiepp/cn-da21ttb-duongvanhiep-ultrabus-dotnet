@@ -50,10 +50,10 @@ const RoleAdminCreate = () => {
         const pers = Object.keys(switchValue)
             .filter((key) => switchValue[key])
             .map(Number);
-        if (pers.length == 0) {
-            alert('Vui lòng chọn ít nhất một quyền');
-            return;
-        }
+        // if (pers.length == 0) {
+        //     alert('Vui lòng chọn ít nhất một quyền');
+        //     return;
+        // }
         if (exit) setLoading1(true);
         else setLoading2(true);
         const data = {

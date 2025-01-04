@@ -3,7 +3,7 @@
 
 import { useRouter } from 'next/navigation';
 import { useEventListener, useMountEffect, useUnmountEffect } from 'primereact/hooks';
-import React, { useContext, useEffect, useRef } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import { classNames } from 'primereact/utils';
 import AppFooter from './AppFooter';
 import AppSidebar from './AppSidebar';
@@ -17,6 +17,7 @@ import { usePathname, useSearchParams } from 'next/navigation';
 const Layout = ({ children }: ChildContainerProps) => {
     const { layoutConfig, layoutState, setLayoutState } = useContext(LayoutContext);
     const { setRipple } = useContext(PrimeReactContext);
+    const [isClient, setIsClient] = useState(false);
     const topbarRef = useRef<AppTopbarRef>(null);
     const sidebarRef = useRef<HTMLDivElement>(null);
     const [bindMenuOutsideClickListener, unbindMenuOutsideClickListener] = useEventListener({
@@ -41,6 +42,10 @@ const Layout = ({ children }: ChildContainerProps) => {
         hideMenu();
         hideProfileMenu();
     }, [pathname, searchParams]);
+
+    useEffect(() => {
+        setIsClient(true);
+    }, []);
 
     const [bindProfileMenuOutsideClickListener, unbindProfileMenuOutsideClickListener] = useEventListener({
         type: 'click',
@@ -125,16 +130,20 @@ const Layout = ({ children }: ChildContainerProps) => {
     return (
         <React.Fragment>
             <div className={containerClass}>
-                <AppTopbar ref={topbarRef} />
-                <div ref={sidebarRef} className="layout-sidebar">
-                    <AppSidebar />
-                </div>
-                <div className="layout-main-container">
-                    <div className="layout-main">{children}</div>
-                    <AppFooter />
-                </div>
-                <AppConfig />
-                <div className="layout-mask"></div>
+                {isClient && (
+                    <>
+                        <AppTopbar ref={topbarRef} />
+                        <div ref={sidebarRef} className="layout-sidebar">
+                            <AppSidebar />
+                        </div>
+                        <div className="layout-main-container">
+                            <div className="layout-main">{children}</div>
+                            <AppFooter />
+                        </div>
+                        <AppConfig />
+                        <div className="layout-mask"></div>
+                    </>
+                )}
             </div>
         </React.Fragment>
     );
