@@ -8,9 +8,11 @@ import Image from "next/image";
 import hero_frame from "../../../../public/assets/img/hero/hero-frame.png";
 import shape_1 from "../../../../public/assets/img/hero/hero-line-shape.png";
 import shape_2 from "../../../../public/assets/img/hero/hero-line-shape-2.png";
-import shape_img_1 from "../../../../public/assets/img/hero/banh-xe.png";
+import shape_img_1 from "../../../../public/assets/img/hero/bus.png";
 import shape_img_2 from "../../../../public/assets/img/hero/hero-shape-2.png";
 import LineShape from "@/svg/line-shape";
+import Link from "next/link";
+import NiceSelect from "@/ui/nice-select";
 
 // hero content data
 const hero_content = {
@@ -89,6 +91,8 @@ const HeroSlider = () => {
     });
   }, []);
 
+  const selectHandler = (e) => {};
+
   useCharAnimation(".tp-hero__hero-title span.child");
 
   return (
@@ -115,13 +119,178 @@ const HeroSlider = () => {
           </div>
           <div className="container">
             <div className="row justify-content-center">
-              <div className="col-xl-10">
-                <div className="tp-hero__content-box text-center z-index-3">
+              <div className="col-xl-12">
+                <div className="tp-hero__content-box text-center z-index-6">
                   <div className="tp-hero__title-box p-relative">
-                    <h2 className="tp-hero__hero-title tp-title-anim">
+                    <h2
+                      className="tp-title-anim"
+                      style={{ fontSize: 70, paddingBottom: 30 }}
+                    >
                       {hero_title}
                     </h2>
-                    <div className="tp-hero__title-shape d-none d-sm-block">
+                    <div class="card z-index-5 rounded-4 shadow-lg pt-4 px-3">
+                      <div class="card-body">
+                        <div className="row mb-3">
+                          <div className="col-12 col-md-6 order-2 order-md-1">
+                            <div
+                              className="text-start"
+                              style={{ color: "var(--tp-theme-primary)" }}
+                            >
+                              <div className="form-check form-check-inline">
+                                <input
+                                  className="form-check-input"
+                                  type="radio"
+                                  style={{}}
+                                  name="inlineRadioOptions"
+                                  id="inlineRadio1"
+                                  value="option1"
+                                />
+                                <label
+                                  className="form-check-label"
+                                  htmlFor="inlineRadio1"
+                                >
+                                  Một chiều
+                                </label>
+                              </div>
+                              <div className="form-check form-check-inline">
+                                <input
+                                  className="form-check-input"
+                                  style={{}}
+                                  type="radio"
+                                  name="inlineRadioOptions"
+                                  id="inlineRadio2"
+                                  value="option2"
+                                />
+                                <label
+                                  className="form-check-label"
+                                  htmlFor="inlineRadio2"
+                                >
+                                  Khứ hồi
+                                </label>
+                              </div>
+                            </div>
+                          </div>
+                          <div
+                            className="col-12 col-md-6 text-start text-md-end order-1 order-md-2 mb-2 mb-md-0"
+                            style={{ color: "var(--tp-theme-primary)" }}
+                          >
+                            <Link href="/search">Hướng dẫn mua vé</Link>
+                          </div>
+                        </div>
+                        <div className="row py-3">
+                          <div className="col-12 col-md-6 col-lg-3">
+                            <div className="postbox__select mb-30">
+                              <NiceSelect
+                                options={[
+                                  { value: "1", text: "Hà Nội" },
+                                  { value: "2", text: "TP. Hồ Chí Minh" },
+                                  { value: "3", text: "Đà Nẵng" },
+                                  { value: "4", text: "Hải Phòng" },
+                                  { value: "5", text: "Cần Thơ" },
+                                  { value: "6", text: "Đà Lạt" },
+                                  { value: "7", text: "Nha Trang" },
+                                  { value: "8", text: "Vũng Tàu" },
+                                  { value: "9", text: "Quy Nhơn" },
+                                  { value: "10", text: "Phan Thiết" },
+                                  { value: "11", text: "Trà Vinh" },
+                                ]}
+                                placeholder="Chọn điểm đi"
+                                title="Điểm đi"
+                                onChange={selectHandler}
+                              />
+                            </div>
+                          </div>
+                          <div className="col-12 col-md-6 col-lg-3">
+                            <div className="postbox__select mb-30">
+                              <NiceSelect
+                                options={[
+                                  { value: "1", text: "Hà Nội" },
+                                  { value: "2", text: "TP. Hồ Chí Minh" },
+                                  { value: "3", text: "Đà Nẵng" },
+                                  { value: "4", text: "Hải Phòng" },
+                                  { value: "5", text: "Cần Thơ" },
+                                  { value: "6", text: "Đà Lạt" },
+                                  { value: "7", text: "Nha Trang" },
+                                  { value: "8", text: "Vũng Tàu" },
+                                  { value: "9", text: "Quy Nhơn" },
+                                  { value: "10", text: "Phan Thiết" },
+                                  { value: "11", text: "Trà Vinh" },
+                                ]}
+                                placeholder="Chọn điểm đến"
+                                title="Điểm đến"
+                                onChange={selectHandler}
+                              />
+                            </div>
+                          </div>
+                          <div className="col-12 col-md-6 col-lg-3">
+                            <div className="postbox__select mb-30">
+                              <NiceSelect
+                                options={[
+                                  { value: "1", text: "Hà Nội" },
+                                  { value: "2", text: "TP. Hồ Chí Minh" },
+                                  { value: "3", text: "Đà Nẵng" },
+                                  { value: "4", text: "Hải Phòng" },
+                                  { value: "5", text: "Cần Thơ" },
+                                  { value: "6", text: "Đà Lạt" },
+                                  { value: "7", text: "Nha Trang" },
+                                  { value: "8", text: "Vũng Tàu" },
+                                  { value: "9", text: "Quy Nhơn" },
+                                  { value: "10", text: "Phan Thiết" },
+                                  { value: "11", text: "Trà Vinh" },
+                                ]}
+                                placeholder="Điểm đến"
+                                onChange={selectHandler}
+                              />
+                            </div>
+                          </div>
+                          <div className="col-12 col-md-6 col-lg-3">
+                            <div className="postbox__select mb-30">
+                              <NiceSelect
+                                options={[
+                                  { value: "1", text: "Hà Nội" },
+                                  { value: "2", text: "TP. Hồ Chí Minh" },
+                                  { value: "3", text: "Đà Nẵng" },
+                                  { value: "4", text: "Hải Phòng" },
+                                  { value: "5", text: "Cần Thơ" },
+                                  { value: "6", text: "Đà Lạt" },
+                                  { value: "7", text: "Nha Trang" },
+                                  { value: "8", text: "Vũng Tàu" },
+                                  { value: "9", text: "Quy Nhơn" },
+                                  { value: "10", text: "Phan Thiết" },
+                                  { value: "11", text: "Trà Vinh" },
+                                ]}
+                                placeholder="Điểm đến"
+                                onChange={selectHandler}
+                              />
+                            </div>
+                          </div>
+                        </div>
+                        <div className="p-relative row justify-content-center">
+                          <div
+                            className=""
+                            style={{
+                              top: -10,
+                              position: "absolute",
+                            }}
+                          >
+                            <Link
+                              className={`tp-btn-blue-sm inner-color alt-color-black tp-btn-hover d-none d-md-inline-block`}
+                              style={{
+                                backgroundColor: "rgb(239, 82, 34)",
+                              }}
+                              href="/register"
+                            >
+                              <span>Tìm chuyến xe</span>
+                              <b></b>
+                            </Link>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                      className="tp-hero__title-shape d-none d-sm-block"
+                      style={{ bottom: "-62px" }}
+                    >
                       <LineShape />
                     </div>
                   </div>
