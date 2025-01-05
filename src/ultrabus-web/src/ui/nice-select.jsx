@@ -1,4 +1,5 @@
-import { useState, useCallback, useRef, useEffect } from "react";
+import { auto } from "@popperjs/core";
+import { useState, useCallback, useRef, useEffect, use } from "react";
 import { useClickAway } from "react-use";
 
 const NiceSelect = ({
@@ -10,6 +11,7 @@ const NiceSelect = ({
   title,
   name,
 }) => {
+  // console.log(options);
   const [open, setOpen] = useState(false);
   const [current, setCurrent] = useState(options[defaultCurrent]);
   const [optionsFilter, setOptionsFilter] = useState(options);
@@ -33,13 +35,20 @@ const NiceSelect = ({
     }
   }, [open]);
 
+  // useEffect(() => {
+  //   setOptionsFilter((prev) => [...prev, ...options]);
+  // }, []);
+
+  // console.log({ optionsFilter });
+
   // Hàm lọc options theo chuỗi tìm kiếm
   const filterOptions = (search) => {
+    // console.log({ search });
     if (search && search.length > 0) {
       const newOptions = options.filter((item) =>
         normalizeString(item.text).includes(normalizeString(search))
       );
-      setOptionsFilter(newOptions);
+      setOptionsFilter((prev) => [...newOptions]);
     } else {
       setOptionsFilter(options);
     }
@@ -88,12 +97,13 @@ const NiceSelect = ({
       }}
       onKeyPress={(e) => e}
       ref={ref}
+      style={{ height: "auto", padding: "0.5rem 1.2rem" }}
     >
       <span className="current fw-bold">{current?.text || placeholder}</span>
 
       <div
         className="list pb-4 px-3 border border-warning-subtle rounded-4 shadow-lg"
-        style={{ top: -10, width: 320 }}
+        style={{ top: -30, left: -10, width: 320 }}
       >
         <div className="row">
           <div className="col-12 fw-bold" style={{ lineHeight: 3 }}>
@@ -141,20 +151,23 @@ const NiceSelect = ({
               "var(--tp-theme-primary)" /* Màu thanh cuộn */,
           }}
         >
-          {optionsFilter?.map((item) => (
-            <li
-              key={item.value}
-              data-value={item.value}
-              className={`option ${
-                item.value === current?.value && "selected focus"
-              }`}
-              role="menuitem"
-              onClick={() => currentHandler(item)}
-              onKeyPress={(e) => e}
-            >
-              {item.text}
-            </li>
-          ))}
+          {optionsFilter.map((item) => {
+            // console.log(item);
+            return (
+              <li
+                key={item.value + Math.random()}
+                data-value={item.value}
+                className={`option ${
+                  item.value === current?.value && "selected focus"
+                }`}
+                role="menuitem"
+                onClick={() => currentHandler(item)}
+                onKeyPress={(e) => e}
+              >
+                {item.text}
+              </li>
+            );
+          })}
         </ul>
         <div className="row">
           <div className="col-12">
@@ -166,19 +179,19 @@ const NiceSelect = ({
             className="col-12"
             style={{ display: "flex", flexWrap: "wrap", gap: 5 }}
           >
-            <button type="button" class="btn btn-light btn-sm rounded-3">
+            <button type="button" className="btn btn-light btn-sm rounded-3">
               Bình định
             </button>
-            <button type="button" class="btn btn-light btn-sm rounded-3">
+            <button type="button" className="btn btn-light btn-sm rounded-3">
               TP. Hồ Chí Minh
             </button>
-            <button type="button" class="btn btn-light btn-sm rounded-3">
+            <button type="button" className="btn btn-light btn-sm rounded-3">
               Trà Vinh
             </button>
-            <button type="button" class="btn btn-light btn-sm rounded-3">
+            <button type="button" className="btn btn-light btn-sm rounded-3">
               Bà Rịa - Vũng Tàu
             </button>
-            <button type="button" class="btn btn-light btn-sm rounded-3">
+            <button type="button" className="btn btn-light btn-sm rounded-3">
               An Giang
             </button>
           </div>

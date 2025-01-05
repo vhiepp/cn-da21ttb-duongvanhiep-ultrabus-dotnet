@@ -15,14 +15,14 @@
     }
   }
   &__bg {
-    padding-top: 135px;
+    padding-top: 100px;
     padding-bottom: 400px;
     border-radius: 30px;
     @media #{$xl,$lg} {
-      padding-top: 140px;
+      padding-top: 100px;
     }
     @media #{$md} {
-      padding-top: 170px;
+      padding-top: 100px;
     }
     @media #{$xs} {
       padding-top: 50px;

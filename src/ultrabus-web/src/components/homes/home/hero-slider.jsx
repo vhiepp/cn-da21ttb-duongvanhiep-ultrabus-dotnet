@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { use, useEffect, useRef } from "react";
 //use gsap
 import { gsap } from "gsap";
 import useCharAnimation from "@/hooks/useCharAnimation";
@@ -13,6 +13,8 @@ import shape_img_2 from "../../../../public/assets/img/hero/hero-shape-2.png";
 import LineShape from "@/svg/line-shape";
 import Link from "next/link";
 import NiceSelect from "@/ui/nice-select";
+import DateSelect from "@/ui/date-select";
+import NumberSelect from "@/ui/number-select";
 
 // hero content data
 const hero_content = {
@@ -30,17 +32,21 @@ const hero_content = {
   ],
   hero_title: (
     <>
-      <span className="tp_title" style={{ marginBottom: 12, marginTop: 24 }}>
+      <span className="tp_title" style={{ paddingBottom: 0 }}>
         <span className="child" style={{ color: "#fff", fontWeight: 900 }}>
           UltraBus
         </span>
-      </span>{" "}
+      </span>
       <br />
-      <span>
-        <span className="child" style={{ color: "var(--tp-theme-yellow)" }}>
-          {/* Software & Technology */}
-        </span>
-      </span>{" "}
+      <span
+        className="child"
+        style={{
+          color: "var(--tp-common-yellow-3)",
+          fontSize: "2.6rem",
+        }}
+      >
+        cùng bạn trên mọi hành trình
+      </span>
     </>
   ),
   sub_title: <>We are not going to save your data</>,
@@ -77,6 +83,7 @@ const { hero_shape, hero_title, sub_title, hero_shape_img, hero_thumbs } =
 
 const HeroSlider = () => {
   let hero_bg = useRef(null);
+  const [provinces, setProvinces] = React.useState([]);
 
   useEffect(() => {
     gsap.from(hero_bg.current, {
@@ -89,6 +96,20 @@ const HeroSlider = () => {
       scale: 1,
       duration: 1.5,
     });
+  }, []);
+
+  useEffect(() => {
+    if (provinces.length > 0) return;
+    fetch("http://localhost:5200/api/provinces")
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+        const prons = data.data.map((item) => ({
+          value: item.id.toString(),
+          text: item.fullName,
+        }));
+        setProvinces(prons);
+      });
   }, []);
 
   const selectHandler = (e) => {};
@@ -124,12 +145,12 @@ const HeroSlider = () => {
                   <div className="tp-hero__title-box p-relative">
                     <h2
                       className="tp-title-anim"
-                      style={{ fontSize: 70, paddingBottom: 30 }}
+                      style={{ fontSize: 70, paddingBottom: 20 }}
                     >
                       {hero_title}
                     </h2>
-                    <div class="card z-index-5 rounded-4 shadow-lg pt-4 px-3">
-                      <div class="card-body">
+                    <div className="card z-index-5 rounded-4 shadow-lg pt-4 px-3">
+                      <div className="card-body">
                         <div className="row mb-3">
                           <div className="col-12 col-md-6 order-2 order-md-1">
                             <div
@@ -141,12 +162,13 @@ const HeroSlider = () => {
                                   className="form-check-input"
                                   type="radio"
                                   style={{}}
+                                  defaultChecked
                                   name="inlineRadioOptions"
                                   id="inlineRadio1"
                                   value="option1"
                                 />
                                 <label
-                                  className="form-check-label"
+                                  className="form-check-label fw-bold"
                                   htmlFor="inlineRadio1"
                                 >
                                   Một chiều
@@ -162,7 +184,7 @@ const HeroSlider = () => {
                                   value="option2"
                                 />
                                 <label
-                                  className="form-check-label"
+                                  className="form-check-label fw-bold"
                                   htmlFor="inlineRadio2"
                                 >
                                   Khứ hồi
@@ -179,87 +201,68 @@ const HeroSlider = () => {
                         </div>
                         <div className="row py-3">
                           <div className="col-12 col-md-6 col-lg-3">
+                            <label
+                              htmlFor=""
+                              className="w-full text-start d-block ps-2"
+                            >
+                              Điểm đi
+                            </label>
                             <div className="postbox__select mb-30">
-                              <NiceSelect
-                                options={[
-                                  { value: "1", text: "Hà Nội" },
-                                  { value: "2", text: "TP. Hồ Chí Minh" },
-                                  { value: "3", text: "Đà Nẵng" },
-                                  { value: "4", text: "Hải Phòng" },
-                                  { value: "5", text: "Cần Thơ" },
-                                  { value: "6", text: "Đà Lạt" },
-                                  { value: "7", text: "Nha Trang" },
-                                  { value: "8", text: "Vũng Tàu" },
-                                  { value: "9", text: "Quy Nhơn" },
-                                  { value: "10", text: "Phan Thiết" },
-                                  { value: "11", text: "Trà Vinh" },
-                                ]}
-                                placeholder="Chọn điểm đi"
-                                title="Điểm đi"
+                              {provinces.length > 0 && (
+                                <NiceSelect
+                                  options={provinces}
+                                  placeholder="Chọn điểm đi"
+                                  title="Điểm đi"
+                                  onChange={selectHandler}
+                                />
+                              )}
+                            </div>
+                          </div>
+                          <div className="col-12 col-md-6 col-lg-3">
+                            <label
+                              htmlFor=""
+                              className="w-full text-start d-block ps-2"
+                            >
+                              Điểm đến
+                            </label>
+                            <div className="postbox__select mb-30">
+                              {provinces.length > 0 && (
+                                <NiceSelect
+                                  options={provinces}
+                                  // options={[{ value: "1", text: "Hồ Chí Minh" }]}
+                                  placeholder="Chọn điểm đến"
+                                  title="Điểm đến"
+                                  onChange={selectHandler}
+                                />
+                              )}
+                            </div>
+                          </div>
+                          <div className="col-12 col-md-6 col-lg-3">
+                            <label
+                              htmlFor=""
+                              className="w-full text-start d-block ps-2"
+                            >
+                              Ngày đi
+                            </label>
+                            <div className="postbox__select mb-30">
+                              <DateSelect
+                                placeholder="Chọn ngày đi"
+                                title="Ngày đi"
                                 onChange={selectHandler}
                               />
                             </div>
                           </div>
                           <div className="col-12 col-md-6 col-lg-3">
+                            <label
+                              htmlFor=""
+                              className="w-full text-start d-block ps-2"
+                            >
+                              Số lượng vé
+                            </label>
                             <div className="postbox__select mb-30">
-                              <NiceSelect
-                                options={[
-                                  { value: "1", text: "Hà Nội" },
-                                  { value: "2", text: "TP. Hồ Chí Minh" },
-                                  { value: "3", text: "Đà Nẵng" },
-                                  { value: "4", text: "Hải Phòng" },
-                                  { value: "5", text: "Cần Thơ" },
-                                  { value: "6", text: "Đà Lạt" },
-                                  { value: "7", text: "Nha Trang" },
-                                  { value: "8", text: "Vũng Tàu" },
-                                  { value: "9", text: "Quy Nhơn" },
-                                  { value: "10", text: "Phan Thiết" },
-                                  { value: "11", text: "Trà Vinh" },
-                                ]}
-                                placeholder="Chọn điểm đến"
-                                title="Điểm đến"
-                                onChange={selectHandler}
-                              />
-                            </div>
-                          </div>
-                          <div className="col-12 col-md-6 col-lg-3">
-                            <div className="postbox__select mb-30">
-                              <NiceSelect
-                                options={[
-                                  { value: "1", text: "Hà Nội" },
-                                  { value: "2", text: "TP. Hồ Chí Minh" },
-                                  { value: "3", text: "Đà Nẵng" },
-                                  { value: "4", text: "Hải Phòng" },
-                                  { value: "5", text: "Cần Thơ" },
-                                  { value: "6", text: "Đà Lạt" },
-                                  { value: "7", text: "Nha Trang" },
-                                  { value: "8", text: "Vũng Tàu" },
-                                  { value: "9", text: "Quy Nhơn" },
-                                  { value: "10", text: "Phan Thiết" },
-                                  { value: "11", text: "Trà Vinh" },
-                                ]}
-                                placeholder="Điểm đến"
-                                onChange={selectHandler}
-                              />
-                            </div>
-                          </div>
-                          <div className="col-12 col-md-6 col-lg-3">
-                            <div className="postbox__select mb-30">
-                              <NiceSelect
-                                options={[
-                                  { value: "1", text: "Hà Nội" },
-                                  { value: "2", text: "TP. Hồ Chí Minh" },
-                                  { value: "3", text: "Đà Nẵng" },
-                                  { value: "4", text: "Hải Phòng" },
-                                  { value: "5", text: "Cần Thơ" },
-                                  { value: "6", text: "Đà Lạt" },
-                                  { value: "7", text: "Nha Trang" },
-                                  { value: "8", text: "Vũng Tàu" },
-                                  { value: "9", text: "Quy Nhơn" },
-                                  { value: "10", text: "Phan Thiết" },
-                                  { value: "11", text: "Trà Vinh" },
-                                ]}
-                                placeholder="Điểm đến"
+                              <NumberSelect
+                                placeholder="Chọn số vé"
+                                title="Số vé"
                                 onChange={selectHandler}
                               />
                             </div>
