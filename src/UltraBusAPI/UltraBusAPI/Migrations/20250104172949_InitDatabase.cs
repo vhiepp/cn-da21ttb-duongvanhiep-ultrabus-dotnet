@@ -1,15 +1,35 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
 namespace UltraBusAPI.Migrations
 {
     /// <inheritdoc />
-    public partial class InitDB : Migration
+    public partial class InitDatabase : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "Buses",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    BusType = table.Column<int>(type: "int", nullable: false),
+                    Floor = table.Column<int>(type: "int", nullable: true),
+                    SeatArrangement = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    SeatCount = table.Column<int>(type: "int", nullable: true),
+                    BrandName = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Buses", x => x.Id);
+                });
+
             migrationBuilder.CreateTable(
                 name: "Permissions",
                 columns: table => new
@@ -49,7 +69,8 @@ namespace UltraBusAPI.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false)
+                    Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -131,6 +152,40 @@ namespace UltraBusAPI.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "BusStations",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    WardId = table.Column<int>(type: "int", nullable: true),
+                    DistrictId = table.Column<int>(type: "int", nullable: true),
+                    ProvinceId = table.Column<int>(type: "int", nullable: true),
+                    Latitude = table.Column<double>(type: "float", nullable: true),
+                    Longitude = table.Column<double>(type: "float", nullable: true),
+                    Address = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_BusStations", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_BusStations_Districts_DistrictId",
+                        column: x => x.DistrictId,
+                        principalTable: "Districts",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_BusStations_Provinces_ProvinceId",
+                        column: x => x.ProvinceId,
+                        principalTable: "Provinces",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_BusStations_Wards_WardId",
+                        column: x => x.WardId,
+                        principalTable: "Wards",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Users",
                 columns: table => new
                 {
@@ -176,6 +231,95 @@ namespace UltraBusAPI.Migrations
                         principalColumn: "Id");
                 });
 
+            migrationBuilder.CreateTable(
+                name: "BusRoutes",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    StartStationId = table.Column<int>(type: "int", nullable: true),
+                    EndStationId = table.Column<int>(type: "int", nullable: true),
+                    Stations = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Price = table.Column<double>(type: "float", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_BusRoutes", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_BusRoutes_BusStations_EndStationId",
+                        column: x => x.EndStationId,
+                        principalTable: "BusStations",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_BusRoutes_BusStations_StartStationId",
+                        column: x => x.StartStationId,
+                        principalTable: "BusStations",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "BusRouteTrips",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    BusRouteId = table.Column<int>(type: "int", nullable: true),
+                    BusId = table.Column<int>(type: "int", nullable: true),
+                    DepartureTime = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    ArrivalTime = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    AvailableSeats = table.Column<int>(type: "int", nullable: true),
+                    Price = table.Column<double>(type: "float", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_BusRouteTrips", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_BusRouteTrips_BusRoutes_BusRouteId",
+                        column: x => x.BusRouteId,
+                        principalTable: "BusRoutes",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_BusRouteTrips_Buses_BusId",
+                        column: x => x.BusId,
+                        principalTable: "Buses",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_BusRoutes_EndStationId",
+                table: "BusRoutes",
+                column: "EndStationId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_BusRoutes_StartStationId",
+                table: "BusRoutes",
+                column: "StartStationId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_BusRouteTrips_BusId",
+                table: "BusRouteTrips",
+                column: "BusId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_BusRouteTrips_BusRouteId",
+                table: "BusRouteTrips",
+                column: "BusRouteId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_BusStations_DistrictId",
+                table: "BusStations",
+                column: "DistrictId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_BusStations_ProvinceId",
+                table: "BusStations",
+                column: "ProvinceId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_BusStations_WardId",
+                table: "BusStations",
+                column: "WardId");
+
             migrationBuilder.CreateIndex(
                 name: "IX_Districts_ProvinceId",
                 table: "Districts",
@@ -216,16 +360,28 @@ namespace UltraBusAPI.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "BusRouteTrips");
+
+            migrationBuilder.DropTable(
                 name: "RolePermissions");
 
             migrationBuilder.DropTable(
                 name: "Users");
 
             migrationBuilder.DropTable(
+                name: "BusRoutes");
+
+            migrationBuilder.DropTable(
+                name: "Buses");
+
+            migrationBuilder.DropTable(
                 name: "Permissions");
 
             migrationBuilder.DropTable(
                 name: "Roles");
+
+            migrationBuilder.DropTable(
+                name: "BusStations");
 
             migrationBuilder.DropTable(
                 name: "Wards");

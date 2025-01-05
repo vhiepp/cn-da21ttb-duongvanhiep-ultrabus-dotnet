@@ -64,14 +64,8 @@ namespace UltraBusAPI.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("BusId")
-                        .HasColumnType("int");
-
                     b.Property<int?>("EndStationId")
                         .HasColumnType("int");
-
-                    b.Property<string>("EndTime")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<double?>("Price")
                         .HasColumnType("float");
@@ -79,21 +73,51 @@ namespace UltraBusAPI.Migrations
                     b.Property<int?>("StartStationId")
                         .HasColumnType("int");
 
-                    b.Property<string>("StartTime")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Stations")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("BusId");
 
                     b.HasIndex("EndStationId");
 
                     b.HasIndex("StartStationId");
 
                     b.ToTable("BusRoutes");
+                });
+
+            modelBuilder.Entity("UltraBusAPI.Datas.BusRouteTrip", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime?>("ArrivalTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("AvailableSeats")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("BusId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("BusRouteId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("DepartureTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<double?>("Price")
+                        .HasColumnType("float");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BusId");
+
+                    b.HasIndex("BusRouteId");
+
+                    b.ToTable("BusRouteTrips");
                 });
 
             modelBuilder.Entity("UltraBusAPI.Datas.BusStation", b =>
@@ -370,10 +394,6 @@ namespace UltraBusAPI.Migrations
 
             modelBuilder.Entity("UltraBusAPI.Datas.BusRoute", b =>
                 {
-                    b.HasOne("UltraBusAPI.Datas.Bus", "Bus")
-                        .WithMany("BusRoutes")
-                        .HasForeignKey("BusId");
-
                     b.HasOne("UltraBusAPI.Datas.BusStation", "EndStation")
                         .WithMany("EndBusRoutes")
                         .HasForeignKey("EndStationId");
@@ -382,11 +402,24 @@ namespace UltraBusAPI.Migrations
                         .WithMany("StartBusRoutes")
                         .HasForeignKey("StartStationId");
 
-                    b.Navigation("Bus");
-
                     b.Navigation("EndStation");
 
                     b.Navigation("StartStation");
+                });
+
+            modelBuilder.Entity("UltraBusAPI.Datas.BusRouteTrip", b =>
+                {
+                    b.HasOne("UltraBusAPI.Datas.Bus", "Bus")
+                        .WithMany()
+                        .HasForeignKey("BusId");
+
+                    b.HasOne("UltraBusAPI.Datas.BusRoute", "BusRoute")
+                        .WithMany("BusRouteTrips")
+                        .HasForeignKey("BusRouteId");
+
+                    b.Navigation("Bus");
+
+                    b.Navigation("BusRoute");
                 });
 
             modelBuilder.Entity("UltraBusAPI.Datas.BusStation", b =>
@@ -478,9 +511,9 @@ namespace UltraBusAPI.Migrations
                     b.Navigation("District");
                 });
 
-            modelBuilder.Entity("UltraBusAPI.Datas.Bus", b =>
+            modelBuilder.Entity("UltraBusAPI.Datas.BusRoute", b =>
                 {
-                    b.Navigation("BusRoutes");
+                    b.Navigation("BusRouteTrips");
                 });
 
             modelBuilder.Entity("UltraBusAPI.Datas.BusStation", b =>

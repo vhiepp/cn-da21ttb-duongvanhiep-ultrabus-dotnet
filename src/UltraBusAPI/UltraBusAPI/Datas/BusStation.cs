@@ -29,19 +29,14 @@ namespace UltraBusAPI.Datas
         [AllowNull]
         public string? Address { get; set; } = null;
 
-        [AllowNull]
-        public List<BusRoute>? StartBusRoutes { get; set; } = null;
-
-        [AllowNull]
-        public List<BusRoute>? EndBusRoutes { get; set; } = null;
-
-        [AllowNull]
         public Ward? Ward { get; set; } = null;
 
-        [AllowNull]
         public District? District { get; set; } = null;
 
-        [AllowNull]
         public Province? Province { get; set; } = null;
+
+        public ICollection<BusRoute>? StartBusRoutes { get; set; } = null;
+
+        public ICollection<BusRoute>? EndBusRoutes { get; set; } = null;
     }
 }

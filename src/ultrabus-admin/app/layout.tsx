@@ -6,6 +6,7 @@ import 'primeflex/primeflex.css';
 import 'primeicons/primeicons.css';
 import '../styles/layout/layout.scss';
 import '../styles/demo/Demos.scss';
+import 'mapbox-gl/dist/mapbox-gl.css';
 
 interface RootLayoutProps {
     children: React.ReactNode;

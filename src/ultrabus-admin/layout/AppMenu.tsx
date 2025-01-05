@@ -69,8 +69,8 @@ const AppMenu = () => {
                     icon: 'pi pi-fw pi-map-marker',
                     permission: 'StationManager',
                     items: [
-                        { label: 'Danh sách trạm dừng', icon: 'pi pi-fw pi-list', to: '' },
-                        { label: 'Thêm mới trạm dừng', icon: 'pi pi-fw pi-plus', to: '' }
+                        { label: 'Danh sách trạm dừng', icon: 'pi pi-fw pi-list', to: '/admin/bus-stations' },
+                        { label: 'Thêm mới trạm dừng', icon: 'pi pi-fw pi-plus', to: '/admin/bus-stations/create' }
                     ]
                 },
                 {

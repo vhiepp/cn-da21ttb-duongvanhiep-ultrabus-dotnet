@@ -5,23 +5,22 @@ import Image from "next/image";
 import Link from "next/link";
 import React, { useState } from "react";
 // img import
-import footer_logo from "@/app-assets/img/logo/ithub-logo2.png";
+import footer_logo from "@/app-assets/img/logo/logo-footer.png";
 import qr_code from "@/app-assets/img/qr/group-zalo.png";
 import i_phone from "../../../public/assets/img/footer/dwnld-2.png";
 import google_ply from "../../../public/assets/img/footer/dwnld-3.png";
-import shape_img_1 from "@/app-assets/img/logo/ithub-logo-3d.svg";
+import shape_img_1 from "@/app-assets/img/logo/bus.png";
 import shape_img_2 from "@/assets/img/footer/footer-inner-2.png";
 
 const footer_content = {
   address: (
     <>
       126, Nguyễn Thiện Thành,
-      <br /> khóm 4, phường 5, <br />
-      TP. Trà Vinh, tỉnh Trà Vinh
+      <br /> khóm 4, phường 5, TP. Trà Vinh, TV
     </>
   ),
-  phone: "0123456789",
-  email: "contact@ithub.club",
+  phone: "0373496609",
+  email: "dhiep2307@gmail.com",
   download: "Download App",
   footer_lisks: [
     {
@@ -45,35 +44,29 @@ const footer_content = {
         { name: "Giới thiệu", link: "/about" },
         { name: "Sự kiện", link: "/event" },
         { name: "Liên hệ", link: "/contact" },
-        { name: "Thông tin sinh viên", link: "https://ttsv.tvu.edu.vn/", target: "_blank" },
-        { name: "Trường ĐH Trà Vinh", link: "https://tvu.edu.vn/", target: "_blank" },
+        {
+          name: "Thông tin sinh viên",
+          link: "https://ttsv.tvu.edu.vn/",
+          target: "_blank",
+        },
+        {
+          name: "Trường ĐH Trà Vinh",
+          link: "https://tvu.edu.vn/",
+          target: "_blank",
+        },
       ],
     },
   ],
   social_links: [
     {
-      link: "https://www.facebook.com/ithub.tvu/",
-      target: "_blank",
+      link: "#",
+      target: "",
       icon: "fab fa-facebook-f",
     },
-    {
-      link: "https://github.com/TVU-ITHub",
-      target: "_blank",
-      icon: "fab fa-github",
-    },
-    //  {
-    //    link: "http://www.vimeo.com",
-    //    target: "_blank",
-    //    icon: "fab fa-vimeo-v",
-    //  },
-    //  {
-    //    link: "http://www.instagram.com",
-    //    target: "_blank",
-    //    icon: "fab fa-instagram",
-    //  },
   ],
 };
-const { address, phone, email, footer_lisks, download, social_links } = footer_content;
+const { address, phone, email, footer_lisks, download, social_links } =
+  footer_content;
 
 const FooterTwo = () => {
   const [isOppen, setIsOppen] = useState(false);
@@ -87,7 +80,11 @@ const FooterTwo = () => {
           <div className="tp-footer__area pt-90 p-relative tp-footer__tp-border-bottom">
             <>
               <div className="tp-footer__shape-1 d-none d-xxl-block">
-                <Image src={shape_img_1} style={{ width: 120 }} alt="theme-pure" />
+                <Image
+                  src={shape_img_1}
+                  style={{ width: 120 }}
+                  alt="theme-pure"
+                />
               </div>
               <div className="tp-footer__shape-2 d-none d-xxl-block">
                 <Image src={shape_img_2} alt="" />
@@ -101,13 +98,20 @@ const FooterTwo = () => {
                   data-wow-delay=".3s"
                 >
                   <div className="tp-footer__widget footer-widget-2 footer-col-2-1">
-                    <div className="tp-footer__logo mb-25">
+                    <div className="tp-footer__logo mb-20">
                       <Link href="/">
-                        <Image src={footer_logo} style={{ height: 36 }} alt="them-pure" />
+                        <Image
+                          src={footer_logo}
+                          style={{ maxWidth: 160 }}
+                          alt="them-pure"
+                        />
                       </Link>
                     </div>
                     <div className="tp-footer__contact-info">
-                      <Link href="https://maps.app.goo.gl/fSR5iXxTiBc2aQBs9" target="_blank">
+                      <Link
+                        href="https://maps.app.goo.gl/fSR5iXxTiBc2aQBs9"
+                        target="_blank"
+                      >
                         {address}
                       </Link>
                       <ul>
@@ -136,13 +140,18 @@ const FooterTwo = () => {
                     data-wow-duration=".6s"
                     data-wow-delay={item.delay}
                   >
-                    <div className={`tp-footer__widget footer-widget-2 ${item.cls}`}>
+                    <div
+                      className={`tp-footer__widget footer-widget-2 ${item.cls}`}
+                    >
                       <h4 className="tp-footer__widget-title">{item.title}</h4>
                       <div className="tp-footer__content">
                         <ul>
                           {item.links.map((link, i) => (
                             <li key={i}>
-                              <Link href={link.link} target={!link.target ? "" : link.target}>
+                              <Link
+                                href={link.link}
+                                target={!link.target ? "" : link.target}
+                              >
                                 {link.name}
                               </Link>
                             </li>
@@ -169,7 +178,11 @@ const FooterTwo = () => {
                       </div>
                       <div className="tp-footer__app">
                         <Link href="#">
-                          <Image className="mb-15" src={i_phone} alt="them-pure" />
+                          <Image
+                            className="mb-15"
+                            src={i_phone}
+                            alt="them-pure"
+                          />
                         </Link>
                         <Link href="#">
                           <Image src={google_ply} alt="them-pure" />
@@ -187,7 +200,11 @@ const FooterTwo = () => {
                 <div className="col-xl-3 col-lg-3 col-md-3 col-sm-6">
                   <div className="tp-copyright__social">
                     {social_links.map((l, i) => (
-                      <Link key={i} href={l.link} target={l.target ? l.target : ""}>
+                      <Link
+                        key={i}
+                        href={l.link}
+                        target={l.target ? l.target : ""}
+                      >
                         <i className={l.icon}></i>
                       </Link>
                     ))}
@@ -205,13 +222,20 @@ const FooterTwo = () => {
                     <div className="tp-copyright__lang tp-copyright__lang-2">
                       <ul>
                         <li>
-                          <button id="tp-copyright__lang-toggle" onClick={() => oppenLan()}>
+                          <button
+                            id="tp-copyright__lang-toggle"
+                            onClick={() => oppenLan()}
+                          >
                             <span>
                               Tiếng Việt<i className="fal fa-angle-down"></i>
                             </span>
                           </button>
                           {isOppen && (
-                            <ul className={`tp-copyright__lang-submenu ${isOppen && "open"}`}>
+                            <ul
+                              className={`tp-copyright__lang-submenu ${
+                                isOppen && "open"
+                              }`}
+                            >
                               <li>
                                 <Link href="#">...</Link>
                               </li>

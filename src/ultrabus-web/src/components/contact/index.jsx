@@ -11,18 +11,19 @@ import OfficeLocation from "./office-location";
 const Contact = () => {
   return (
     <>
-      <HeaderSix />
       <div id="smooth-wrapper">
         <div id="smooth-content">
           <main>
-            <Breadcrumb title_top="Get In" title_bottom="Get In" />
-            <HeroBanner bg_img="/assets/img/contact/contact-banner.jpg" />
-            <OfficeLocation />
+            <Breadcrumb title_top="UltraBus" title_bottom="UltraBus" />
+            <HeroBanner
+              bg_img="/assets/img/contact/contact-banner.jpg"
+              title="UltraBus"
+              subtitle="Contact"
+            />
+            {/* <OfficeLocation /> */}
             <ContactFormArea />
             <ContactInner />
-            <CtaArea />
           </main>
-          <FooterFive style_contact={true} style_team={true} />
         </div>
       </div>
     </>

@@ -32,8 +32,5 @@ namespace UltraBusAPI.Datas
 
         [AllowNull]
         public string? BrandName { get; set; } = null;
-
-        [AllowNull]
-        public List<BusRoute>? BusRoutes { get; set; } = null;
     }
 }

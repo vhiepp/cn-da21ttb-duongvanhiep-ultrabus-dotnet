@@ -19,6 +19,7 @@ namespace UltraBusAPI.Datas
         public DbSet<Bus> Buses { get; set; }
         public DbSet<BusRoute> BusRoutes { get; set; }
         public DbSet<BusStation> BusStations { get; set; }
+        public DbSet<BusRouteTrip> BusRouteTrips { get; set; }
         #endregion
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -71,11 +72,6 @@ namespace UltraBusAPI.Datas
                 .HasForeignKey(d => d.ProvinceId);
 
             modelBuilder.Entity<BusRoute>()
-                .HasOne(br => br.Bus)
-                .WithMany(b => b.BusRoutes)
-                .HasForeignKey(br => br.BusId);
-
-            modelBuilder.Entity<BusRoute>()
                 .HasOne(br => br.StartStation)
                 .WithMany(bs => bs.StartBusRoutes)
                 .HasForeignKey(br => br.StartStationId);
@@ -85,18 +81,10 @@ namespace UltraBusAPI.Datas
                 .WithMany(bs => bs.EndBusRoutes)
                 .HasForeignKey(br => br.EndStationId);
 
-            modelBuilder.Entity<BusStation>()
-                .HasOne(bs => bs.Ward)
-                .WithMany(w => w.BusStations)
-                .HasForeignKey(bs => bs.WardId);
-            modelBuilder.Entity<BusStation>()
-                .HasOne(bs => bs.District)
-                .WithMany(d => d.BusStations)
-                .HasForeignKey(bs => bs.DistrictId);
-            modelBuilder.Entity<BusStation>()
-                .HasOne(bs => bs.Province)
-                .WithMany(p => p.BusStations)
-                .HasForeignKey(bs => bs.ProvinceId);
+            modelBuilder.Entity<BusRouteTrip>()
+                .HasOne(brt => brt.BusRoute)
+                .WithMany(br => br.BusRouteTrips)
+                .HasForeignKey(brt => brt.BusRouteId);
         }
     }
 }

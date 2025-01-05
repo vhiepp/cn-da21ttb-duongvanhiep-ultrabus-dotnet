@@ -16,6 +16,9 @@ namespace UltraBusAPI.Configurations
             services.AddScoped<IProvinceRepository, ProvinceRepository>();
             services.AddScoped<IDistrictRepository, DistrictRepository>();
             services.AddScoped<IWardRepository, WardRepository>();
+            services.AddScoped<IBusRepository, BusRepository>();
+            services.AddScoped<IBusRouteRepository, BusRouteRepository>();
+            services.AddScoped<IBusStationRepository, BusStationRepository>();
         }
     }
 }

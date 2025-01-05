@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import NavMenu from "./nav-menu";
 import Image from "next/image";
 
-import logo from "@/app-assets/img/logo/ithub-logo2.svg";
+import logo from "@/app-assets/img/logo/ithub-logo2.png";
 import white_logo from "../../../public/assets/img/logo/logo-white.png";
 import black_logo from "../../../public/assets/img/logo/logo-black.png";
 import useSticky from "../../../hooks/use-sticky";
@@ -20,7 +20,9 @@ const HeaderFour = ({ style_error = true, white_header = true }) => {
           style={{ background: "#fff" }}
           id="header-sticky"
           className={`header-bottom__area ${
-            style_error ? "header-sticky-bg-2 tp-error-header z-index-5" : "header-blur header-bottom__plr-4 z-index-3"
+            style_error
+              ? "header-sticky-bg-2 tp-error-header z-index-5"
+              : "header-blur header-bottom__plr-4 z-index-3"
           }  header-bottom__transparent ${sticky && "header-sticky"}`}
         >
           <div className="container">
@@ -29,7 +31,7 @@ const HeaderFour = ({ style_error = true, white_header = true }) => {
                 <div className="header-bottom__logo">
                   {style_error ? (
                     <Link href="/">
-                      <Image src={logo} alt="theme-pure" width={140} />
+                      <Image src={logo} alt="theme-pure" height={48} />
                     </Link>
                   ) : (
                     <>
@@ -52,22 +54,34 @@ const HeaderFour = ({ style_error = true, white_header = true }) => {
               </div>
               <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-8 col-6">
                 <div className="header-bottom__right d-flex align-items-center justify-content-end">
-                  <div className={`header-bottom__action ${style_error ? "" : "header-bottom__action-4"}`}>
-                    <Link className="d-none d-lg-inline-block header-bottom__action-2 border-none" href="/sign-in">
+                  <div
+                    className={`header-bottom__action ${
+                      style_error ? "" : "header-bottom__action-4"
+                    }`}
+                  >
+                    <Link
+                      className="d-none d-lg-inline-block header-bottom__action-2 border-none"
+                      href="/sign-in"
+                    >
                       <span>Đăng nhập</span>
                     </Link>
                   </div>
                   <div className="header-bottom__btn d-flex align-items-center">
                     <Link
                       className={`tp-btn-blue-sm ${
-                        style_error ? "inner-color alt-color-black" : "alt-color-white"
+                        style_error
+                          ? "inner-color alt-color-black"
+                          : "alt-color-white"
                       } tp-btn-hover d-none d-md-inline-block`}
                       href="/register"
                     >
                       <span>Đăng ký</span>
                       <b></b>
                     </Link>
-                    <a className="header-bottom__bar tp-menu-bar d-lg-none" onClick={() => setSidebarOpen(true)}>
+                    <a
+                      className="header-bottom__bar tp-menu-bar d-lg-none"
+                      onClick={() => setSidebarOpen(true)}
+                    >
                       <i className="fal fa-bars"></i>
                     </a>
                   </div>

@@ -27,7 +27,12 @@ const SocialLinks = () => {
   return (
     <>
       {social_links.map((l, i) => (
-        <Link key={i} href={l.link} className={l.color} target={l.target ? l.target : ""}>
+        <Link
+          key={i}
+          href={l.link}
+          className={l.color}
+          target={l.target ? l.target : ""}
+        >
           <i className={l.icon}></i>
         </Link>
       ))}
@@ -41,8 +46,8 @@ const copy_right_text = {
   copy_right: (
     <>
       Copyright By{" "}
-      <Link href="https://github.com/TVU-ITHub" target="_blank">
-        @ITHub Club
+      <Link href="https://github.com/vhiepp" target="_blank">
+        @Văn Hiệp
       </Link>{" "}
       – {new Date().getFullYear()}
     </>
@@ -87,7 +92,12 @@ export const SocialLinksTwo = ({ social_links }) => {
   return (
     <>
       {social_links.map((link, i) => (
-        <Link key={i} target={link.target} className={`icon-color-${link.color}`} href={link.link}>
+        <Link
+          key={i}
+          target={link.target}
+          className={`icon-color-${link.color}`}
+          href={link.link}
+        >
           <i className={link.icon}></i>
           <span></span>
         </Link>

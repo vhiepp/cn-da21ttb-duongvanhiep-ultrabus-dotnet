@@ -2,34 +2,32 @@ import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 
-
 import icon_1 from "../../../public/assets/img/contact/contact-icon-sm-1.png";
 import icon_2 from "../../../public/assets/img/contact/contact-icon-sm-2.png";
 import icon_3 from "../../../public/assets/img/contact/contact-icon-sm-3.png";
 
-
 const inner_content = {
-  title: "Book a Demo!",
-  description: <>We will contact again after receive your request in 24h</>,
+  title: "Liên hệ trực tiếp",
+  description: <>Chúng tôi tiếp nhận các liên hệ trực tiếp 24/7</>,
 
   contact_data: [
     {
       id: 1,
       icon: icon_1,
-      title: "contact@softuch.com",
-      link: "mailto:contact@softuch.com",
+      title: "dhiep2307@gmail.com",
+      link: "mailto:dhiep2307@gmail.com",
     },
     {
       id: 2,
       icon: icon_2,
-      title: "+1-202-555-0144",
-      link: "tel:+1-202-555-0144",
+      title: "0373496609",
+      link: "tel:0373496609",
     },
     {
       id: 3,
       icon: icon_3,
-      title: "35Park Avenue, Uk",
-      link: "https://www.google.com.bd/maps/@23.7806365,90.4193257,12z",
+      title: "TP. Trà Vinh, TV",
+      link: "https://maps.app.goo.gl/xuQ9vT6hkivfMH7WA",
     },
   ],
 };
@@ -65,7 +63,7 @@ const ContactInner = () => {
             </div>
           </div>
         </div>
-      </div> 
+      </div>
     </>
   );
 };

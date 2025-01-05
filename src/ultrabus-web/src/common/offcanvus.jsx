@@ -4,7 +4,7 @@ import Image from "next/image";
 import MobileMenus from "../layout/headers/mobile-menus";
 
 // images import
-import logo from "@/app-assets/img/logo/ithub-logo2-trang.svg";
+import logo from "@/app-assets/img/logo/ithub-logo2.png";
 import canvus_img_1 from "@/app-assets/img/team/team-1.png";
 import canvus_img_2 from "@/app-assets/img/team/team-2.png";
 import canvus_img_3 from "@/app-assets/img/team/team-3.png";
@@ -22,7 +22,7 @@ const Offcanvus = ({ sidebarOpen, setSidebarOpen }) => {
           </div>
           <div className="tpoffcanvas__logo text-center">
             <Link href="/" onClick={() => setSidebarOpen(false)}>
-              <Image src={logo} alt="theme-pure" />
+              <Image src={logo} style={{ height: 50 }} alt="theme-pure" />
             </Link>
           </div>
           <div className="mobile-menu mean-container">
@@ -47,7 +47,10 @@ const Offcanvus = ({ sidebarOpen, setSidebarOpen }) => {
           </div>
           <div className="tpoffcanvas__info text-center">
             <h4 className="offcanva-title">Liên hệ</h4>
-            <Link href="https://maps.app.goo.gl/fSR5iXxTiBc2aQBs9" target="_blank">
+            <Link
+              href="https://maps.app.goo.gl/fSR5iXxTiBc2aQBs9"
+              target="_blank"
+            >
               126, Nguyễn Thiện Thành,
               <br /> khóm 4, phường 5, <br />
               TP. Trà Vinh, tỉnh Trà Vinh <br /> <br />
@@ -74,7 +77,10 @@ const Offcanvus = ({ sidebarOpen, setSidebarOpen }) => {
           </div>
         </div>
       </div>
-      <div className={`body-overlay ${sidebarOpen && "apply"}`} onClick={() => setSidebarOpen(false)}></div>
+      <div
+        className={`body-overlay ${sidebarOpen && "apply"}`}
+        onClick={() => setSidebarOpen(false)}
+      ></div>
     </>
   );
 };

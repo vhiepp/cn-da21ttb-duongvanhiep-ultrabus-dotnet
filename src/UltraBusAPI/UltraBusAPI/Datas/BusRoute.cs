@@ -9,9 +9,6 @@ namespace UltraBusAPI.Datas
         public int Id { get; set; }
 
         [AllowNull]
-        public int? BusId { get; set; } = null;
-
-        [AllowNull]
         public int? StartStationId { get; set; } = null;
 
         [AllowNull]
@@ -21,21 +18,12 @@ namespace UltraBusAPI.Datas
         public List<int>? Stations { get; set; } = [];
 
         [AllowNull]
-        public string? StartTime { get; set; } = null;
-
-        [AllowNull]
-        public string? EndTime { get; set; } = null;
-
-        [AllowNull]
         public double? Price { get; set; } = null;
 
-        [AllowNull]
-        public Bus? Bus { get; set; } = null;
-
-        [AllowNull]
         public BusStation? StartStation { get; set; } = null;
 
-        [AllowNull]
         public BusStation? EndStation { get; set; } = null;
+
+        public ICollection<BusRouteTrip>? BusRouteTrips { get; set; } = null;
     }
 }

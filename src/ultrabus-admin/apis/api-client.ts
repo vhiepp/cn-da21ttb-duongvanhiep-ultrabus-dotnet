@@ -11,5 +11,11 @@ export const apiClient = axios.create({
     headers: {
         'Content-Type': 'application/json',
         ...authorization
+    },
+    validateStatus: function (status) {
+        if (status === 403) {
+            window.location.href = '/';
+        }
+        return status < 500; // Resolve only if the status code is less than 500
     }
 });
