@@ -249,8 +249,12 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(269.88deg, rgba(2, 6, 17, 0) -0.76%, rgba(1, 4, 10, 0) 46.85%, rgba(0, 0, 0, 0.72) 99.9%, rgba(0, 0, 0, 0.72) 99.9%);
-            filter: drop-shadow(0px 1px 3px rgba(1, 16, 61, 0.1));
+            // background: linear-gradient(269.88deg, rgba(2, 6, 17, 0) -0.76%, rgba(1, 4, 10, 0) 46.85%, rgba(0, 0, 0, 0.72) 99.9%, rgba(0, 0, 0, 0.72) 99.9%);
+            // background: linear-gradient(269.88deg, rgba(2, 6, 17, 0) -0.76%, rgba(1, 4, 10, 0) 46.85%, rgba(0, 0, 0, 0.72) 99.9%, rgba(0, 0, 0, 0.72) 99.9%);
+            // filter: drop-shadow(0px 1px 3px rgba(1, 16, 61, 0.1));
+            // filter: blur(10px);
+            background-color: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(6px);
             border-radius: 20px;
         }
     }

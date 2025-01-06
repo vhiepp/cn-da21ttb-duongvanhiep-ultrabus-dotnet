@@ -3,13 +3,14 @@ import React from "react";
 
 const cta_content = {
   bg_img: "/assets/img/cta/cta-bg.jpg",
-  title: "Tham gia ngay",
+  title: "Đặt vé xe",
   description: (
     <>
-      Câu lạc bộ ITHub <br /> Nơi hội tụ đam mê lập trình của sinh viên TVU
+      <span className="fs-3 fw-bold">UltraBus</span> <br /> Đồng hành cùng bạn
+      trên mọi hành trình
     </>
   ),
-  btn_text: "Nhóm Zalo",
+  btn_text: "Đặt ngay",
 };
 const { bg_img, title, description, btn_text } = cta_content;
 
@@ -21,11 +22,17 @@ const CtaArea = () => {
         <div className="container">
           <div className="row">
             <div className="col-12">
-              <div className="tp-cta-bg" style={{ backgroundColor: "var(--tp-theme-primary)" }}>
+              <div
+                className="tp-cta-bg"
+                style={{ backgroundColor: "var(--tp-theme-primary)" }}
+              >
                 <div className="tp-cta-content tp-inner-font text-center">
                   <h3 className="tp-section-title text-white">{title}</h3>
                   <p>{description}</p>
-                  <Link className="tp-btn-inner white-bg text-black" href="https://zalo.me/g/ozquzx187" target="_blank">
+                  <Link
+                    className="tp-btn-inner white-bg text-black"
+                    href="/book-ticket"
+                  >
                     {btn_text}
                   </Link>
                 </div>

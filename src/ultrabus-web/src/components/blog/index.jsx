@@ -9,14 +9,12 @@ import Portfolio from "./portfolio";
 const Blog = () => {
   return (
     <>
-      <HeaderSix />
       <main>
-        <BreadcrumbTwo title={"Read our blogs"} innertitle={"Blog Grid Classic"} />
+        <BreadcrumbTwo title={"Tin tức mới nhất"} innertitle={"Tin tức"} />
         <BlogGrid />
-        <Portfolio />
+        {/* <Portfolio /> */}
         <CtaArea />
       </main>
-      <FooterFive style_contact={true} style_team={true} />
     </>
   );
 };

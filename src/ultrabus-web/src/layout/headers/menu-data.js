@@ -39,45 +39,12 @@ const menu_data = [
     link: "/contact",
     active: "",
   },
-  {
-    id: 6,
-    mega_menu: false,
-    has_dropdown: false,
-    title: "Về chúng tôi",
-    link: "/about",
-    active: "",
-  },
-
   // {
-  //   id: 3,
-  //   mega_menu: false,
-  //   has_dropdown: true,
-  //   title: "Thành viên",
-  //   link: "/member",
-  //   active: "",
-  //   sub_menus: [
-  //     { link: "/leader", title: "Ban chủ nhiệm" },
-  //     { link: "/counselor", title: "Ban cố vấn" },
-  //     { link: "/member", title: "Thành viên" },
-  //   ],
-  // },
-
-  // {
-  //   id: 4,
+  //   id: 6,
   //   mega_menu: false,
   //   has_dropdown: false,
-  //   title: "Sự kiện",
-  //   link: "/event",
-  //   active: "",
-  //   sub_menus: [],
-  // },
-
-  // {
-  //   id: 5,
-  //   mega_menu: false,
-  //   has_dropdown: false,
-  //   title: "Liên hệ",
-  //   link: "/contact",
+  //   title: "Về chúng tôi",
+  //   link: "/about",
   //   active: "",
   // },
 ];
