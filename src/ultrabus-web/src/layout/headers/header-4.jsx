@@ -73,7 +73,7 @@ const HeaderFour = ({ style_error = true, white_header = true }) => {
                           ? "inner-color alt-color-black"
                           : "alt-color-white"
                       } tp-btn-hover d-none d-md-inline-block`}
-                      href="/register"
+                      href="/sign-in"
                     >
                       <span>Đăng ký</span>
                       <b></b>

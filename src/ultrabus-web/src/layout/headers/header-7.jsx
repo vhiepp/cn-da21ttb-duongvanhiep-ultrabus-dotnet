@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import Image from "next/image";
 import NavMenu from "./nav-menu";
 // logo
-import logo_white from "@/app-assets/img/logo/ithub-logo2-trang.svg";
+import logo_white from "@/app-assets/img/logo/ithub-logo2.png";
 
 const HeaderSeven = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -18,7 +18,7 @@ const HeaderSeven = () => {
               <div className="col-6">
                 <div className="header-signin-logo">
                   <Link href="/">
-                    <Image src={logo_white} style={{ width: 150 }} alt="" />
+                    <Image src={logo_white} style={{ width: 200 }} alt="" />
                   </Link>
                 </div>
               </div>
@@ -56,12 +56,18 @@ const HeaderSeven = () => {
               <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-8 col-6">
                 <div className="header-bottom__right d-flex align-items-center justify-content-end">
                   <div className="header-bottom__action header-bottom__action-4">
-                    <Link className="d-none d-lg-inline-block header-bottom__action-2 border-none" href="/register">
+                    <Link
+                      className="d-none d-lg-inline-block header-bottom__action-2 border-none"
+                      href="/register"
+                    >
                       <span>Log In</span>
                     </Link>
                   </div>
                   <div className="header-bottom__btn d-flex align-items-center">
-                    <Link className="tp-btn-yellow d-none d-md-inline-block inner-color" href="#">
+                    <Link
+                      className="tp-btn-yellow d-none d-md-inline-block inner-color"
+                      href="#"
+                    >
                       Get in Touch
                     </Link>
                     <a className="header-bottom__bar tp-menu-bar d-lg-none">

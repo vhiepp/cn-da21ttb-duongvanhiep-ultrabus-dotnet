@@ -43,12 +43,17 @@ const LogingForm = () => {
         <div className="row">
           <div className="col-12">
             <div className="postbox__comment-input mb-30">
-              <input name="email" className="inputText" {...register("email")} />
-              <span className="floating-label">Email</span>
-              <p className="form_error">{errors.email?.message}</p>
+              <input
+                name="phone"
+                className="inputText"
+                {...register("phone")}
+                placeholder="Nhập số điện thoại"
+              />
+              <span className="floating-label">Số điện thoại</span>
+              {/* <p className="form_error">{errors.email?.message}</p> */}
             </div>
           </div>
-          <div className="col-12">
+          {/* <div className="col-12">
             <div className="mb-30">
               <div className="postbox__comment-input">
                 <input
@@ -73,7 +78,7 @@ const LogingForm = () => {
               </div>
               <p className="form_error">{errors.password?.message}</p>
             </div>
-          </div>
+          </div> */}
         </div>
 
         <div className="signin-banner-form-remember">
@@ -89,22 +94,22 @@ const LogingForm = () => {
               </div>
             </div>
             <div className="col-6">
-              <div className="postbox__forget text-end">
+              {/* <div className="postbox__forget text-end">
                 <Link href="#">Quên mật khẩu?</Link>
-              </div>
+              </div> */}
             </div>
           </div>
         </div>
         <div className="signin-banner-from-btn mb-20">
           <button type="submit" className="signin-btn ">
-            Sign In
+            Đăng nhập
           </button>
         </div>
-        <div className="signin-banner-from-register">
+        {/* <div className="signin-banner-from-register">
           <Link href="/register">
             Bạn chưa có tài khoản? <span>Đăng ký</span>
           </Link>
-        </div>
+        </div> */}
       </form>
     </>
   );

@@ -61,7 +61,7 @@ const BookTicketForm = () => {
         // console.log(data);
         const prons = data.data.map((item) => ({
           value: item.id.toString(),
-          text: item.fullName,
+          text: item.name,
         }));
         setProvinces(prons);
       });

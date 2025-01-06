@@ -12,11 +12,21 @@ const NiceSelect = ({
   title,
   name,
 }) => {
+  let searchProvinceHistory = [];
+  if (typeof window !== "undefined") {
+    const localStorageSearchHistory = JSON.parse(
+      localStorage.getItem("searchHistory")
+    );
+    if (localStorageSearchHistory) {
+      searchProvinceHistory = localStorageSearchHistory;
+    }
+  }
   // console.log(options);
   const [open, setOpen] = useState(defaultOpen || false);
   const [current, setCurrent] = useState(
     options.find((item) => item.value == defaultCurrent)
   );
+
   // console.log(options);
   const [optionsFilter, setOptionsFilter] = useState(options);
   const onClose = useCallback(() => {
@@ -30,6 +40,17 @@ const NiceSelect = ({
   const currentHandler = (item) => {
     setCurrent(item);
     onChange(item);
+    let searchHistory = JSON.parse(localStorage.getItem("searchHistory"));
+    if (searchHistory) {
+      if (searchHistory.length > 5) {
+        searchHistory.pop();
+      }
+      searchHistory = searchHistory.filter((i) => i.value != item.value);
+      searchHistory.unshift(item);
+      localStorage.setItem("searchHistory", JSON.stringify(searchHistory));
+    } else {
+      localStorage.setItem("searchHistory", JSON.stringify([item]));
+    }
     onClose();
   };
 
@@ -187,33 +208,29 @@ const NiceSelect = ({
             );
           })}
         </ul>
-        <div className="row">
-          <div className="col-12">
-            <label className="fw-bold" style={{ lineHeight: 0 }}>
-              TÌM KIẾM GẦN ĐÂY
-            </label>
+        {searchProvinceHistory.length > 0 && (
+          <div className="row">
+            <div className="col-12">
+              <label className="fw-bold" style={{ lineHeight: 0 }}>
+                TÌM KIẾM GẦN ĐÂY
+              </label>
+            </div>
+            <div
+              className="col-12"
+              style={{ display: "flex", flexWrap: "wrap", gap: 5 }}
+            >
+              {searchProvinceHistory.map((item) => (
+                <button
+                  type="button"
+                  className="btn btn-light btn-sm rounded-3"
+                  onClick={() => currentHandler(item)}
+                >
+                  {item.text}
+                </button>
+              ))}
+            </div>
           </div>
-          <div
-            className="col-12"
-            style={{ display: "flex", flexWrap: "wrap", gap: 5 }}
-          >
-            <button type="button" className="btn btn-light btn-sm rounded-3">
-              Bình định
-            </button>
-            <button type="button" className="btn btn-light btn-sm rounded-3">
-              TP. Hồ Chí Minh
-            </button>
-            <button type="button" className="btn btn-light btn-sm rounded-3">
-              Trà Vinh
-            </button>
-            <button type="button" className="btn btn-light btn-sm rounded-3">
-              Bà Rịa - Vũng Tàu
-            </button>
-            <button type="button" className="btn btn-light btn-sm rounded-3">
-              An Giang
-            </button>
-          </div>
-        </div>
+        )}
       </div>
     </div>
   );

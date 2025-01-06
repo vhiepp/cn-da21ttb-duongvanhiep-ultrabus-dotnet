@@ -10,14 +10,22 @@ import shape_1 from "../../../public/assets/img/login/login-shape-1.png";
 import shape_2 from "@/app-assets/img/about/chuyennghiep.png";
 import shape_3 from "@/app-assets/img/about/sangtao.png";
 import shape_4 from "@/app-assets/img/about/nhom.png";
-import shape_5 from "../../../public/assets/img/login/login-4.png";
+import shape_5 from "../../../public/assets/img/hero/bus.png";
 import MicrosoftIcon from "@/svg/microsoft-icon";
 
 const login_content = {
   bg_img: "/assets/img/login/login-bg-shape.png",
   banner_title: (
     <>
-      Welcome To <br /> ITHub Club
+      Welcome To <br />{" "}
+      <span
+        className="fw-bold"
+        style={{
+          fontSize: "3rem",
+        }}
+      >
+        UltraBus
+      </span>
     </>
   ),
 };
@@ -39,7 +47,9 @@ const SingnInArea = () => {
                 </div>
                 <div className="signin-banner-left-wrap">
                   <div className="signin-banner-title-box mb-100">
-                    <h4 className="signin-banner-title tp-char-animation">{banner_title}</h4>
+                    <h4 className="signin-banner-title tp-char-animation">
+                      {banner_title}
+                    </h4>
                   </div>
                   <div className="signin-banner-img-box position-relative">
                     <div className="signin-banner-img signin-img-1 d-none d-md-block z-index-3">
@@ -51,8 +61,18 @@ const SingnInArea = () => {
                     <div className="signin-banner-img signin-img-3 d-none d-md-block z-index-5">
                       <Image src={shape_4} alt="theme-pure" />
                     </div>
-                    <div className="signin-banner-img signin-img-4 d-none d-sm-block">
-                      <Image src={shape_5} alt="theme-pure" />
+                    <div
+                      className="signin-banner-img signin-img-4 d-none d-sm-block"
+                      style={{
+                        bottom: -95,
+                        left: -70,
+                      }}
+                    >
+                      <Image
+                        src={shape_5}
+                        style={{ width: 180 }}
+                        alt="theme-pure"
+                      />
                     </div>
                   </div>
                 </div>
@@ -60,16 +80,16 @@ const SingnInArea = () => {
               <div className="signin-banner-from d-flex justify-content-center align-items-center">
                 <div className="signin-banner-from-wrap">
                   <div className="signin-banner-title-box">
-                    <h4 className="signin-banner-from-title">Đăng Nhập ITHub</h4>
+                    <h4 className="signin-banner-from-title">Đăng Nhập</h4>
                   </div>
                   <div className="signin-banner-login-browser">
                     <Link href="#">
-                      <MicrosoftIcon />
-                      Đăng nhập với Microsoft
-                    </Link>
-                    <Link href="#">
                       <GoogleIcon />
+                      <span className="ms-2">Đăng nhập với Google</span>
                     </Link>
+                    {/* <Link href="#">
+                      <GoogleIcon />
+                    </Link> */}
                   </div>
                   <div className="signin-banner-from-box">
                     <h5 className="signin-banner-from-subtitle">Hoặc</h5>
