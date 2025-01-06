@@ -15,6 +15,7 @@ import Link from "next/link";
 import NiceSelect from "@/ui/nice-select";
 import DateSelect from "@/ui/date-select";
 import NumberSelect from "@/ui/number-select";
+import BookTicketForm from "@/components/ticket/book-ticket-form";
 
 // hero content data
 const hero_content = {
@@ -83,7 +84,6 @@ const { hero_shape, hero_title, sub_title, hero_shape_img, hero_thumbs } =
 
 const HeroSlider = () => {
   let hero_bg = useRef(null);
-  const [provinces, setProvinces] = React.useState([]);
 
   useEffect(() => {
     gsap.from(hero_bg.current, {
@@ -97,22 +97,6 @@ const HeroSlider = () => {
       duration: 1.5,
     });
   }, []);
-
-  useEffect(() => {
-    if (provinces.length > 0) return;
-    fetch("http://localhost:5200/api/provinces")
-      .then((res) => res.json())
-      .then((data) => {
-        console.log(data);
-        const prons = data.data.map((item) => ({
-          value: item.id.toString(),
-          text: item.fullName,
-        }));
-        setProvinces(prons);
-      });
-  }, []);
-
-  const selectHandler = (e) => {};
 
   useCharAnimation(".tp-hero__hero-title span.child");
 
@@ -149,147 +133,7 @@ const HeroSlider = () => {
                     >
                       {hero_title}
                     </h2>
-                    <div className="card z-index-5 rounded-4 shadow-lg pt-4 px-3">
-                      <div className="card-body">
-                        <div className="row mb-3">
-                          <div className="col-12 col-md-6 order-2 order-md-1">
-                            <div
-                              className="text-start"
-                              style={{ color: "var(--tp-theme-primary)" }}
-                            >
-                              <div className="form-check form-check-inline">
-                                <input
-                                  className="form-check-input"
-                                  type="radio"
-                                  style={{}}
-                                  defaultChecked
-                                  name="inlineRadioOptions"
-                                  id="inlineRadio1"
-                                  value="option1"
-                                />
-                                <label
-                                  className="form-check-label fw-bold"
-                                  htmlFor="inlineRadio1"
-                                >
-                                  Một chiều
-                                </label>
-                              </div>
-                              <div className="form-check form-check-inline">
-                                <input
-                                  className="form-check-input"
-                                  style={{}}
-                                  type="radio"
-                                  name="inlineRadioOptions"
-                                  id="inlineRadio2"
-                                  value="option2"
-                                />
-                                <label
-                                  className="form-check-label fw-bold"
-                                  htmlFor="inlineRadio2"
-                                >
-                                  Khứ hồi
-                                </label>
-                              </div>
-                            </div>
-                          </div>
-                          <div
-                            className="col-12 col-md-6 text-start text-md-end order-1 order-md-2 mb-2 mb-md-0"
-                            style={{ color: "var(--tp-theme-primary)" }}
-                          >
-                            <Link href="/search">Hướng dẫn mua vé</Link>
-                          </div>
-                        </div>
-                        <div className="row py-3">
-                          <div className="col-12 col-md-6 col-lg-3">
-                            <label
-                              htmlFor=""
-                              className="w-full text-start d-block ps-2"
-                            >
-                              Điểm đi
-                            </label>
-                            <div className="postbox__select mb-30">
-                              {provinces.length > 0 && (
-                                <NiceSelect
-                                  options={provinces}
-                                  placeholder="Chọn điểm đi"
-                                  title="Điểm đi"
-                                  onChange={selectHandler}
-                                />
-                              )}
-                            </div>
-                          </div>
-                          <div className="col-12 col-md-6 col-lg-3">
-                            <label
-                              htmlFor=""
-                              className="w-full text-start d-block ps-2"
-                            >
-                              Điểm đến
-                            </label>
-                            <div className="postbox__select mb-30">
-                              {provinces.length > 0 && (
-                                <NiceSelect
-                                  options={provinces}
-                                  // options={[{ value: "1", text: "Hồ Chí Minh" }]}
-                                  placeholder="Chọn điểm đến"
-                                  title="Điểm đến"
-                                  onChange={selectHandler}
-                                />
-                              )}
-                            </div>
-                          </div>
-                          <div className="col-12 col-md-6 col-lg-3">
-                            <label
-                              htmlFor=""
-                              className="w-full text-start d-block ps-2"
-                            >
-                              Ngày đi
-                            </label>
-                            <div className="postbox__select mb-30">
-                              <DateSelect
-                                placeholder="Chọn ngày đi"
-                                title="Ngày đi"
-                                onChange={selectHandler}
-                              />
-                            </div>
-                          </div>
-                          <div className="col-12 col-md-6 col-lg-3">
-                            <label
-                              htmlFor=""
-                              className="w-full text-start d-block ps-2"
-                            >
-                              Số lượng vé
-                            </label>
-                            <div className="postbox__select mb-30">
-                              <NumberSelect
-                                placeholder="Chọn số vé"
-                                title="Số vé"
-                                onChange={selectHandler}
-                              />
-                            </div>
-                          </div>
-                        </div>
-                        <div className="p-relative row justify-content-center">
-                          <div
-                            className=""
-                            style={{
-                              top: -10,
-                              position: "absolute",
-                            }}
-                          >
-                            <Link
-                              className={`tp-btn-blue-sm inner-color alt-color-black tp-btn-hover d-none d-md-inline-block`}
-                              style={{
-                                backgroundColor: "rgb(239, 82, 34)",
-                              }}
-                              href="/register"
-                            >
-                              <span>Tìm chuyến xe</span>
-                              <b></b>
-                            </Link>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
+                    <BookTicketForm />
                     <div
                       className="tp-hero__title-shape d-none d-sm-block"
                       style={{ bottom: "-62px" }}

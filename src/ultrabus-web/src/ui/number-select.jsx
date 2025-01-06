@@ -1,12 +1,20 @@
 import { auto } from "@popperjs/core";
-import { useState, useCallback, useRef, useEffect } from "react";
+import { useState, useCallback, useRef, useEffect, use } from "react";
 import { useClickAway } from "react-use";
 
 const numbers = [1, 2, 3, 4, 5, 6, 7, 8];
 
-const NumberSelect = ({ placeholder, className, onChange, title, name }) => {
-  const [open, setOpen] = useState(false);
-  const [current, setCurrent] = useState(1);
+const NumberSelect = ({
+  placeholder,
+  className,
+  onChange,
+  title,
+  name,
+  defaultOpen,
+  defaultCurrent,
+}) => {
+  const [open, setOpen] = useState(defaultOpen || false);
+  const [current, setCurrent] = useState(defaultCurrent || 1);
   const onClose = useCallback(() => {
     setOpen(false);
   }, []);
@@ -16,9 +24,17 @@ const NumberSelect = ({ placeholder, className, onChange, title, name }) => {
 
   const currentHandler = (item) => {
     setCurrent(item);
-    // onChange(item, name);
+    onChange(item);
     onClose();
   };
+
+  useEffect(() => {
+    if (defaultCurrent != current) setCurrent(defaultCurrent);
+  }, [defaultCurrent]);
+
+  useEffect(() => {
+    if (defaultOpen != open) setOpen(defaultOpen);
+  }, [defaultOpen]);
 
   return (
     <div

@@ -8,12 +8,16 @@ const NiceSelect = ({
   placeholder,
   className,
   onChange,
+  defaultOpen,
   title,
   name,
 }) => {
   // console.log(options);
-  const [open, setOpen] = useState(false);
-  const [current, setCurrent] = useState(options[defaultCurrent]);
+  const [open, setOpen] = useState(defaultOpen || false);
+  const [current, setCurrent] = useState(
+    options.find((item) => item.value == defaultCurrent)
+  );
+  // console.log(options);
   const [optionsFilter, setOptionsFilter] = useState(options);
   const onClose = useCallback(() => {
     setOpen(false);
@@ -25,7 +29,7 @@ const NiceSelect = ({
 
   const currentHandler = (item) => {
     setCurrent(item);
-    onChange(item, name);
+    onChange(item);
     onClose();
   };
 
@@ -34,6 +38,20 @@ const NiceSelect = ({
       searchRef.current.focus();
     }
   }, [open]);
+
+  useEffect(() => {
+    // console.log({ defaultOpen });
+    if (defaultOpen != open) setOpen(defaultOpen);
+  }, [defaultOpen]);
+
+  useEffect(() => {
+    // console.log({ defaultCurrent, options });
+    if (defaultCurrent) {
+      setCurrent(options.find((item) => item.value == defaultCurrent));
+    }
+  }, [defaultCurrent]);
+
+  // console.log({ current });
 
   // useEffect(() => {
   //   setOptionsFilter((prev) => [...prev, ...options]);
@@ -89,7 +107,7 @@ const NiceSelect = ({
 
   return (
     <div
-      className={`nice-select ${(className, open && "open")}`}
+      className={`nice-select ${(className, (open || defaultOpen) && "open")}`}
       role="button"
       tabIndex={0}
       onClick={() => {

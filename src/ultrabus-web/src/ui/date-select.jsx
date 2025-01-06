@@ -5,8 +5,16 @@ import { useClickAway } from "react-use";
 
 const weekDays = ["CN", "T2", "T3", "T4", "T5", "T6", "T7"];
 
-const DateSelect = ({ placeholder, className, onChange, title, name }) => {
-  const [open, setOpen] = useState(false);
+const DateSelect = ({
+  placeholder,
+  className,
+  onChange,
+  title,
+  name,
+  defaultCurrent,
+  defaultOpen,
+}) => {
+  const [open, setOpen] = useState(defaultOpen || false);
   const [current, setCurrent] = useState({
     text: "",
     value: "",
@@ -27,6 +35,29 @@ const DateSelect = ({ placeholder, className, onChange, title, name }) => {
   const ref = useRef(null);
 
   useClickAway(ref, onClose);
+
+  useEffect(() => {
+    if (defaultCurrent) {
+      const defaultDate = new Date(defaultCurrent);
+      if (
+        defaultDate.getDate() != selectDay.day ||
+        defaultDate.getMonth() != selectDay.month - 1 ||
+        defaultDate.getFullYear() != selectDay.year
+      ) {
+        // console.log(defaultCurrent);
+        setSelectDay({
+          day: defaultDate.getDate(),
+          month: defaultDate.getMonth() + 1,
+          year: defaultDate.getFullYear(),
+          weekday: defaultDate.getDay(),
+        });
+      }
+    }
+  }, [defaultCurrent]);
+
+  useEffect(() => {
+    if (defaultOpen != open) setOpen(defaultOpen);
+  }, [defaultOpen]);
 
   // const currentHandler = (item) => {
   //   setCurrent(item);
@@ -101,6 +132,7 @@ const DateSelect = ({ placeholder, className, onChange, title, name }) => {
       year: current.year,
       weekday: i === 6 ? 0 : i + 1,
     }));
+    onChange(`${current.year}-${Number.parseInt(current.month)}-${day}`);
     onClose();
   };
 
