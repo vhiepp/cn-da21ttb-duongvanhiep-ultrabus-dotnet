@@ -11,7 +11,7 @@ const categories = [
 ];
 
 const Portfolio = () => {
-  const { dataRef } = useMultipleAnime();
+  // const { dataRef } = useMultipleAnime();
   const [activeCategory, setActiveCategory] = useState("All");
   const [items, setItems] = useState(portfolio_blog);
 
@@ -28,6 +28,8 @@ const Portfolio = () => {
     }
   };
 
+  // console.log(items);
+
   return (
     <>
       <div className="portfolio blog-grid-inner mb-80">
@@ -35,11 +37,11 @@ const Portfolio = () => {
           <div className="row justify-content-center">
             <div className="col-lg-8">
               <div className="tp-about__section-box text-center mb-40">
-                <h4 className="inner-section-subtitle">OVER 150K+ CLIENT</h4>
-                <h3 className="tp-section-title">Accomplish more, Together</h3>
-                <p>
+                <h4 className="inner-section-subtitle">HƠN 2M+ KHÁCH HÀNG</h4>
+                <h3 className="tp-section-title">Tin tức mới nhất</h3>
+                {/* <p>
                   Softuch blog is your knowledge center for everything remote.
-                </p>
+                </p> */}
               </div>
             </div>
           </div>
@@ -58,7 +60,7 @@ const Portfolio = () => {
               </div>
             </div>
           </div>
-          <div className="row grid blog-grid-inner" ref={dataRef}>
+          <div className="row grid blog-grid-inner">
             {items.map((item, i) => (
               <div
                 key={i}
@@ -68,7 +70,12 @@ const Portfolio = () => {
                 <div className="tp-blog-item">
                   <div className="tp-blog-thumb fix">
                     <Link href="/blog-details">
-                      <Image src={item.thumb_img} alt="theme-pure" />
+                      <Image
+                        src={item.thumb_img}
+                        width={370}
+                        height={250}
+                        alt="theme-pure"
+                      />
                     </Link>
                   </div>
                   <div className="tp-blog-content">
@@ -80,14 +87,32 @@ const Portfolio = () => {
                         <span>{item.date}</span>
                       </div>
                     </div>
-                    <div className="tp-blog-title-box">
-                      <Link className="tp-blog-title-sm" href="/blog-details">
-                        {item.title}
-                      </Link>
+                    <div
+                      className="tp-blog-title-box"
+                      title={`${item.title.toString()}`}
+                    >
+                      <div
+                        style={{
+                          "-webkit-line-clamp": "2",
+                          display: "-webkit-box",
+                          "-webkit-box-orient": "vertical",
+                          overflow: "hidden",
+                          textOverflow: "ellipsis",
+                        }}
+                      >
+                        <Link className="tp-blog-title-sm" href="/blog-details">
+                          {item.title}
+                        </Link>
+                      </div>
                     </div>
                     <div className="tp-blog-author-info-box d-flex align-items-center">
-                      <div className="tp-blog-avata">
-                        <Image src={item.avata_img} alt="theme-pure" />
+                      <div className="tp-blog-avata rounded-circle overflow-hidden">
+                        <Image
+                          src={item.avata_img}
+                          width={50}
+                          height={50}
+                          objectFit="cover"
+                        />
                       </div>
                       <div className="tp-blog-author-info">
                         <h5>{item.name}</h5>

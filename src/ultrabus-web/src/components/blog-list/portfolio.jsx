@@ -59,9 +59,11 @@ const Portfolio = () => {
                     </div>
                     <div className="tp-blog-author-info-box d-flex align-items-center mt-2">
                       <div className="tp-blog-avata">
-                        <img
+                        <Image
                           src={item.avata_img}
-                          style={{ width: 40, height: 40, borderRadius: 100 }}
+                          width={50}
+                          height={50}
+                          className="rounded-circle"
                           alt="theme-pure"
                         />
                       </div>

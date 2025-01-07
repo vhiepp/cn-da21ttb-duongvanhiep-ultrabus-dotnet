@@ -12,7 +12,7 @@ const Blog = () => {
       <main>
         <BreadcrumbTwo title={"Tin tức mới nhất"} innertitle={"Tin tức"} />
         <BlogGrid />
-        {/* <Portfolio /> */}
+        <Portfolio />
         <CtaArea />
       </main>
     </>
