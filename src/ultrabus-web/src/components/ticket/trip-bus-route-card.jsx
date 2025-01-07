@@ -116,7 +116,7 @@ const TripBusRouteCard = ({}) => {
                   fontSize: "14px",
                   padding: "0 20px",
                 }}
-                href="/book-ticket"
+                href="/book-ticket-info"
               >
                 <span>Chọn chuyến</span>
                 <b></b>
