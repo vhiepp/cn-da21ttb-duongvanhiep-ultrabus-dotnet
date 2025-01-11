@@ -21,17 +21,6 @@ erDiagram
     }
 
     
-
-    Accounts {
-        Id Uuid "Primary"
-        UserId Uuid "Required"
-        Username Varchar(50) "Required, Unique"
-        Password Varchar(200) "Required"
-        Provider Varchar(20) "Required"
-        ProviderId Varchar(50) "Required, Unique"
-        CreatedAt Datetime "NotNull"
-        UpdatedAt Datetime "NotNull"
-    }
     Permissions {
         Id Uuid "Primary"
         Name NVarchar(50) "Required, Unique"
@@ -52,7 +41,6 @@ erDiagram
     }
     Permissions ||--o{ RolePermissions : ""
     Roles ||--o{ RolePermissions : ""
-    Users ||--o{ Accounts : ""
     Roles ||--o{ Users : ""
 
     BusTypes {

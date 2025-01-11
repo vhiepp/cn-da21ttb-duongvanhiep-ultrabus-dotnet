@@ -49,6 +49,12 @@ namespace UltraBusAPI.Controllers
             );
         }
 
+        [HttpPost("login-with-phone-number")]
+        public async Task<IActionResult> LoginWithPhoneNumber()
+        {
+            return Ok();
+        }
+
         [HttpPost("register")]
         public async Task<IActionResult> Register(SignUpModel signUp)
         {   

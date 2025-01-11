@@ -15,6 +15,8 @@ export const apiClient = axios.create({
     validateStatus: function (status) {
         if (status === 403) {
             window.location.href = '/';
+        } else if (status === 401) {
+            window.location.href = '/auth/login';
         }
         return status < 500; // Resolve only if the status code is less than 500
     }

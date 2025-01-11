@@ -47,6 +47,13 @@ namespace UltraBusAPI.Models
         public required string Password { get; set; }
     }
 
+    public class SignInWithPhoneNumberModel
+    {
+        public required string PhoneNumber { get; set; }
+        public required string Code { get; set; }
+        public required string Key { get; set; }
+    }
+
     public class ProfileModel
     {
         public string? Email { get; set; } = string.Empty;

@@ -20,6 +20,7 @@ namespace UltraBusAPI.Datas
         public DbSet<BusRoute> BusRoutes { get; set; }
         public DbSet<BusStation> BusStations { get; set; }
         public DbSet<BusRouteTrip> BusRouteTrips { get; set; }
+        public DbSet<OTP> OTPs { get; set; }
         #endregion
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
