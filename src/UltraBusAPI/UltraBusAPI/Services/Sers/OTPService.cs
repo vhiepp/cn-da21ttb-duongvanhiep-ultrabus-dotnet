@@ -21,7 +21,7 @@ namespace UltraBusAPI.Services.Sers
                 Code = otpCode.ToString(),
                 Key = Guid.NewGuid().ToString(),
                 ExpiredAt = DateTime.Now.AddMinutes(5),
-                Content = $"[UltraBus]\nMa OTP cua ban la {otpCode}.\nCam on quy khach da su dung dich vu!"
+                Content = $"[UltraBus]\nMa OTP cua ban la {otpCode}, ma se het han sau 5 phut.\nVui long khong chia se ma nay voi bat ky ai!\nCam on quy khach da su dung dich vu!"
                 //Content = "[UltraBus]\nThong tin dat ve\nKH: Duong Van Hiep\nHT: Tra Vinh - Ho Chi Minh\nNgay: 11/01/2025\nGio khoi hanh: 11:00\nSVe: 2\nTT: Da thanh toan\nCam on quy khach!"
                 //Content = $"{otpCode}",
             };

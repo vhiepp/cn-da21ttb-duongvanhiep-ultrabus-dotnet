@@ -60,8 +60,8 @@ const AppMenu = () => {
                     icon: 'pi pi-fw pi-car',
                     permission: 'CarManager',
                     items: [
-                        { label: 'Danh sách xe', icon: 'pi pi-fw pi-list', to: '' },
-                        { label: 'Thêm mới xe', icon: 'pi pi-fw pi-plus', to: '' }
+                        { label: 'Danh sách xe', icon: 'pi pi-fw pi-list', to: '/admin/bus' },
+                        { label: 'Thêm mới xe', icon: 'pi pi-fw pi-plus', to: '/admin/bus/create' }
                     ]
                 },
                 {

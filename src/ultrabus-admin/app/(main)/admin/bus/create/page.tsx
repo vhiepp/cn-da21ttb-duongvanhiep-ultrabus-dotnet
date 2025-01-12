@@ -12,16 +12,25 @@ import { createAdminUserApi } from '@/apis/admin/user';
 import { useRouter } from 'next/navigation';
 import { Dropdown } from 'primereact/dropdown';
 import { Password } from 'primereact/password';
+import { InputNumber } from 'primereact/inputnumber';
+import { Badge } from 'primereact/badge';
 
 interface InputValue {
     name: string;
     code: number;
 }
 
-const genderValues: Array<InputValue> = [
-    { name: 'Nam', code: 1 },
-    { name: 'Nữ', code: 2 },
-    { name: 'Khác', code: 3 }
+const busTypeValues: Array<InputValue> = [
+    { name: 'Ghế ngồi', code: 1 },
+    { name: 'Giường nằm', code: 2 }
+];
+
+const floorValues: Array<InputValue> = [
+    { name: '1 tầng', code: 1 },
+    { name: '2 tầng', code: 2 },
+    { name: '3 tầng', code: 3 },
+    { name: '4 tầng', code: 4 },
+    { name: '5 tầng', code: 5 }
 ];
 
 const UserAdminCreate = () => {
@@ -30,8 +39,13 @@ const UserAdminCreate = () => {
     const [username, setUsername] = useState('');
     const [checkUserName, setCheckUserName] = useState(null);
     const [password, setPassword] = useState('ultrabus123');
-    const [selectRoleValue, setSelectRoleValue] = useState(null);
-    const [selectGenderValue, setSelectGenderValue] = useState(genderValues[2]);
+    const [selectFloorValue, setSelectFloorValue] = useState(floorValues[0]);
+    const [selectBusType, setBusTypeValue] = useState(busTypeValues[1]);
+    const [description, setDescription] = useState('');
+    const [brandName, setBrandName] = useState('');
+    const [rowSeatValue, setRowSeatValue] = useState(1);
+    const [colSeatValue, setColSeatValue] = useState(1);
+    const [seatArrangement, setSeatArrangement] = useState<Array<Array<Array<string>>>>([]);
 
     const [loading1, setLoading1] = useState(false);
     const [dropdownValues, setDropdownValues] = useState<Array<InputValue>>([]);
@@ -69,11 +83,11 @@ const UserAdminCreate = () => {
             passwordRef.current.focus();
             return;
         }
-        if (selectRoleValue == null) {
+        if (selectFloorValue == null) {
             roleRef.current.focus();
             return;
         }
-        if (selectGenderValue == null) {
+        if (selectBusType == null) {
             genderRef.current.focus();
             return;
         }
@@ -88,8 +102,8 @@ const UserAdminCreate = () => {
             phoneNumber: phone,
             userName: username,
             password: password,
-            roleId: selectRoleValue.code,
-            gender: selectGenderValue.code
+            roleId: selectFloorValue.code,
+            gender: selectBusType.code
         };
 
         const response = await apiClient.post(createAdminUserApi, data);
@@ -103,14 +117,26 @@ const UserAdminCreate = () => {
                 setFullName('');
                 setPhone('');
                 setUsername('');
-                setSelectRoleValue(null);
                 setPassword('ultrabus123');
-                setSelectGenderValue(genderValues[2]);
             }
         } else {
             alert('Có lỗi xảy ra');
         }
     };
+
+    useEffect(() => {
+        setSeatArrangement(
+            Array.from({ length: selectFloorValue.code }, (_, i) => i + 1).map((floor, index) => {
+                return Array.from({ length: rowSeatValue }, (_, i) => i + 1).map((col, index) => {
+                    return Array.from({ length: colSeatValue }, (_, i) => i + 1).map((row, index) => {
+                        return `${String.fromCharCode(row + 64)}${floor}.${col}`;
+                    });
+                });
+            })
+        );
+    }, [colSeatValue, rowSeatValue, selectFloorValue]);
+
+    // console.log(seatArrangement);
 
     const checkUsernameExist = async () => {
         if (username.length > 0) {
@@ -132,70 +158,123 @@ const UserAdminCreate = () => {
     useEffect(() => {
         getRoles();
     }, []);
+    // console.log(rowSeatValue);
 
     return (
         <div className="grid">
             <div className="col-12">
                 <div className="card">
-                    <h5>Thêm user quản trị hệ thống</h5>
+                    <h5>Thêm loại xe</h5>
                     <div className="p-fluid formgrid grid">
                         <div className="field col-12 md:col-6">
                             <label htmlFor="full_name" className="text-lg">
-                                Họ tên <span className="p-error">(*)</span>
+                                Tên xe <span className="p-error">(*)</span>
                             </label>
-                            <InputText ref={fullNameRef} placeholder="Nhập họ tên" id="full_name" value={fullName} onChange={(e) => setFullName(e.target.value)} type="text" />
+                            <InputText ref={fullNameRef} placeholder="Nhập tên xe" id="full_name" value={fullName} onChange={(e) => setFullName(e.target.value)} type="text" />
                         </div>
+
                         <div className="field col-12 md:col-6">
-                            <label htmlFor="phone" className="text-lg">
-                                Số điện thoại
+                            <label htmlFor="brand_name" className="text-lg">
+                                Hãng sản xuất <span className="p-error">(*)</span>
                             </label>
-                            <InputText id="phone" ref={phoneRef} placeholder="Nhập số điện thoại" value={phone} onChange={(e) => setPhone(e.target.value)} type="text" />
+                            <InputText ref={fullNameRef} placeholder="Nhập tên hãng sản xuất" id="brand_name" value={brandName} onChange={(e) => setBrandName(e.target.value)} type="text" />
                         </div>
-                        <div className="field col-12 md:col-6">
-                            <label htmlFor="username" className="text-lg">
-                                Tên đăng nhập <span className="p-error">(*)</span>{' '}
-                                {checkUserName != null && (
-                                    <small id="username-help" className="p-error text-sm">
-                                        <i>{checkUserName}</i>
-                                    </small>
-                                )}
-                            </label>
-                            <InputText
-                                ref={usernameRef}
-                                id="username"
-                                placeholder="Nhập tên đăng nhập"
-                                value={username}
-                                onChange={(e) => {
-                                    setUsername(e.target.value);
-                                    if (checkUserName != null) {
-                                        setCheckUserName(null);
-                                    }
-                                }}
-                                onBlur={checkUsernameExist}
-                                type="text"
-                            />
-                        </div>
-                        <div className="field col-12 md:col-6">
-                            <label htmlFor="password" className="text-lg">
-                                Mật khẩu <span className="p-error">(*)</span>{' '}
+
+                        <div className="field col-12">
+                            <label htmlFor="address" className="text-lg">
+                                Mô tả{' '}
                                 <span className="text-sm">
-                                    <i>(Mặc định: ultrabus123)</i>
+                                    <i>(không bắt buộc)</i>
                                 </span>
                             </label>
-                            <Password id="password" ref={passwordRef} value={password} placeholder="Nhập mật khẩu" toggleMask onChange={(e) => setPassword(e.target.value)} type="password" />
+                            <InputTextarea id="description" value={description} onChange={(e) => setDescription(e.target.value)} rows={2} />
                         </div>
                         <div className="field col-12 md:col-6">
-                            <label htmlFor="password" className="text-lg">
-                                Giới tính <span className="p-error">(*)</span>
+                            <label htmlFor="bustype" className="text-lg">
+                                Loại ghế <span className="p-error">(*)</span>
                             </label>
-                            <Dropdown ref={genderRef} value={selectGenderValue} onChange={(e) => setSelectGenderValue(e.value)} options={genderValues} optionLabel="name" placeholder="Chọn giới tính" />
+                            <Dropdown ref={genderRef} value={selectBusType} onChange={(e) => setBusTypeValue(e.value)} options={busTypeValues} optionLabel="name" placeholder="Chọn giới tính" />
                         </div>
                         <div className="field col-12 md:col-6">
-                            <label htmlFor="password" className="text-lg">
-                                Quyền <span className="p-error">(*)</span>
+                            <label htmlFor="floor" className="text-lg">
+                                Số lượng tầng <span className="p-error">(*)</span>
                             </label>
-                            <Dropdown ref={roleRef} value={selectRoleValue} onChange={(e) => setSelectRoleValue(e.value)} options={dropdownValues} optionLabel="name" placeholder="Chọn quyền cho user" />
+                            <Dropdown ref={roleRef} value={selectFloorValue} onChange={(e) => setSelectFloorValue(e.value)} options={floorValues} optionLabel="name" placeholder="Chọn số lượng tầng ghế" />
                         </div>
+                        <div className="field col-12">
+                            <label htmlFor="seat" className="text-lg">
+                                Bố trí ghế <span className="p-error">(*)</span>
+                            </label>
+                        </div>
+                        <div className="field col-6">
+                            <label htmlFor="seat" className="text-lg">
+                                Số lượng dãy ghế
+                            </label>
+                            <InputNumber value={colSeatValue} onValueChange={(e) => setColSeatValue(e.value ?? null)} min={1} max={5} showButtons mode="decimal"></InputNumber>
+                        </div>
+                        <div className="field col-6">
+                            <label htmlFor="seat" className="text-lg">
+                                Số lượng hàng ghế
+                            </label>
+                            <InputNumber value={rowSeatValue} onValueChange={(e) => setRowSeatValue(e.value ?? null)} min={1} max={20} showButtons mode="decimal"></InputNumber>
+                        </div>
+                        {selectFloorValue.code && (
+                            <>
+                                {seatArrangement.map((floor, floorIndex) => {
+                                    return (
+                                        <div className={`col-${colSeatValue} mb-3`} key={`floor-${floorIndex}`}>
+                                            <div style={{ border: '1px solid #ccc', borderRadius: '5px', padding: '10px' }}>
+                                                <h5 className="text-center">Tầng {floorIndex + 1}</h5>
+                                                <table className="w-full text-center">
+                                                    <tbody>
+                                                        {floor.map((cols, colIndex) => {
+                                                            return (
+                                                                <tr key={`row-${colIndex}`} className="text-center">
+                                                                    {cols.map((row, rowIndex) => {
+                                                                        return (
+                                                                            <td key={`col-${rowIndex}`}>
+                                                                                <div className="flex justify-content-center align-items-center py-2 relative">
+                                                                                    {(row && (
+                                                                                        <i className="pi pi-stop p-overlay-badge" style={{ fontSize: '3.2rem' }}>
+                                                                                            <Badge
+                                                                                                value="x"
+                                                                                                severity="danger"
+                                                                                                className="cursor-pointer"
+                                                                                                onClick={() => {
+                                                                                                    const newArr = [...seatArrangement];
+                                                                                                    newArr[floorIndex][colIndex][rowIndex] = '';
+                                                                                                    setSeatArrangement(newArr);
+                                                                                                }}
+                                                                                            ></Badge>
+                                                                                        </i>
+                                                                                    )) || (
+                                                                                        <i
+                                                                                            className="pi pi-plus p-overlay-badge flex justify-content-center align-items-center cursor-pointer"
+                                                                                            style={{ fontSize: '1rem', width: '44px', height: '44px' }}
+                                                                                            onClick={() => {
+                                                                                                const newArr = [...seatArrangement];
+                                                                                                newArr[floorIndex][colIndex][rowIndex] = `${String.fromCharCode(rowIndex + 65)}${floorIndex + 1}.${colIndex + 1}`;
+                                                                                                setSeatArrangement(newArr);
+                                                                                            }}
+                                                                                        ></i>
+                                                                                    )}
+
+                                                                                    {row && <div className="absolute">{row}</div>}
+                                                                                </div>
+                                                                            </td>
+                                                                        );
+                                                                    })}
+                                                                </tr>
+                                                            );
+                                                        })}
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    );
+                                })}
+                            </>
+                        )}
 
                         <div className="field col-12">
                             <div className="grid mt-4 justify-content-end align-items-center gap-2">
