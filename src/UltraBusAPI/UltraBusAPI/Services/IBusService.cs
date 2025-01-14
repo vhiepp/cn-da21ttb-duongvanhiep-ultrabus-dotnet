@@ -11,5 +11,7 @@ namespace UltraBusAPI.Services
         public Task<BusModel?> FindById(int id);
 
         public Task DeleteById(int id);
+
+        public Task UpdateBus(int id, CreateBusModel busModel);
     }
 }

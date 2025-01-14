@@ -3,7 +3,8 @@
     width: 300px;
     height: calc(100vh - 9rem);
     z-index: 999;
-    overflow-y: auto;
+    overflow: hidden;
+    overflow-y: scroll;
     user-select: none;
     top: 7rem;
     left: 2rem;
@@ -12,6 +13,22 @@
     border-radius: $borderRadius;
     padding: 0.5rem 1.5rem;
     box-shadow: 0px 3px 5px rgba(0, 0, 0, .02), 0px 0px 2px rgba(0, 0, 0, .05), 0px 1px 4px rgba(0, 0, 0, .08);
+
+    scrollbar-width: thin; /* Thanh cuộn mỏng */
+    scrollbar-color: #888 #f1f1f1; /* Màu thanh trượt và nền */
+}
+
+.layout-sidebar::-webkit-scrollbar {
+    width: 1px;
+}
+
+.layout-sidebar::-webkit-scrollbar-thumb {
+    background-color: #888; /* Màu của thanh trượt (phần di chuyển được) */
+    border-radius: 10px; /* Bo tròn góc */
+}
+
+.layout-sidebar::-webkit-scrollbar-track {
+    background-color: #f1f1f1; /* Màu nền của thanh cuộn */
 }
 
 .layout-menu {

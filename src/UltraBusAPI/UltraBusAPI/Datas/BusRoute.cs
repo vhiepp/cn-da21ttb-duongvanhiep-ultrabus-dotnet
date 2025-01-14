@@ -25,5 +25,7 @@ namespace UltraBusAPI.Datas
         public BusStation? EndStation { get; set; } = null;
 
         public ICollection<BusRouteTrip>? BusRouteTrips { get; set; } = null;
+
+        public ICollection<BusRouteStation>? BusRouteStations { get; set; } = null;
     }
 }

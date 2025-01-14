@@ -15,12 +15,16 @@ namespace UltraBusAPI.Datas
 
         public Bus? Bus { get; set; }
 
-        public DateTime? DepartureTime { get; set; }
+        public int TotalHours { get; set; } = 0;
 
-        public DateTime? ArrivalTime { get; set; }
+        public int TotalMinutes { get; set; } = 0;
 
-        public int? AvailableSeats { get; set; }
+        public DateTime DepartureTime { get; set; }
+
+        public DateTime ArrivalTime { get; set; }
 
         public double? Price { get; set; }
+
+        public ICollection<BusRouteTripDate>? BusRouteTripDates { get; set; }
     }
 }

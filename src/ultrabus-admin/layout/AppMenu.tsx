@@ -78,18 +78,15 @@ const AppMenu = () => {
                     icon: 'pi pi-fw pi-share-alt',
                     permission: 'RouteManager',
                     items: [
-                        { label: 'Danh sách tuyến đường', icon: 'pi pi-fw pi-list', to: '' },
-                        { label: 'Thêm mới tuyến đường', icon: 'pi pi-fw pi-plus', to: '' }
+                        { label: 'Danh sách tuyến đường', icon: 'pi pi-fw pi-list', to: '/admin/bus-routes' },
+                        { label: 'Thêm mới tuyến đường', icon: 'pi pi-fw pi-plus', to: '/admin/bus-routes/create' }
                     ]
                 },
                 {
                     label: 'Chuyến đi',
                     icon: 'pi pi-fw pi-map',
                     permission: 'TripManager',
-                    items: [
-                        { label: 'Danh sách chuyến đi', icon: 'pi pi-fw pi-list', to: '' },
-                        { label: 'Thêm mới chuyến đi', icon: 'pi pi-fw pi-plus', to: '' }
-                    ]
+                    to: '/admin/bus-route-trips'
                 }
             ]
         },

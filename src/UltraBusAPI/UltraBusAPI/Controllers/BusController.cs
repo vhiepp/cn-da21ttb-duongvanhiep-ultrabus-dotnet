@@ -33,7 +33,6 @@ namespace UltraBusAPI.Controllers
 
         [HttpGet]
         [Authorize]
-        [Permission("CarManager")]
         public async Task<IActionResult> GetAll()
         {
             var busModels = await _busService.GetAll();
@@ -76,6 +75,19 @@ namespace UltraBusAPI.Controllers
             return Ok(new ApiResponse()
             {
                 Message = "Bus deleted successfully",
+                Success = true
+            });
+        }
+
+        [HttpPut("{id}")]
+        [Authorize]
+        [Permission("CarManager")]
+        public async Task<IActionResult> UpdateBus(int id, [FromBody] CreateBusModel busModel)
+        {
+            await _busService.UpdateBus(id, busModel);
+            return Ok(new ApiResponse()
+            {
+                Message = "Bus updated successfully",
                 Success = true
             });
         }

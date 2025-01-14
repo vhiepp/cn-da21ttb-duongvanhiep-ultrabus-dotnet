@@ -10,7 +10,7 @@ namespace UltraBusAPI.Datas.Seeders
             {
                 UserName = "superadmin",
                 Password = "ultrabus123",
-                FirstName = "Super Admin",
+                FirstName = "Văn Hiệp",
                 IsSuperAdmin = true,
                 IsCustomer = false,
             },

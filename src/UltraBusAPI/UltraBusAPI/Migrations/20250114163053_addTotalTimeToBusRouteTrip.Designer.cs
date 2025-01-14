@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using UltraBusAPI.Datas;
 
@@ -11,9 +12,11 @@ using UltraBusAPI.Datas;
 namespace UltraBusAPI.Migrations
 {
     [DbContext(typeof(MyDBContext))]
-    partial class MyDBContextModelSnapshot : ModelSnapshot
+    [Migration("20250114163053_addTotalTimeToBusRouteTrip")]
+    partial class addTotalTimeToBusRouteTrip
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -178,12 +181,6 @@ namespace UltraBusAPI.Migrations
 
                     b.Property<string>("Stations")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("TotalHours")
-                        .HasColumnType("int");
-
-                    b.Property<int>("TotalMinutes")
-                        .HasColumnType("int");
 
                     b.HasKey("Id");
 

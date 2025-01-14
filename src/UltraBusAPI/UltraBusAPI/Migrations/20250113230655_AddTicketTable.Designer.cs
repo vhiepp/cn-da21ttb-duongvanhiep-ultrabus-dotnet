@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using UltraBusAPI.Datas;
 
@@ -11,9 +12,11 @@ using UltraBusAPI.Datas;
 namespace UltraBusAPI.Migrations
 {
     [DbContext(typeof(MyDBContext))]
-    partial class MyDBContextModelSnapshot : ModelSnapshot
+    [Migration("20250113230655_AddTicketTable")]
+    partial class AddTicketTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -108,7 +111,7 @@ namespace UltraBusAPI.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("ArrivalTime")
+                    b.Property<DateTime?>("ArrivalTime")
                         .HasColumnType("datetime2");
 
                     b.Property<int?>("BusId")
@@ -117,17 +120,11 @@ namespace UltraBusAPI.Migrations
                     b.Property<int?>("BusRouteId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("DepartureTime")
+                    b.Property<DateTime?>("DepartureTime")
                         .HasColumnType("datetime2");
 
                     b.Property<double?>("Price")
                         .HasColumnType("float");
-
-                    b.Property<int>("TotalHours")
-                        .HasColumnType("int");
-
-                    b.Property<int>("TotalMinutes")
-                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -146,7 +143,7 @@ namespace UltraBusAPI.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("ArrivalTime")
+                    b.Property<DateTime?>("ArrivalTime")
                         .HasColumnType("datetime2");
 
                     b.Property<int?>("AvailableSeats")
@@ -155,10 +152,10 @@ namespace UltraBusAPI.Migrations
                     b.Property<int?>("BusRouteTripId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("DepartureDay")
+                    b.Property<DateTime?>("DepartureDay")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("DepartureTime")
+                    b.Property<DateTime?>("DepartureTime")
                         .HasColumnType("datetime2");
 
                     b.Property<int?>("EndStationId")
@@ -178,12 +175,6 @@ namespace UltraBusAPI.Migrations
 
                     b.Property<string>("Stations")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("TotalHours")
-                        .HasColumnType("int");
-
-                    b.Property<int>("TotalMinutes")
-                        .HasColumnType("int");
 
                     b.HasKey("Id");
 

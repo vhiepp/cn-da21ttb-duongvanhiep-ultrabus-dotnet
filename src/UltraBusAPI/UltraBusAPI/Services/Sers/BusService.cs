@@ -102,5 +102,37 @@ namespace UltraBusAPI.Services.Sers
             }
             return busModels;
         }
+
+        public async Task UpdateBus(int id, CreateBusModel busModel)
+        {
+            string seatArrangementJson = JsonSerializer.Serialize(busModel.SeatArrangement);
+            int seatCount = 0;
+            foreach (var floor in busModel.SeatArrangement)
+            {
+                foreach (var col in floor)
+                {
+                    foreach (var row in col)
+                    {
+                        if (row != null && row != "")
+                        {
+                            seatCount++;
+                        }
+                    }
+                }
+            }
+            var bus = new Bus
+            {
+                Id = id,
+                Name = busModel.Name,
+                Description = busModel.Description,
+                BusType = busModel.BusType,
+                BrandName = busModel.BrandName,
+                Floor = busModel.Floor,
+                SeatArrangement = seatArrangementJson,
+                SeatCount = seatCount
+            };
+
+            await _busRepository.UpdateAsync(bus);
+        }
     }
 }

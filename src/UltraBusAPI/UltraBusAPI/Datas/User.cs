@@ -64,6 +64,8 @@ namespace UltraBusAPI.Datas
         [AllowNull]
         public string? Address { get; set; }
 
+        public List<Ticket>? Tickets { get; set; } = null;
+
         public User()
         {
             UserName = "";

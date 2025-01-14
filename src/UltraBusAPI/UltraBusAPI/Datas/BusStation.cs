@@ -38,5 +38,15 @@ namespace UltraBusAPI.Datas
         public ICollection<BusRoute>? StartBusRoutes { get; set; } = null;
 
         public ICollection<BusRoute>? EndBusRoutes { get; set; } = null;
+
+        public ICollection<BusRouteStation>? BusRouteStations { get; set; } = null;
+
+        public ICollection<BusRouteTripDate>? StartBusRouteTripDates { get; set; } = null;
+
+        public ICollection<BusRouteTripDate>? EndBusRouteTripDates { get; set; } = null;
+
+        public ICollection<Ticket>? TicketsUp { get; set; } = null;
+
+        public ICollection<Ticket>? TicketsDown { get; set; } = null;
     }
 }

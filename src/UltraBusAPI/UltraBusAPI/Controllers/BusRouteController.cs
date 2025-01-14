@@ -1,5 +1,9 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using UltraBusAPI.Attributes;
+using UltraBusAPI.Models;
+using UltraBusAPI.Services;
 
 namespace UltraBusAPI.Controllers
 {
@@ -7,36 +11,84 @@ namespace UltraBusAPI.Controllers
     [ApiController]
     public class BusRouteController : ControllerBase
     {
-        public BusRouteController() { }
+        public readonly IBusRouteService _busRouteService;
+        public BusRouteController(IBusRouteService busRouteService)
+        {
+            _busRouteService = busRouteService;
+        }
 
         [HttpGet]
-        public IActionResult GetAll()
+        [Authorize]
+        public async Task<IActionResult> GetAll()
         {
-            return Ok();
+            var busRouteModels = await _busRouteService.GetAll();
+            return Ok(new ApiResponse()
+            {
+                Data = busRouteModels,
+                Message = "Get all bus routes successfully",
+                Success = true
+            });
         }
 
         [HttpGet("{id}")]
-        public IActionResult Get(int id)
+        [Authorize]
+        [Permission("RouteManager")]
+        public async Task<IActionResult> Get(int id)
         {
-            return Ok();
+            var busRouteModel = await _busRouteService.FindById(id);
+            if (busRouteModel == null)
+            {
+                return NotFound(new ApiResponse()
+                {
+                    Message = "Bus route not found",
+                    Success = false
+                });
+            }
+            return Ok(new ApiResponse()
+            {
+                Data = busRouteModel,
+                Message = "Get bus route successfully",
+                Success = true
+            });
         }
 
         [HttpPost]
-        public IActionResult Create()
+        [Authorize]
+        [Permission("RouteManager")]
+        public async Task<IActionResult> Create(CreateBusRouteModel busRouteModel)
         {
-            return Ok();
+            await _busRouteService.CreateBusRoute(busRouteModel);
+            return Ok(new ApiResponse()
+            {
+                Success = true,
+                Message = "Bus route created successfully"
+            });
         }
 
         [HttpPut("{id}")]
-        public IActionResult Update(int id)
+        [Authorize]
+        [Permission("RouteManager")]
+        public async Task<IActionResult> Update(int id, CreateBusRouteModel busRouteModel)
         {
-            return Ok();
+            await _busRouteService.UpdateBusRoute(id, busRouteModel);
+            return Ok(new ApiResponse()
+            {
+                Success = true,
+                Message = "Bus route updated successfully"
+            });
         }
 
         [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
+        [Authorize]
+        [Permission("RouteManager")]
+        public async Task<IActionResult> Delete(int id)
         {
-            return Ok();
+            await _busRouteService.DeleteBusRoute(id);
+            return Ok(new ApiResponse()
+            {
+                Success = true,
+                Message = "Bus route deleted successfully"
+            });
         }
 
         // Tìm kiếm tuyến xe bus theo điểm đầu và điểm cuối

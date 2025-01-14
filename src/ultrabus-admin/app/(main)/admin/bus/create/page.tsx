@@ -4,14 +4,10 @@ import React, { useState, useEffect, useRef } from 'react';
 import { InputText } from 'primereact/inputtext';
 import { Button } from 'primereact/button';
 import { InputTextarea } from 'primereact/inputtextarea';
-import { InputSwitch } from 'primereact/inputswitch';
 import { apiClient } from '@/apis/api-client';
-import { createAdminRoleApi, getAdminRolesApi } from '@/apis/admin/role';
-import { checkUsernameExistApi } from '@/apis/user-api';
-import { createAdminUserApi } from '@/apis/admin/user';
+import { createBusApi } from '@/apis/admin/bus';
 import { useRouter } from 'next/navigation';
 import { Dropdown } from 'primereact/dropdown';
-import { Password } from 'primereact/password';
 import { InputNumber } from 'primereact/inputnumber';
 import { Badge } from 'primereact/badge';
 
@@ -34,11 +30,7 @@ const floorValues: Array<InputValue> = [
 ];
 
 const UserAdminCreate = () => {
-    const [fullName, setFullName] = useState('');
-    const [phone, setPhone] = useState('');
-    const [username, setUsername] = useState('');
-    const [checkUserName, setCheckUserName] = useState(null);
-    const [password, setPassword] = useState('ultrabus123');
+    const [name, setName] = useState('');
     const [selectFloorValue, setSelectFloorValue] = useState(floorValues[0]);
     const [selectBusType, setBusTypeValue] = useState(busTypeValues[1]);
     const [description, setDescription] = useState('');
@@ -48,39 +40,21 @@ const UserAdminCreate = () => {
     const [seatArrangement, setSeatArrangement] = useState<Array<Array<Array<string>>>>([]);
 
     const [loading1, setLoading1] = useState(false);
-    const [dropdownValues, setDropdownValues] = useState<Array<InputValue>>([]);
 
-    const fullNameRef = useRef(null);
-    const phoneRef = useRef(null);
-    const passwordRef = useRef(null);
-    const usernameRef = useRef(null);
+    const nameRef = useRef(null);
+    const brandNameRef = useRef(null);
     const roleRef = useRef(null);
     const genderRef = useRef(null);
 
     const router = useRouter();
 
-    const getRoles = async () => {
-        const response = await apiClient.get(getAdminRolesApi);
-        const roles = response.data.data.map((role) => {
-            return {
-                name: role.name,
-                code: role.id
-            };
-        });
-        setDropdownValues(roles);
-    };
-
     const saveRole = async (exit = false) => {
-        if (fullName.length == 0) {
-            fullNameRef.current.focus();
+        if (name.length == 0) {
+            nameRef.current.focus();
             return;
         }
-        if (username.length == 0) {
-            usernameRef.current.focus();
-            return;
-        }
-        if (password.length == 0) {
-            passwordRef.current.focus();
+        if (brandName.length == 0) {
+            brandNameRef.current.focus();
             return;
         }
         if (selectFloorValue == null) {
@@ -91,37 +65,33 @@ const UserAdminCreate = () => {
             genderRef.current.focus();
             return;
         }
-        if (checkUserName != null) {
-            return;
-        }
 
         setLoading1(true);
 
         const data = {
-            firstName: fullName,
-            phoneNumber: phone,
-            userName: username,
-            password: password,
-            roleId: selectFloorValue.code,
-            gender: selectBusType.code
+            name: name,
+            brandName: brandName,
+            description: description,
+            busType: selectBusType.code,
+            floor: selectFloorValue.code,
+            seatArrangement: seatArrangement
         };
 
-        const response = await apiClient.post(createAdminUserApi, data);
-
-        setLoading1(false);
+        const response = await apiClient.post(createBusApi, data);
 
         if (response.status == 200) {
             if (exit) {
-                router.push('/admin/user-admin');
+                router.push('/admin/bus');
             } else {
-                setFullName('');
-                setPhone('');
-                setUsername('');
-                setPassword('ultrabus123');
+                setName('');
+                setBrandName('');
+                setDescription('');
+                setBusTypeValue(busTypeValues[1]);
             }
         } else {
             alert('Có lỗi xảy ra');
         }
+        setLoading1(false);
     };
 
     useEffect(() => {
@@ -136,30 +106,6 @@ const UserAdminCreate = () => {
         );
     }, [colSeatValue, rowSeatValue, selectFloorValue]);
 
-    // console.log(seatArrangement);
-
-    const checkUsernameExist = async () => {
-        if (username.length > 0) {
-            // check username khoong co ky tu dac biet
-            if (!/^[a-zA-Z0-9_]*$/.test(username) && checkUserName == null) {
-                setCheckUserName('Tên đăng nhập không được chứa ký tự đặc biệt');
-                usernameRef.current.focus();
-                return;
-            }
-
-            // const response = await apiClient.get(checkUsernameExistApi, { params: { username: username } });
-            // // console.log(response.data);
-            // if (response.data.status == 'error') {
-            //     setCheckUserName('Username đã tồn tại');
-            // }
-        }
-    };
-
-    useEffect(() => {
-        getRoles();
-    }, []);
-    // console.log(rowSeatValue);
-
     return (
         <div className="grid">
             <div className="col-12">
@@ -170,14 +116,14 @@ const UserAdminCreate = () => {
                             <label htmlFor="full_name" className="text-lg">
                                 Tên xe <span className="p-error">(*)</span>
                             </label>
-                            <InputText ref={fullNameRef} placeholder="Nhập tên xe" id="full_name" value={fullName} onChange={(e) => setFullName(e.target.value)} type="text" />
+                            <InputText ref={nameRef} placeholder="Nhập tên xe" id="full_name" value={name} onChange={(e) => setName(e.target.value)} type="text" />
                         </div>
 
                         <div className="field col-12 md:col-6">
                             <label htmlFor="brand_name" className="text-lg">
                                 Hãng sản xuất <span className="p-error">(*)</span>
                             </label>
-                            <InputText ref={fullNameRef} placeholder="Nhập tên hãng sản xuất" id="brand_name" value={brandName} onChange={(e) => setBrandName(e.target.value)} type="text" />
+                            <InputText ref={brandNameRef} placeholder="Nhập tên hãng sản xuất" id="brand_name" value={brandName} onChange={(e) => setBrandName(e.target.value)} type="text" />
                         </div>
 
                         <div className="field col-12">
@@ -222,7 +168,7 @@ const UserAdminCreate = () => {
                             <>
                                 {seatArrangement.map((floor, floorIndex) => {
                                     return (
-                                        <div className={`col-${colSeatValue} mb-3`} key={`floor-${floorIndex}`}>
+                                        <div className={`col-${colSeatValue * 2} lg:col-${colSeatValue} mb-3`} key={`floor-${floorIndex}`}>
                                             <div style={{ border: '1px solid #ccc', borderRadius: '5px', padding: '10px' }}>
                                                 <h5 className="text-center">Tầng {floorIndex + 1}</h5>
                                                 <table className="w-full text-center">

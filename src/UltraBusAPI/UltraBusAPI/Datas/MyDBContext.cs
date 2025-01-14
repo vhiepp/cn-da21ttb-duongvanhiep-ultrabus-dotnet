@@ -20,6 +20,9 @@ namespace UltraBusAPI.Datas
         public DbSet<BusRoute> BusRoutes { get; set; }
         public DbSet<BusStation> BusStations { get; set; }
         public DbSet<BusRouteTrip> BusRouteTrips { get; set; }
+        public DbSet<BusRouteStation> BusRouteStations { get; set; }
+        public DbSet<BusRouteTripDate> BusRouteTripDates { get; set; }
+        public DbSet<Ticket> Tickets { get; set; }
         public DbSet<OTP> OTPs { get; set; }
         #endregion
 
@@ -86,6 +89,48 @@ namespace UltraBusAPI.Datas
                 .HasOne(brt => brt.BusRoute)
                 .WithMany(br => br.BusRouteTrips)
                 .HasForeignKey(brt => brt.BusRouteId);
+
+            modelBuilder.Entity<BusRouteStation>()
+                .HasKey(brs => new { brs.BusRouteId, brs.BusStationId });
+            modelBuilder.Entity<BusRoute>()
+                .HasMany(br => br.BusRouteStations)
+                .WithOne(brs => brs.BusRoute)
+                .HasForeignKey(brs => brs.BusRouteId);
+            modelBuilder.Entity<BusRouteStation>()
+                .HasOne(brs => brs.BusStation)
+                .WithMany(bs => bs.BusRouteStations)
+                .HasForeignKey(brs => brs.BusStationId);
+
+            modelBuilder.Entity<BusRouteTripDate>()
+                .HasOne(brtd => brtd.BusRouteTrip)
+                .WithMany(brt => brt.BusRouteTripDates)
+                .HasForeignKey(brtd => brtd.BusRouteTripId);
+            modelBuilder.Entity<BusRouteTripDate>()
+                .HasOne(brtd => brtd.StartStation)
+                .WithMany(bs => bs.StartBusRouteTripDates)
+                .HasForeignKey(brtd => brtd.StartStationId);
+            modelBuilder.Entity<BusRouteTripDate>()
+                .HasOne(brtd => brtd.EndStation)
+                .WithMany(bs => bs.EndBusRouteTripDates)
+                .HasForeignKey(brtd => brtd.EndStationId);
+
+            modelBuilder.Entity<Ticket>()
+                .HasOne(t => t.BusRouteTripDate)
+                .WithMany(brtd => brtd.Tickets)
+                .HasForeignKey(t => t.BusRouteTripDateId);
+            modelBuilder.Entity<Ticket>()
+                .HasOne(t => t.User)
+                .WithMany(u => u.Tickets)
+                .HasForeignKey(t => t.UserId);
+            modelBuilder.Entity<Ticket>()
+                .HasOne(t => t.BusStationUp)
+                .WithMany(bs => bs.TicketsUp)
+                .HasForeignKey(t => t.BusStationUpId);
+            modelBuilder.Entity<Ticket>()
+                .HasOne(t => t.BusStationDown)
+                .WithMany(bs => bs.TicketsDown)
+                .HasForeignKey(t => t.BusStationDownId);
+
         }
     }
 }
