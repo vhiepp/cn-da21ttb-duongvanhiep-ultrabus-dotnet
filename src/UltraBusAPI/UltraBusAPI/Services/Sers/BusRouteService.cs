@@ -31,13 +31,16 @@ namespace UltraBusAPI.Services.Sers
 
         public async Task CreateBusRoute(CreateBusRouteModel busRouteModel)
         {
-
+            var startStation = await _busStationRepository.FindByIdAsync(busRouteModel.Stations[0]);
+            var endStation = await _busStationRepository.FindByIdAsync(busRouteModel.Stations[busRouteModel.Stations.Count - 1]);
             var busRoute = new BusRoute
             {
                 Price = busRouteModel.Price,
                 Stations = busRouteModel.Stations,
                 StartStationId = busRouteModel.Stations[0],
-                EndStationId = busRouteModel.Stations[busRouteModel.Stations.Count - 1]          
+                EndStationId = busRouteModel.Stations[busRouteModel.Stations.Count - 1],
+                ProvinceStartStationId = startStation != null ? startStation.ProvinceId : null,
+                ProvinceEndStationId = endStation != null ? endStation.ProvinceId : null
             };
             await _busRouteRepository.AddAsync(busRoute);
             for (int i = 0; i < busRouteModel.Stations.Count; i++)
@@ -431,10 +434,20 @@ namespace UltraBusAPI.Services.Sers
             var busRoute = await _busRouteRepository.FindByIdAsync(id);
             if (busRoute != null)
             {
+                var startStation = await _busStationRepository.FindByIdAsync(busRouteModel.Stations[0]);
+                var endStation = await _busStationRepository.FindByIdAsync(busRouteModel.Stations[busRouteModel.Stations.Count - 1]);
                 busRoute.Price = busRouteModel.Price;
                 busRoute.Stations = busRouteModel.Stations;
                 busRoute.StartStationId = busRouteModel.Stations[0];
                 busRoute.EndStationId = busRouteModel.Stations[busRouteModel.Stations.Count - 1];
+                if (startStation != null)
+                {
+                    busRoute.ProvinceStartStationId = startStation.ProvinceId;
+                }
+                if (endStation != null)
+                {
+                    busRoute.ProvinceEndStationId = endStation.ProvinceId;
+                }
                 await _busRouteRepository.UpdateAsync(busRoute);
                 await _busRouteStationRepository.DeleteBusRouteStationByBusRouteId(busRoute.Id);
                 

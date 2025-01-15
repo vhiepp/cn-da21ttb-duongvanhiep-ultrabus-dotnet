@@ -1,4 +1,5 @@
-﻿using UltraBusAPI.Datas;
+﻿using System.Text.Json;
+using UltraBusAPI.Datas;
 using UltraBusAPI.Models;
 using UltraBusAPI.Repositories;
 
@@ -7,10 +8,204 @@ namespace UltraBusAPI.Services.Sers
     public class BusRouteTripService : IBusRouteTripService
     {
         private readonly IBusRouteTripRepository _busRouteTripRepository;
+        private readonly IBusRouteRepository _busRouteRepository;
+        private readonly IBusStationRepository _busStationRepository;
+        private readonly IBusRepository _busRepository;
+        private readonly IProvinceRepository _provinceRepository;
+        private readonly IDistrictRepository _districtRepository;
+        private readonly IWardRepository _wardRepository;
 
-        public BusRouteTripService(IBusRouteTripRepository busRouteTripRepository)
+        public BusRouteTripService(
+            IBusRouteTripRepository busRouteTripRepository,
+            IBusRouteRepository busRouteRepository,
+            IBusStationRepository busStationRepository,
+            IBusRepository busRepository,
+            IProvinceRepository provinceRepository,
+            IDistrictRepository districtRepository,
+            IWardRepository wardRepository)
         {
             _busRouteTripRepository = busRouteTripRepository;
+            _busRouteRepository = busRouteRepository;
+            _busStationRepository = busStationRepository;
+            _busRepository = busRepository;
+            _provinceRepository = provinceRepository;
+            _districtRepository = districtRepository;
+            _wardRepository = wardRepository;
+        }
+
+        public async Task<BusRouteTripModel> FindById(int id)
+        {
+            var busRouteTrip = await _busRouteTripRepository.FindByIdAsync(id);
+            if (busRouteTrip == null)
+            {
+                return new BusRouteTripModel();
+            }
+            var bus = await _busRepository.FindByIdAsync(busRouteTrip.BusId);
+            BusModel? busModel = null;
+            if (bus != null) {
+                busModel = new BusModel
+                {
+                    Id = bus.Id,
+                    Name = bus.Name,
+                    BrandName = bus.BrandName,
+                    BusType = bus.BusType,
+                    Description = bus.Description,
+                    Floor = bus.Floor,
+                    SeatArrangement = JsonSerializer.Deserialize<List<List<List<string>>>>(bus.SeatArrangement != null ? bus.SeatArrangement : ""),
+                    SeatCount = bus.SeatCount
+                };
+            }
+            var busRoute = await _busRouteRepository.FindByIdAsync(busRouteTrip.BusRouteId);
+            BusRouteModel? busRouteModel = null;
+            if (busRoute != null) {
+                busRouteModel = new BusRouteModel
+                {
+                    Id = busRoute.Id
+                };
+                var startStation = await _busStationRepository.FindByIdAsync(busRoute.StartStationId);
+                var endStation = await _busStationRepository.FindByIdAsync(busRoute.EndStationId);
+                BusStationModel? startStationModel = null;
+                BusStationModel? endStationModel = null;
+                if (startStation != null)
+                {
+                    var province = await _provinceRepository.FindByIdAsync(startStation.ProvinceId);
+                    var district = await _districtRepository.FindByIdAsync(startStation.DistrictId);
+                    var ward = await _wardRepository.FindByIdAsync(startStation.WardId);
+                    startStationModel = new BusStationModel
+                    {
+                        Id = startStation.Id,
+                        Name = startStation.Name,
+                        ProvinceId = startStation.ProvinceId,
+                        Address = startStation.Address,
+                        Province = new ProvinceModel
+                        {
+                            Id = province.Id,
+                            Name = province.Name,
+                            NameEnglish = province.NameEnglish,
+                            FullName = province.FullName,
+                            FullNameEnglish = province.FullNameEnglish
+                        },
+                        District = new DistrictModel
+                        {
+                            Id = district.Id,
+                            Name = district.Name,
+                            NameEnglish = district.NameEnglish,
+                            FullName = district.FullName,
+                            FullNameEnglish = district.FullNameEnglish
+                        },
+                        Ward = new WardModel
+                        {
+                            Id = ward.Id,
+                            Name = ward.Name,
+                            NameEnglish = ward.NameEnglish,
+                            FullName = ward.FullName,
+                            FullNameEnglish = ward.FullNameEnglish
+                        }
+                    };
+                }
+                if (endStation != null)
+                {
+                    var province = await _provinceRepository.FindByIdAsync(endStation.ProvinceId);
+                    var district = await _districtRepository.FindByIdAsync(endStation.DistrictId);
+                    var ward = await _wardRepository.FindByIdAsync(endStation.WardId);
+                    endStationModel = new BusStationModel
+                    {
+                        Id = endStation.Id,
+                        Name = endStation.Name,
+                        ProvinceId = endStation.ProvinceId,
+                        Address = endStation.Address,
+                        Province = new ProvinceModel
+                        {
+                            Id = province.Id,
+                            Name = province.Name,
+                            NameEnglish = province.NameEnglish,
+                            FullName = province.FullName,
+                            FullNameEnglish = province.FullNameEnglish
+                        },
+                        District = new DistrictModel
+                        {
+                            Id = district.Id,
+                            Name = district.Name,
+                            NameEnglish = district.NameEnglish,
+                            FullName = district.FullName,
+                            FullNameEnglish = district.FullNameEnglish
+                        },
+                        Ward = new WardModel
+                        {
+                            Id = ward.Id,
+                            Name = ward.Name,
+                            NameEnglish = ward.NameEnglish,
+                            FullName = ward.FullName,
+                            FullNameEnglish = ward.FullNameEnglish
+                        }
+                    };
+                }
+                List<BusStationModel>? stations = null;
+                if (busRoute.Stations != null)
+                {
+                    foreach (var station in busRoute.Stations)
+                    {
+                        var stationTemp = await _busStationRepository.FindByIdAsync(station);
+                        if (stationTemp != null)
+                        {
+                            var province = await _provinceRepository.FindByIdAsync(stationTemp.ProvinceId);
+                            var district = await _districtRepository.FindByIdAsync(stationTemp.DistrictId);
+                            var ward = await _wardRepository.FindByIdAsync(stationTemp.WardId);
+                            if (stations == null)
+                            {
+                                stations = new List<BusStationModel>();
+                            }
+                            stations.Add(new BusStationModel
+                            {
+                                Id = stationTemp.Id,
+                                Name = stationTemp.Name,
+                                ProvinceId = stationTemp.ProvinceId,
+                                Address = stationTemp.Address,
+                                Province = new ProvinceModel
+                                {
+                                    Id = province.Id,
+                                    Name = province.Name,
+                                    NameEnglish = province.NameEnglish,
+                                    FullName = province.FullName,
+                                    FullNameEnglish = province.FullNameEnglish
+                                },
+                                District = new DistrictModel
+                                {
+                                    Id = district.Id,
+                                    Name = district.Name,
+                                    NameEnglish = district.NameEnglish,
+                                    FullName = district.FullName,
+                                    FullNameEnglish = district.FullNameEnglish
+                                },
+                                Ward = new WardModel
+                                {
+                                    Id = ward.Id,
+                                    Name = ward.Name,
+                                    NameEnglish = ward.NameEnglish,
+                                    FullName = ward.FullName,
+                                    FullNameEnglish = ward.FullNameEnglish
+                                }
+                            });
+                        }
+                    }
+                }
+                busRouteModel.StartStation = startStationModel;
+                busRouteModel.EndStation = endStationModel;
+                busRouteModel.Stations = stations;
+            }
+            return new BusRouteTripModel
+            {
+                Id = busRouteTrip.Id,
+                BusId = busRouteTrip.BusId,
+                BusRouteId = busRouteTrip.BusRouteId,
+                DepartureTime = busRouteTrip.DepartureTime,
+                ArrivalTime = busRouteTrip.ArrivalTime,
+                Price = busRouteTrip.Price,
+                TotalHours = busRouteTrip.TotalHours,
+                TotalMinutes = busRouteTrip.TotalMinutes,
+                Bus = busModel,
+                BusRoute = busRouteModel
+            };
         }
 
         public async Task<List<BusRouteTripModel>> GetByBusRouteIdAndBusId(int busRouteId, int busId)
@@ -31,6 +226,85 @@ namespace UltraBusAPI.Services.Sers
                 TotalHours = x.TotalHours,
                 TotalMinutes = x.TotalMinutes
             }).ToList();
+        }
+
+        public async Task<List<BusRouteTripModel>> SearchBusRouteTrips(SearchBusRouteTripsModel searchBusRouteTrips)
+        {
+            var busRoutes = await _busRouteRepository.GetByProvinceStartEndStationId(searchBusRouteTrips.StartProvinceId, searchBusRouteTrips.EndProvinceId);
+            if (busRoutes == null)
+            {
+                return new List<BusRouteTripModel>();
+            }
+            var busRouteTrips = new List<BusRouteTripModel>();
+            foreach (var busRoute in busRoutes)
+            {
+                var startStation = await _busStationRepository.FindByIdAsync(busRoute.StartStationId);
+                var endStation = await _busStationRepository.FindByIdAsync(busRoute.EndStationId);
+                BusStationModel? startStationModel = null;
+                BusStationModel? endStationModel = null;
+                if (startStation != null)
+                {
+                    startStationModel = new BusStationModel
+                    {
+                        Id = startStation.Id,
+                        Name = startStation.Name,
+                        ProvinceId = startStation.ProvinceId
+                    };
+                }
+                if (endStation != null)
+                {
+                    endStationModel = new BusStationModel
+                    {
+                        Id = endStation.Id,
+                        Name = endStation.Name,
+                        ProvinceId = endStation.ProvinceId
+                    };
+                }
+                var busRouteTripsTemp = await _busRouteTripRepository.GetByBusRouteId(busRoute.Id);
+                if (busRouteTripsTemp == null)
+                {
+                    continue;
+                }
+                foreach (var busRouteTrip in busRouteTripsTemp)
+                {
+                    // DepartureTime phải lớn hơn giờ hiện tại 1 tiếng
+                    var nowTime = DateTime.Now.AddHours(1);
+                    if (nowTime.Date < searchBusRouteTrips.Date || busRouteTrip.DepartureTime.Hour > nowTime.Hour)
+                    {
+                        var bus = await _busRepository.FindByIdAsync(busRouteTrip.BusId);
+                        BusModel? busModel = null;
+                        if (bus != null)
+                        {
+                            busModel = new BusModel
+                            {
+                                Id = bus.Id,
+                                Name = bus.Name,
+                                BrandName = bus.BrandName,
+                                BusType = bus.BusType,
+                                Description = bus.Description,
+                                Floor = bus.Floor,
+                                //SeatArrangement = JsonSerializer.Deserialize<List<List<List<string>>>>(bus.SeatArrangement != null ? bus.SeatArrangement : ""),
+                                SeatCount = bus.SeatCount
+                            };
+                        }
+                        busRouteTrips.Add(new BusRouteTripModel
+                        {
+                            Id = busRouteTrip.Id,
+                            BusId = busRouteTrip.BusId,
+                            BusRouteId = busRouteTrip.BusRouteId,
+                            DepartureTime = busRouteTrip.DepartureTime,
+                            ArrivalTime = busRouteTrip.ArrivalTime,
+                            Price = busRouteTrip.Price,
+                            TotalHours = busRouteTrip.TotalHours,
+                            TotalMinutes = busRouteTrip.TotalMinutes,
+                            Bus = busModel,
+                            StartStation = startStationModel,
+                            EndStation = endStationModel
+                        });
+                    } 
+                }
+            }
+            return busRouteTrips;
         }
 
         public async Task UpdateBusRouteTrip(UpdateBusRouteTripModel busRouteTripModel)

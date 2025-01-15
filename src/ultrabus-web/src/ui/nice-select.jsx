@@ -219,9 +219,10 @@ const NiceSelect = ({
               className="col-12"
               style={{ display: "flex", flexWrap: "wrap", gap: 5 }}
             >
-              {searchProvinceHistory.map((item) => (
+              {searchProvinceHistory.map((item, index) => (
                 <button
                   type="button"
+                  key={`button-${index}`}
                   className="btn btn-light btn-sm rounded-3"
                   onClick={() => currentHandler(item)}
                 >

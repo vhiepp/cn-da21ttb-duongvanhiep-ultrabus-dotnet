@@ -40,5 +40,16 @@
         public double? Price { get; set; }
         public DateTime DepartureTime { get; set; }
         public DateTime ArrivalTime { get; set; }
+        public BusModel? Bus { get; set; } = null;
+        public BusRouteModel? BusRoute { get; set; } = null;
+        public BusStationModel? StartStation { get; set; } = null;
+        public BusStationModel? EndStation { get; set; } = null;
+    }
+
+    public class SearchBusRouteTripsModel
+    {
+        public required int StartProvinceId { get; set; }
+        public required int EndProvinceId { get; set; }
+        public DateTime? Date { get; set; } = null;
     }
 }

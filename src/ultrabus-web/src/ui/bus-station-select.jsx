@@ -71,7 +71,7 @@ const BusStationSelect = ({
           onClick={(e) => e.stopPropagation()}
           onKeyPress={(e) => e.stopPropagation()}
           style={{
-            maxHeight: 280,
+            maxHeight: 230,
             overflowY: "auto",
             scrollbarWidth: "thin" /* Thanh cuộn nhỏ (Firefox) */,
             scrollbarColor:
@@ -95,7 +95,7 @@ const BusStationSelect = ({
                 >
                   {item.value === current?.value && (
                     <i
-                      class="fa fa-check-circle"
+                      className="fa fa-check-circle"
                       style={{ color: "var(--tp-theme-primary)" }}
                     ></i>
                   )}
@@ -130,7 +130,7 @@ const BusStationSelect = ({
                   </li>
                 </div>
                 <div>
-                  <i class="fas fa-map-marked-alt text-success fs-5"></i>
+                  <i className="fas fa-map-marked-alt text-success fs-5"></i>
                 </div>
               </div>
             );

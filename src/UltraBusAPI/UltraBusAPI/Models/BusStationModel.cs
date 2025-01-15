@@ -2,7 +2,7 @@
 {
     public class BusStationModel
     {
-        public int Id { get; set; }
+        public int? Id { get; set; } = null;
         public string? Name { get; set; } = null;
         public int? ProvinceId { get; set; } = null;
         public int? DistrictId { get; set; } = null;

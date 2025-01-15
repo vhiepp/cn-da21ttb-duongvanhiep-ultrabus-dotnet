@@ -6,5 +6,6 @@ namespace UltraBusAPI.Repositories
     {
         public Task<List<BusRouteTrip>> GetByBusRouteIdAndBusId(int busRouteId, int busId);
         public Task<BusRouteTrip?> FindByBusRouteIdBusIdAndTime(int busRouteId, int busId, DateTime time);
+        public Task<List<BusRouteTrip>> GetByBusRouteId(int busRouteId);
     }
 }

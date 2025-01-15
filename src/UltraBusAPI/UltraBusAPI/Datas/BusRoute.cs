@@ -14,6 +14,10 @@ namespace UltraBusAPI.Datas
         [AllowNull]
         public int? EndStationId { get; set; } = null;
 
+        public int? ProvinceStartStationId { get; set; } = null;
+
+        public int? ProvinceEndStationId { get; set; } = null;
+
         [AllowNull]
         public List<int>? Stations { get; set; } = [];
 

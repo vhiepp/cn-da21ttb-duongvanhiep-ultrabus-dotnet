@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 import { set } from "react-hook-form";
 import { date } from "yup";
 
-const BookTicketForm = () => {
+const BookTicketForm = ({ onSearch }) => {
   const [provinces, setProvinces] = useState([]);
   const router = useRouter();
   const query = router.query;
@@ -31,7 +31,41 @@ const BookTicketForm = () => {
   });
 
   useEffect(() => {
-    if (query) {
+    if (query && provinces.length > 0) {
+      let data = {
+        from: query.from,
+        to: query.to,
+        date: !query.date
+          ? `${nowDate.getFullYear()}-${
+              nowDate.getMonth() + 1
+            }-${nowDate.getDate()}`
+          : query.date,
+        quantity: isNaN(parseInt(query.quantity))
+          ? 1
+          : parseInt(query.quantity),
+        "round-trip":
+          !isNaN(parseInt(query["round-trip"])) &&
+          parseInt(query["round-trip"]) == 1
+            ? 1
+            : 0,
+      };
+      if (onSearch && query.from && query.to) {
+        let date = new Date(data.date);
+        onSearch({
+          ...data,
+          fromProvince:
+            provinces.length > 0 && query.from
+              ? provinces.find((item) => item.value == query.from).text
+              : "",
+          toProvince:
+            provinces.length > 0 && query.to
+              ? provinces.find((item) => item.value == query.to).text
+              : "",
+          fullDate: `${date.getDate()}/${
+            date.getMonth() + 1
+          }/${date.getFullYear()}`,
+        });
+      }
       setDataSearch((prev) => ({
         ...prev,
         from: query.from,
@@ -51,7 +85,7 @@ const BookTicketForm = () => {
             : 0,
       }));
     }
-  }, [query]);
+  }, [query, provinces]);
 
   useEffect(() => {
     if (provinces.length > 0) return;
@@ -173,6 +207,18 @@ const BookTicketForm = () => {
       }));
       return;
     }
+    if (onSearch) {
+      let date = new Date(dataSearch.date);
+      onSearch({
+        ...dataSearch,
+        fromProvince: provinces.find((item) => item.value == dataSearch.from)
+          ?.text,
+        toProvince: provinces.find((item) => item.value == dataSearch.to)?.text,
+        fullDate: `${date.getDate()}/${
+          date.getMonth() + 1
+        }/${date.getFullYear()}`,
+      });
+    }
     router.push({
       pathname: "/book-ticket",
       query: dataSearch,
@@ -208,7 +254,7 @@ const BookTicketForm = () => {
                   Một chiều
                 </label>
               </div>
-              <div className="form-check form-check-inline">
+              {/* <div className="form-check form-check-inline">
                 <input
                   className="form-check-input"
                   style={{}}
@@ -225,7 +271,7 @@ const BookTicketForm = () => {
                 >
                   Khứ hồi
                 </label>
-              </div>
+              </div> */}
             </div>
           </div>
           <div

@@ -43,5 +43,37 @@ namespace UltraBusAPI.Controllers
                 Success = true
             });
         }
+
+        [HttpGet("search")]
+        public async Task<IActionResult> ActionResult([FromQuery] SearchBusRouteTripsModel searchBusRouteTrips)
+        {
+            var busRouteModels = await _busRouteTripService.SearchBusRouteTrips(searchBusRouteTrips);
+            return Ok(new ApiResponse()
+            {
+                Data = busRouteModels,
+                Message = "Search bus route trips successfully",
+                Success = true
+            });
+        }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> FindById(int id)
+        {
+            var busRouteTripModel = await _busRouteTripService.FindById(id);
+            if (busRouteTripModel == null)
+            {
+                return NotFound(new ApiResponse()
+                {
+                    Message = "Bus route trip not found",
+                    Success = false
+                });
+            }
+            return Ok(new ApiResponse()
+            {
+                Data = busRouteTripModel,
+                Message = "Get bus route trip successfully",
+                Success = true
+            });
+        }
     }
 }

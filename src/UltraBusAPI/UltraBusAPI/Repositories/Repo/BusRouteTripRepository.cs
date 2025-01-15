@@ -21,6 +21,11 @@ namespace UltraBusAPI.Repositories.Repo
             //return await _dbSet.((x) => x.BusRouteId == busRouteId && x.BusId == busId && x.DepartureTime.Hour == time.Hour && x.DepartureTime.Minute == time.Minute);
         }
 
+        public async Task<List<BusRouteTrip>> GetByBusRouteId(int busRouteId)
+        {
+            return await _dbSet.Where(x => x.BusRouteId == busRouteId).ToListAsync();
+        }
+
         public async Task<List<BusRouteTrip>> GetByBusRouteIdAndBusId(int busRouteId, int busId)
         {
             return await _dbSet.Where(x => x.BusRouteId == busRouteId && x.BusId == busId).ToListAsync();
