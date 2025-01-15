@@ -40,5 +40,11 @@ namespace UltraBusAPI.Datas
         public bool IsPaid { get; set; } = false;
 
         public int? ReceivedAmount { get; set; }
+
+        public DateTime ExpriedTime { get; set; }
+
+        public string PaymentMethod { get; set; } = "CK";
+
+        public int? CollectUserId { get; set; }
     }
 }

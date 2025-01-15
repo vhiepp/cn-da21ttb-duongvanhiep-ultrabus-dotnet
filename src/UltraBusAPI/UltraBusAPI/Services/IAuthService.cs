@@ -16,5 +16,7 @@ namespace UltraBusAPI.Services
         public string HashPassword(string password);
 
         public bool VerifyPassword(string password, string passwordHash);
+
+        public Task<object> LoginWithPhoneNumber(SignInWithPhoneNumberModel signInWithPhone);
     }
 }

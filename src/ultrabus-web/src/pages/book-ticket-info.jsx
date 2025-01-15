@@ -1,5 +1,6 @@
 import SEO from "@/common/seo";
 import { apiClient } from "@/configs/api-client";
+import { fetcher, setToken } from "@/functions";
 import Wrapper from "@/layout/wrapper";
 import BusStationSelect from "@/ui/bus-station-select";
 import DateSelect from "@/ui/date-select";
@@ -7,6 +8,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { set } from "react-hook-form";
+import useSWR from "swr";
 
 // import seatIcon from "@/public/app-assets/img/icons/icons8-seat-50.png";
 // import shape_2 from "../../../../public/assets/img/cta/cta-shape-5-2.png";
@@ -31,6 +33,19 @@ const index = () => {
   const [busRouteTrip, setBusRouteTrip] = useState(null);
   const [chooseSeat, setChooseSeat] = useState([]);
 
+  const { data, error } = useSWR("/auth/profile", fetcher);
+
+  useEffect(() => {
+    if (!!data) {
+      setCustomerInfo((prev) => ({
+        ...prev,
+        fullName: data.fullName.trim(),
+        phoneNumber: data.phoneNumber,
+        email: data.email,
+      }));
+    }
+  }, [data]);
+
   const [customerInfo, setCustomerInfo] = useState({
     fullName: "",
     phoneNumber: "",
@@ -38,6 +53,11 @@ const index = () => {
   });
 
   const [otpCode, setOtpCode] = useState("");
+  const [otpData, setOtpData] = useState(null);
+  const [isSendingOtp, setIsSendingOtp] = useState(false);
+  const [isVerifyingOtp, setIsVerifyingOtp] = useState(false);
+
+  const [isAcceptTerms, setIsAcceptTerms] = useState(true);
 
   const { query } = router;
 
@@ -47,7 +67,7 @@ const index = () => {
     if (!query.tripId) return;
     const res = await apiClient.get(`/bus-route-trips/${query.tripId}`);
     const data = res.data.data;
-    console.log(data);
+    // console.log(data);
     setBusRouteTrip(data);
   };
 
@@ -83,10 +103,88 @@ const index = () => {
     }));
   };
 
+  const handleVerifyOTP = async (value) => {
+    if (!value) return;
+    const res = await apiClient.post("/auth/login-with-phone-number", {
+      phoneNumber: customerInfo.phoneNumber,
+      code: value,
+      key: otpData.key,
+      firstName: customerInfo.fullName,
+    });
+    const data = res.data.data;
+    if (data && data.accessToken) {
+      setToken(data.accessToken);
+      setIsVerifyingOtp(true);
+    }
+    // console.log(otpData);
+    console.log(data);
+  };
+
   const handleChangeOTPCode = (e) => {
     let value = e.target.value;
     value = value.replace(/\D/g, "");
     setOtpCode(value);
+    if (value.length === 4) {
+      handleVerifyOTP(value);
+    }
+  };
+
+  const handleSendOTP = async (e) => {
+    e.preventDefault();
+    if (!customerInfo.phoneNumber || customerInfo.phoneNumber.length < 10) {
+      return;
+    }
+    const res = await apiClient.post("/otps/send-otp-phone-number", {
+      phoneNumber: customerInfo.phoneNumber,
+    });
+    const data = res.data.data;
+    // console.log(data);
+    setOtpData(data);
+    setIsSendingOtp(true);
+  };
+
+  const checkOk = () => {
+    return (
+      data &&
+      chooseSeat.length > 0 &&
+      customerInfo.fullName &&
+      customerInfo.phoneNumber &&
+      isAcceptTerms
+    );
+  };
+
+  const handlePayment = async (ticketId) => {
+    const res = await apiClient.post("/payment/ticket", {
+      ticketId: ticketId,
+      cancelUrl: "http://localhost:3001",
+      returnUrl: "http://localhost:3001",
+    });
+    const data = res.data.data;
+    console.log(data);
+    if (data) {
+      window.location.href = data.checkoutUrl;
+    }
+  };
+
+  const handleBookTicket = async (e) => {
+    e.preventDefault();
+    if (!checkOk()) return;
+    if (!query.tripId) return;
+    if (!query.date) return;
+    let date = new Date(query.date);
+    date.setHours(7, 0, 0, 0);
+    const res = await apiClient.post("/tickets", {
+      busRouteTripId: query.tripId,
+      date: date.toISOString(),
+      customerName: customerInfo.fullName,
+      phoneNumber: customerInfo.phoneNumber,
+      email: customerInfo.email,
+      seatNumbers: chooseSeat,
+      busStationUpId: busRouteTrip.busRoute.startStation.id,
+      busStationDownId: busRouteTrip.busRoute.endStation.id,
+    });
+    const data = res.data.data;
+    handlePayment(data.id);
   };
 
   return (
@@ -223,7 +321,7 @@ const index = () => {
                                       </span>
                                     </div>
                                   </div>
-                                  <div className="col-12">
+                                  <div className="col-12 was-validated">
                                     <div className="postbox__comment-input mb-30">
                                       <input
                                         type="text"
@@ -237,24 +335,79 @@ const index = () => {
                                         Số điện thoại{" "}
                                         <span className="text-danger">*</span>
                                       </span>
+                                      <div
+                                        class="valid-feedback ps-2"
+                                        style={
+                                          isVerifyingOtp
+                                            ? { display: "block" }
+                                            : { display: "none" }
+                                        }
+                                      >
+                                        Xác thực số điện thoại thành công
+                                      </div>
                                     </div>
                                   </div>
-                                  <div className="col-12">
-                                    <div className="postbox__comment-input mb-30">
-                                      <input
-                                        type="text"
-                                        className="inputText text-center"
-                                        required
-                                        value={otpCode}
-                                        onChange={handleChangeOTPCode}
-                                        maxlength="4"
-                                      />
-                                      <span className="floating-label">
-                                        Mã OTP{" "}
-                                        <span className="text-danger">*</span>
-                                      </span>
+                                  {!data && isSendingOtp && !isVerifyingOtp && (
+                                    <div className="col-12 was-validated">
+                                      {/* <small>
+                                        <i>Gửi mã OTP thành công</i>
+                                      </small> */}
+                                      <div className="postbox__comment-input mb-30">
+                                        <input
+                                          type="text"
+                                          className="inputText text-center"
+                                          required
+                                          value={otpCode}
+                                          onChange={handleChangeOTPCode}
+                                          maxlength="4"
+                                        />
+                                        <span className="floating-label">
+                                          Nhập mã OTP{" "}
+                                          <span className="text-danger">*</span>
+                                        </span>
+                                        <div
+                                          class="invalid-feedback ps-2"
+                                          style={
+                                            !isVerifyingOtp &&
+                                            otpCode.length === 4
+                                              ? { display: "block" }
+                                              : { display: "none" }
+                                          }
+                                        >
+                                          Mã OTP không chính xác
+                                        </div>
+                                      </div>
                                     </div>
-                                  </div>
+                                  )}
+                                  {!isSendingOtp &&
+                                    !data &&
+                                    customerInfo.phoneNumber.length >= 10 && (
+                                      <div className="col-12">
+                                        <Link
+                                          className={`tp-btn-blue-sm inner-color alt-color-black tp-btn-hover d-inline-block border`}
+                                          style={{
+                                            backgroundColor: "#fff",
+                                            height: "34px",
+                                            lineHeight: "34px",
+                                            fontSize: "14px",
+                                            padding: "0 20px",
+                                          }}
+                                          href="/book-ticket"
+                                          onClick={handleSendOTP}
+                                        >
+                                          <span className="text-secondary">
+                                            Gửi mã xác thực
+                                          </span>
+                                          <b
+                                            style={{
+                                              transition: "all 0.5s ease",
+                                              backgroundColor:
+                                                "rgba(255, 58, 36, 0.2)",
+                                            }}
+                                          ></b>
+                                        </Link>
+                                      </div>
+                                    )}
                                   <div className="col-12">
                                     <div className="form-check">
                                       <input
@@ -262,6 +415,10 @@ const index = () => {
                                         type="checkbox"
                                         value=""
                                         id="flexCheckDefault"
+                                        checked={isAcceptTerms}
+                                        onChange={(e) =>
+                                          setIsAcceptTerms(e.target.checked)
+                                        }
                                       />
                                       <label
                                         className="form-check-label"
@@ -604,8 +761,12 @@ const index = () => {
                                   lineHeight: "34px",
                                   fontSize: "14px",
                                   padding: "0 20px",
+                                  ...(!checkOk()
+                                    ? { cursor: "not-allowed" }
+                                    : {}),
                                 }}
                                 href="/book-ticket-info"
+                                onClick={handleBookTicket}
                               >
                                 <span>Thanh toán</span>
                                 <b style={{ transition: "all 0.5s ease" }}></b>

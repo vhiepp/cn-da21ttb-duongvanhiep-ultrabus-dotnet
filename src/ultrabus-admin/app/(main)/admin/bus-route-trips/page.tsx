@@ -595,7 +595,7 @@ const UserAdminCreate = () => {
                         <div className="field col-6 md:col-3">
                             <label htmlFor="seat" className="text-lg">
                                 <span className="p-error" style={{ opacity: 0 }}>
-                                    '
+                                    {`o`}
                                 </span>
                             </label>
                             <div className="p-inputgroup flex-1">

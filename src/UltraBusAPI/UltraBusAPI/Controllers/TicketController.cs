@@ -1,5 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using UltraBusAPI.Models;
+using UltraBusAPI.Services;
 
 namespace UltraBusAPI.Controllers
 {
@@ -7,7 +10,11 @@ namespace UltraBusAPI.Controllers
     [ApiController]
     public class TicketController : ControllerBase
     {
-        public TicketController() { }
+        private readonly ITicketService _ticketService;
+        public TicketController(ITicketService ticketService)
+        {
+            _ticketService = ticketService;
+        }
 
         [HttpGet]
         public IActionResult GetAll()
@@ -23,9 +30,24 @@ namespace UltraBusAPI.Controllers
 
         // Đặt vé xe    
         [HttpPost]
-        public IActionResult Create()
+        [Authorize]
+        public async Task<IActionResult> Create([FromBody] CreateTicketModel createTicket)
         {
-            return Ok();
+            var userIdClaim = User.FindFirst("Id");
+            if (userIdClaim == null)
+            {
+                return Unauthorized();
+            }
+            int userId = int.Parse(userIdClaim.Value);
+            var result = await _ticketService.CreateTicketAsync(createTicket, userId);
+            return Ok(
+                new ApiResponse()
+                {
+                    Message = "Create ticket successfully",
+                    Success = true,
+                    Data = result
+                }
+            );
         }
 
         [HttpPut("{id}")]

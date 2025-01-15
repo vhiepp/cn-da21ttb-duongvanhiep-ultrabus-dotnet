@@ -50,9 +50,28 @@ namespace UltraBusAPI.Controllers
         }
 
         [HttpPost("login-with-phone-number")]
-        public async Task<IActionResult> LoginWithPhoneNumber()
+        public async Task<IActionResult> LoginWithPhoneNumber(SignInWithPhoneNumberModel signInWithPhone)
         {
-            return Ok();
+            var result = await _authService.LoginWithPhoneNumber(signInWithPhone);
+            if (result is Dictionary<string, string>)
+            {
+                return Ok(
+                    new ApiResponse()
+                    {
+                        Message = "Login failed",
+                        Errors = result,
+                        Success = false
+                    }
+                );
+            }
+            return Ok(
+                new ApiResponse()
+                {
+                    Message = "Login successfully",
+                    Success = true,
+                    Data = result
+                }
+            );
         }
 
         [HttpPost("register")]

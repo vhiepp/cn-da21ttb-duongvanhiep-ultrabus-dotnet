@@ -14,12 +14,14 @@ namespace UltraBusAPI.Services.Sers
         private readonly IConfiguration _configuration;
         private readonly IUserRepository _userRepository;
         private readonly IRoleRepository _roleRepository;
+        private readonly IOTPService _otpService;
 
-        public AuthService(IConfiguration configuration, IUserRepository userRepository, IRoleRepository roleRepository)
+        public AuthService(IConfiguration configuration, IUserRepository userRepository, IRoleRepository roleRepository, IOTPService otpService)
         {
             _configuration = configuration;
             _userRepository = userRepository;
             _roleRepository = roleRepository;
+            _otpService = otpService;
         }
 
         public async Task<object> RegisterCustomer(SignUpModel signUp)
@@ -188,6 +190,43 @@ namespace UltraBusAPI.Services.Sers
                 Role = roleModel
             };
             return profile;
+        }
+
+        public async Task<object> LoginWithPhoneNumber(SignInWithPhoneNumberModel signInWithPhone)
+        {
+            var user = await _userRepository.FindByPhone(signInWithPhone.PhoneNumber);
+            if (user == null)
+            {
+                string? firstName = signInWithPhone.FirstName;
+                if (firstName == null)
+                {
+                    firstName = signInWithPhone.PhoneNumber;
+                }
+                user = new User
+                {
+                    Password = HashPassword(signInWithPhone.Key),
+                    PhoneNumber = signInWithPhone.PhoneNumber,
+                    UserName = signInWithPhone.PhoneNumber + "",
+                    FirstName = firstName,
+                    LastName = "",
+                    IsCustomer = true,
+                    IsSuperAdmin = false,
+                    RoleId = null,
+                };
+                await _userRepository.AddAsync(user);
+            }
+            if (user.FirstName == "" && signInWithPhone.FirstName != "")
+            {
+                user.FirstName = signInWithPhone.FirstName;
+                await _userRepository.UpdateAsync(user);
+            }
+            var otp = await _otpService.VerifyOTPAsync(signInWithPhone.PhoneNumber, signInWithPhone.Code, signInWithPhone.Key);
+            if (!otp)
+            {
+                return await Task.FromResult(new Dictionary<string, string> { { "OTP", "OTP is incorrect" } });
+            }
+            var profile = await GetProfile(user);
+            return await Task.FromResult(new { AccessToken = GenerateJwtToken(user), Profile = profile });
         }
     }
 }

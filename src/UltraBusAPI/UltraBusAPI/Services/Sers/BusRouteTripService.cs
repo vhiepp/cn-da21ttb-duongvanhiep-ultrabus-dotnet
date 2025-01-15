@@ -10,10 +10,12 @@ namespace UltraBusAPI.Services.Sers
         private readonly IBusRouteTripRepository _busRouteTripRepository;
         private readonly IBusRouteRepository _busRouteRepository;
         private readonly IBusStationRepository _busStationRepository;
+        private readonly IBusRouteTripDateRepository _busRouteTripDateRepository;
         private readonly IBusRepository _busRepository;
         private readonly IProvinceRepository _provinceRepository;
         private readonly IDistrictRepository _districtRepository;
         private readonly IWardRepository _wardRepository;
+        private readonly ITicketRepository _ticketRepository;
 
         public BusRouteTripService(
             IBusRouteTripRepository busRouteTripRepository,
@@ -22,7 +24,9 @@ namespace UltraBusAPI.Services.Sers
             IBusRepository busRepository,
             IProvinceRepository provinceRepository,
             IDistrictRepository districtRepository,
-            IWardRepository wardRepository)
+            IWardRepository wardRepository,
+            IBusRouteTripDateRepository busRouteTripDateRepository,
+            ITicketRepository ticketRepository)
         {
             _busRouteTripRepository = busRouteTripRepository;
             _busRouteRepository = busRouteRepository;
@@ -31,6 +35,8 @@ namespace UltraBusAPI.Services.Sers
             _provinceRepository = provinceRepository;
             _districtRepository = districtRepository;
             _wardRepository = wardRepository;
+            _busRouteTripDateRepository = busRouteTripDateRepository;
+            _ticketRepository = ticketRepository;
         }
 
         public async Task<BusRouteTripModel> FindById(int id)
@@ -267,6 +273,22 @@ namespace UltraBusAPI.Services.Sers
                 }
                 foreach (var busRouteTrip in busRouteTripsTemp)
                 {
+                    var busRouteTripDate = await _busRouteTripDateRepository.FindByBusRouteTripDateAsync(busRouteTrip.Id, (DateTime)searchBusRouteTrips.Date);
+                    int totalSeatEmptys = 0;
+                    if (busRouteTripDate != null)
+                    {
+                        var tickets = await _ticketRepository.GetByBusRouteTripDateId(busRouteTripDate.Id);
+                        if (tickets != null)
+                        {
+                            foreach (var tk in tickets)
+                            {
+                                if (tk.IsPaid || tk.ExpriedTime > DateTime.Now)
+                                {
+                                    totalSeatEmptys += (int)tk.ToTalSeats;
+                                }
+                            }
+                        }
+                    }
                     // DepartureTime phải lớn hơn giờ hiện tại 1 tiếng
                     var nowTime = DateTime.Now.AddHours(1);
                     if (nowTime.Date < searchBusRouteTrips.Date || busRouteTrip.DepartureTime.Hour > nowTime.Hour)
@@ -299,7 +321,8 @@ namespace UltraBusAPI.Services.Sers
                             TotalMinutes = busRouteTrip.TotalMinutes,
                             Bus = busModel,
                             StartStation = startStationModel,
-                            EndStation = endStationModel
+                            EndStation = endStationModel,
+                            TotalSeatEmptys = (int)busModel.SeatCount - totalSeatEmptys
                         });
                     } 
                 }

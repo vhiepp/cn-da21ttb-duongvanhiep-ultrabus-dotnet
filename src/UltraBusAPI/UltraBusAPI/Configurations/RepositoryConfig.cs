@@ -21,6 +21,8 @@ namespace UltraBusAPI.Configurations
             services.AddScoped<IBusStationRepository, BusStationRepository>();
             services.AddScoped<IBusRouteStationRepository, BusRouteStationRepository>();
             services.AddScoped<IBusRouteTripRepository, BusRouteTripRepository>();
+            services.AddScoped<IBusRouteTripDateRepository, BusRouteTripDateRepository>();
+            services.AddScoped<ITicketRepository, TicketRepository>();
             services.AddScoped<IOTPRepository, OTPRepository>();
         }
     }

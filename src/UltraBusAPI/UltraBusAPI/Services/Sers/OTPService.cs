@@ -29,7 +29,7 @@ namespace UltraBusAPI.Services.Sers
             return new OTPModel
             {
                 PhoneNumber = otp.PhoneNumber,
-                Code = otp.Code,
+                //Code = otp.Code,
                 Key = otp.Key,
                 ExpiredAt = otp.ExpiredAt
             };

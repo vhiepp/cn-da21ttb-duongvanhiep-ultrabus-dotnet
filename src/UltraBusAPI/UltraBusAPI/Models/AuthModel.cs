@@ -49,6 +49,7 @@ namespace UltraBusAPI.Models
 
     public class SignInWithPhoneNumberModel
     {
+        public string? FirstName { get; set; } = string.Empty;
         public required string PhoneNumber { get; set; }
         public required string Code { get; set; }
         public required string Key { get; set; }

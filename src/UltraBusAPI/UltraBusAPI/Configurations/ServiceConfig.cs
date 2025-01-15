@@ -16,6 +16,8 @@ namespace UltraBusAPI.Configurations
             services.AddScoped<IBusService, BusService>();
             services.AddScoped<IBusRouteService, BusRouteService>();
             services.AddScoped<IBusRouteTripService, BusRouteTripService>();
+            services.AddScoped<ITicketService, TicketService>();
+            services.AddScoped<IPaymentService, PaymentService>();
         }
     }
 }

@@ -1,4 +1,4 @@
-"use client";
+'use client';
 import { Metadata } from 'next';
 import Layout from '../../layout/layout';
 import { useRouter } from 'next/navigation';
@@ -12,7 +12,7 @@ interface AppLayoutProps {
 }
 
 export const metadata: Metadata = {
-    title: 'Quản lý điện nước',
+    title: 'UltraBus Admin',
     description: 'The ultimate collection of design-agnostic, flexible and accessible React UI Components.',
     robots: { index: false, follow: false },
     viewport: { initialScale: 1, width: 'device-width' },
@@ -32,7 +32,6 @@ export const metadata: Metadata = {
 export default function AppLayout({ children }: AppLayoutProps) {
     const router = useRouter();
     const { data, error } = useSWR(profileApi, fetcher);
-
 
     useEffect(() => {
         if (error) {
