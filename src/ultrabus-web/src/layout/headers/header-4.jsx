@@ -8,10 +8,15 @@ import logo from "@/app-assets/img/logo/ithub-logo2.png";
 import white_logo from "../../../public/assets/img/logo/logo-white.png";
 import black_logo from "../../../public/assets/img/logo/logo-black.png";
 import useSticky from "../../../hooks/use-sticky";
+import { fetcher } from "@/functions";
+import useSWR from "swr";
 
 const HeaderFour = ({ style_error = true, white_header = true }) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const { sticky } = useSticky();
+  const { data, error } = useSWR("/auth/profile", fetcher);
+
+  console.log(data);
 
   return (
     <>
@@ -54,37 +59,60 @@ const HeaderFour = ({ style_error = true, white_header = true }) => {
               </div>
               <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-8 col-6">
                 <div className="header-bottom__right d-flex align-items-center justify-content-end">
-                  <div
-                    className={`header-bottom__action ${
-                      style_error ? "" : "header-bottom__action-4"
-                    }`}
-                  >
-                    <Link
-                      className="d-none d-lg-inline-block header-bottom__action-2 border-none"
-                      href="/sign-in"
-                    >
-                      <span>Đăng nhập</span>
-                    </Link>
-                  </div>
-                  <div className="header-bottom__btn d-flex align-items-center">
-                    <Link
-                      className={`tp-btn-blue-sm ${
-                        style_error
-                          ? "inner-color alt-color-black"
-                          : "alt-color-white"
-                      } tp-btn-hover d-none d-md-inline-block`}
-                      href="/sign-in"
-                    >
-                      <span>Đăng ký</span>
-                      <b></b>
-                    </Link>
-                    <a
-                      className="header-bottom__bar tp-menu-bar d-lg-none"
-                      onClick={() => setSidebarOpen(true)}
-                    >
-                      <i className="fal fa-bars"></i>
-                    </a>
-                  </div>
+                  {!data && (
+                    <>
+                      <div
+                        className={`header-bottom__action ${
+                          style_error ? "" : "header-bottom__action-4"
+                        }`}
+                      >
+                        <Link
+                          className="d-none d-lg-inline-block header-bottom__action-2 border-none"
+                          href="/sign-in"
+                        >
+                          <span>Đăng nhập</span>
+                        </Link>
+                      </div>
+                      <div className="header-bottom__btn d-flex align-items-center">
+                        <Link
+                          className={`tp-btn-blue-sm ${
+                            style_error
+                              ? "inner-color alt-color-black"
+                              : "alt-color-white"
+                          } tp-btn-hover d-none d-md-inline-block`}
+                          href="/sign-in"
+                        >
+                          <span>Đăng ký</span>
+                          <b></b>
+                        </Link>
+                        <a
+                          className="header-bottom__bar tp-menu-bar d-lg-none"
+                          onClick={() => setSidebarOpen(true)}
+                        >
+                          <i className="fal fa-bars"></i>
+                        </a>
+                      </div>
+                    </>
+                  )}
+                  {data && (
+                    <div className="header-bottom__action d-flex align-items-center cursor-pointer">
+                      <Link href="/profile">
+                        <span className="fw-bold">
+                          {data.fullName.length > 0
+                            ? data.fullName
+                            : data.phoneNumber}
+                        </span>
+                      </Link>
+                      <Image
+                        src={
+                          "https://www.svgrepo.com/show/452030/avatar-default.svg"
+                        }
+                        width={30}
+                        height={30}
+                        objectFit="cover"
+                      />
+                    </div>
+                  )}
                 </div>
               </div>
             </div>

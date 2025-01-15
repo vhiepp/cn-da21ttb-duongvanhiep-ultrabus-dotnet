@@ -57,9 +57,9 @@ namespace UltraBusAPI.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> FindById(int id)
+        public async Task<IActionResult> FindById(int id, [FromQuery] DateModel dateModel)
         {
-            var busRouteTripModel = await _busRouteTripService.FindById(id);
+            var busRouteTripModel = await _busRouteTripService.FindById(id, dateModel.Date);
             if (busRouteTripModel == null)
             {
                 return NotFound(new ApiResponse()

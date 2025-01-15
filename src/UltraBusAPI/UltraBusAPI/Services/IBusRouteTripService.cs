@@ -10,6 +10,6 @@ namespace UltraBusAPI.Services
 
         public Task<List<BusRouteTripModel>> SearchBusRouteTrips(SearchBusRouteTripsModel searchBusRouteTrips);
 
-        public Task<BusRouteTripModel> FindById(int id);
+        public Task<BusRouteTripModel> FindById(int id, DateTime date);
     }
 }

@@ -39,12 +39,28 @@ namespace UltraBusAPI.Services.Sers
             _ticketRepository = ticketRepository;
         }
 
-        public async Task<BusRouteTripModel> FindById(int id)
+        public async Task<BusRouteTripModel> FindById(int id, DateTime date)
         {
             var busRouteTrip = await _busRouteTripRepository.FindByIdAsync(id);
             if (busRouteTrip == null)
             {
                 return new BusRouteTripModel();
+            }
+            var busTripDate = await _busRouteTripDateRepository.FindByBusRouteTripDateAsync(busRouteTrip.Id, date);
+            List<string> seatSeleted = [];
+            if (busTripDate != null)
+            {
+                var tickets = await _ticketRepository.GetByBusRouteTripDateId(busTripDate.Id);
+                if (tickets != null)
+                {
+                    foreach (var tk in tickets)
+                    {
+                        if (tk.IsPaid || tk.ExpriedTime > DateTime.Now)
+                        {
+                            seatSeleted.AddRange(tk.SeatNumbers);
+                        }
+                    }
+                }
             }
             var bus = await _busRepository.FindByIdAsync(busRouteTrip.BusId);
             BusModel? busModel = null;
@@ -210,7 +226,8 @@ namespace UltraBusAPI.Services.Sers
                 TotalHours = busRouteTrip.TotalHours,
                 TotalMinutes = busRouteTrip.TotalMinutes,
                 Bus = busModel,
-                BusRoute = busRouteModel
+                BusRoute = busRouteModel,
+                SeatSelectds = seatSeleted
             };
         }
 

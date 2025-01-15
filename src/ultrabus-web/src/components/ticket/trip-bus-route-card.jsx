@@ -104,7 +104,7 @@ const TripBusRouteCard = ({ item, date }) => {
                       style={{ color: "#ccc", fontSize: "8px" }}
                     ></i>
                     <span style={{ fontSize: "14px" }} className="fw-bold">
-                      7 chỗ trống
+                      {item.totalSeatEmptys} chỗ trống
                     </span>
                   </div>
                   <div className="col-12 mt-3">

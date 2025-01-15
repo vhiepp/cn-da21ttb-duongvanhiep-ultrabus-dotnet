@@ -44,11 +44,11 @@ namespace UltraBusAPI.Controllers
         public async Task<IActionResult> Webhook([FromBody] WebhookType webHookBody)
         {
             var result = await _paymentService.WebHook(webHookBody);
-            
+
             return Ok(new
-                {
-                    success = result
-                }
+            {
+                success = result
+            }
             );
         }
     }

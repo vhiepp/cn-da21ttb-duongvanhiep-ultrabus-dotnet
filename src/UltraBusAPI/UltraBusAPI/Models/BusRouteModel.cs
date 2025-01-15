@@ -38,6 +38,7 @@
         public int TotalHours { get; set; }
         public int TotalMinutes { get; set; }
         public int TotalSeatEmptys { get; set; } = 0;
+        public List<string> SeatSelectds { get; set; } = [];
         public double? Price { get; set; }
         public DateTime DepartureTime { get; set; }
         public DateTime ArrivalTime { get; set; }

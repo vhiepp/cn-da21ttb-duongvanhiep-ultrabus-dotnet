@@ -64,8 +64,14 @@ const index = () => {
   // console.log(query);
 
   const getBusRouteTrip = async () => {
-    if (!query.tripId) return;
-    const res = await apiClient.get(`/bus-route-trips/${query.tripId}`);
+    if (!query.tripId || !query.date) return;
+    let dateData = new Date(query.date);
+    dateData.setHours(7, 0, 0, 0);
+    const res = await apiClient.get(`/bus-route-trips/${query.tripId}`, {
+      params: {
+        date: dateData.toISOString(),
+      },
+    });
     const data = res.data.data;
     // console.log(data);
     setBusRouteTrip(data);
@@ -241,20 +247,45 @@ const index = () => {
                                                         "p-relative d-flex justify-content-center align-items-center rounded-2 px-1 py-2 " +
                                                         (!chooseSeat.includes(
                                                           seat
+                                                        ) &&
+                                                        !busRouteTrip.seatSelectds.includes(
+                                                          seat
                                                         )
                                                           ? "bg-light text-info"
+                                                          : "") +
+                                                        " " +
+                                                        (busRouteTrip.seatSelectds.includes(
+                                                          seat
+                                                        )
+                                                          ? "bg-light text-secondary"
                                                           : "")
                                                       }
                                                       style={{
-                                                        cursor: "pointer",
+                                                        ...(!busRouteTrip.seatSelectds.includes(
+                                                          seat
+                                                        )
+                                                          ? {
+                                                              cursor: "pointer",
+                                                            }
+                                                          : {
+                                                              cursor:
+                                                                "not-allowed",
+                                                            }),
                                                         color:
                                                           "var(--tp-theme-primary)",
                                                         backgroundColor:
                                                           "rgba(211, 117, 40, 0.1)",
                                                       }}
-                                                      onClick={() =>
-                                                        handleChooseSeat(seat)
-                                                      }
+                                                      onClick={() => {
+                                                        if (
+                                                          !busRouteTrip.seatSelectds.includes(
+                                                            seat
+                                                          )
+                                                        )
+                                                          handleChooseSeat(
+                                                            seat
+                                                          );
+                                                      }}
                                                     >
                                                       <img
                                                         src={
@@ -336,7 +367,7 @@ const index = () => {
                                         <span className="text-danger">*</span>
                                       </span>
                                       <div
-                                        class="valid-feedback ps-2"
+                                        className="valid-feedback ps-2"
                                         style={
                                           isVerifyingOtp
                                             ? { display: "block" }
@@ -366,7 +397,7 @@ const index = () => {
                                           <span className="text-danger">*</span>
                                         </span>
                                         <div
-                                          class="invalid-feedback ps-2"
+                                          className="invalid-feedback ps-2"
                                           style={
                                             !isVerifyingOtp &&
                                             otpCode.length === 4
