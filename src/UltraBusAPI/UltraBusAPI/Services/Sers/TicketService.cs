@@ -108,5 +108,114 @@ namespace UltraBusAPI.Services.Sers
                 ArrivalTime = busRouteTripDate.ArrivalTime,
             };
         }
+
+        public async Task<List<TicketModel>> GetTicketByUserId(int userId)
+        {
+            var tickets = await _ticketRepository.GetByUserId(userId);
+            var ticketModels = new List<TicketModel>();
+            foreach (var ticket in tickets)
+            {
+                if (ticket.IsPaid == false && ticket.ExpriedTime <= DateTime.Now) continue;
+                var busRouteTripDate = await _busRouteTripDateRepository.FindByIdAsync(ticket.BusRouteTripDateId);
+                var user = await _userRepository.FindByIdAsync(ticket.UserId);
+                var busStationUp = await _busStationRepository.FindByIdAsync(ticket.BusStationUpId);
+                var busStationDown = await _busStationRepository.FindByIdAsync(ticket.BusStationDownId);
+                ticketModels.Add(new TicketModel
+                {
+                    Id = ticket.Id,
+                    User = new UserModel
+                    {
+                        Id = user.Id,
+                        FirstName = user.FirstName,
+                        LastName = user.LastName,
+                        Email = user.Email,
+                        PhoneNumber = user.PhoneNumber,
+                        Address = user.Address,
+                    },
+                    SeatNumbers = ticket.SeatNumbers,
+                    BusStationUp = new BusStationModel
+                    {
+                        Id = busStationUp.Id,
+                        Name = busStationUp.Name,
+                        Address = busStationUp.Address,
+                    },
+                    BusStationDown = new BusStationModel
+                    {
+                        Id = busStationDown.Id,
+                        Name = busStationDown.Name,
+                        Address = busStationDown.Address,
+                    },
+                    TotalPrice = ticket.TotalPrice,
+                    CustomerName = ticket.CustomerName,
+                    PhoneNumber = ticket.PhoneNumber,
+                    Email = ticket.Email,
+                    IsPaid = ticket.IsPaid,
+                    CollectUser = new UserModel(),
+                    DepartureDay = busRouteTripDate.DepartureDay,
+                    DepartureTime = busRouteTripDate.DepartureTime,
+                    ArrivalTime = busRouteTripDate.ArrivalTime,
+                    CheckoutUrl = ticket.CheckoutUrl,
+                });
+            }
+            return ticketModels;
+        }
+
+        public async Task<List<TicketModel>> SearchTickets(SearchTicketModel model)
+        {
+            var busRouteTrip = await _busRouteTripRepository.FindByBusRouteIdBusIdAndTime((int)model.BusRouteId, (int)model.BusId, (DateTime)model.DepartureTime);
+            if (busRouteTrip == null)
+            {
+                return new List<TicketModel>();
+            }
+            var busRouteTripDate = await _busRouteTripDateRepository.FindByBusRouteTripDateAsync(busRouteTrip.Id, (DateTime)model.DepartureDay);
+            if (busRouteTripDate == null)
+            {
+                return new List<TicketModel>();
+            }
+            var tickets = await _ticketRepository.GetByBusRouteTripDateId(busRouteTripDate.Id);
+            var ticketModels = new List<TicketModel>();
+            foreach (var ticket in tickets) {
+                if (ticket.IsPaid == false && ticket.ExpriedTime <= DateTime.Now) continue;
+                var user = await _userRepository.FindByIdAsync(ticket.UserId);
+                var busStationUp = await _busStationRepository.FindByIdAsync(ticket.BusStationUpId);
+                var busStationDown = await _busStationRepository.FindByIdAsync(ticket.BusStationDownId);
+                ticketModels.Add(new TicketModel
+                {
+                    Id = ticket.Id,
+                    User = new UserModel
+                    {
+                        Id = user.Id,
+                        FirstName = user.FirstName,
+                        LastName = user.LastName,
+                        Email = user.Email,
+                        PhoneNumber = user.PhoneNumber,
+                        Address = user.Address,
+                    },
+                    SeatNumbers = ticket.SeatNumbers,
+                    BusStationUp = new BusStationModel
+                    {
+                        Id = busStationUp.Id,
+                        Name = busStationUp.Name,
+                        Address = busStationUp.Address,
+                    },
+                    BusStationDown = new BusStationModel
+                    {
+                        Id = busStationDown.Id,
+                        Name = busStationDown.Name,
+                        Address = busStationDown.Address,
+                    },
+                    TotalPrice = ticket.TotalPrice,
+                    CustomerName = ticket.CustomerName,
+                    PhoneNumber = ticket.PhoneNumber,
+                    Email = ticket.Email,
+                    IsPaid = ticket.IsPaid,
+                    CollectUser = new UserModel(),
+                    DepartureDay = busRouteTripDate.DepartureDay,
+                    DepartureTime = busRouteTripDate.DepartureTime,
+                    ArrivalTime = busRouteTripDate.ArrivalTime,
+                });
+            }
+            return ticketModels;
+        }
     }
 }

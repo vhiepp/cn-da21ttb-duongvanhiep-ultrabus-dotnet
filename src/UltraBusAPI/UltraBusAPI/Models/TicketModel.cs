@@ -32,6 +32,8 @@
         public DateTime DepartureTime { get; set; } = DateTime.Now;
 
         public DateTime ArrivalTime { get; set; } = DateTime.Now;
+
+        public string CheckoutUrl { get; set; } = string.Empty;
     }
 
     public class CreateTicketModel
@@ -58,5 +60,13 @@
         public string CancelUrl { get; set; } = string.Empty;
 
         public string ReturnUrl { get; set; } = string.Empty;
+    }
+
+    public class  SearchTicketModel
+    {
+        public DateTime? DepartureDay { get; set; }
+        public int? BusRouteId { get; set; }
+        public int? BusId { get; set; }
+        public DateTime? DepartureTime { get; set; }
     }
 }

@@ -162,8 +162,8 @@ const index = () => {
   const handlePayment = async (ticketId) => {
     const res = await apiClient.post("/payment/ticket", {
       ticketId: ticketId,
-      cancelUrl: "http://localhost:3001",
-      returnUrl: "http://localhost:3001",
+      cancelUrl: "http://localhost:3001/ticket",
+      returnUrl: "http://localhost:3001/ticket",
     });
     const data = res.data.data;
     console.log(data);

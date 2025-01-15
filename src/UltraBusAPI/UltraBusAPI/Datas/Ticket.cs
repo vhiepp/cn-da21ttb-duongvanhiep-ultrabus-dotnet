@@ -46,5 +46,7 @@ namespace UltraBusAPI.Datas
         public string PaymentMethod { get; set; } = "CK";
 
         public int? CollectUserId { get; set; }
+
+        public string CheckoutUrl { get; set; } = string.Empty;
     }
 }

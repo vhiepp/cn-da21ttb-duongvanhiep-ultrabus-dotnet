@@ -21,6 +21,7 @@ namespace UltraBusAPI.Services.Sers
         }
         public async Task<CreatePaymentResult?> CreatePaymentAsync(PaymentTicketRequestModel model, int userId)
         {
+            Random random = new Random();
             var ticket = await _ticketRepository.FindByIdAsync(model.TicketId);
             if (ticket == null)
             {
@@ -36,8 +37,14 @@ namespace UltraBusAPI.Services.Sers
             {
                 price = (int)ticket.TotalPrice;
             }
-            PaymentData paymentData = new PaymentData(ticket.Id, price, "TTVeXe " + ticket.Id, items, model.CancelUrl, model.ReturnUrl);
-            return await _payOS.createPaymentLink(paymentData);
+
+            long orderId = random.Next(100000, 100000000);
+
+            PaymentData paymentData = new PaymentData(orderId, price, $"{ticket.Id}", items, model.CancelUrl, model.ReturnUrl);
+            var paymentLink = await _payOS.createPaymentLink(paymentData);
+            ticket.CheckoutUrl = paymentLink.checkoutUrl;
+            await _ticketRepository.UpdateAsync(ticket);
+            return paymentLink;
         }
 
         public async Task<bool> WebHook(WebhookType webhook)
@@ -47,7 +54,7 @@ namespace UltraBusAPI.Services.Sers
             {
                 return await Task.FromResult(false);
             }
-            var ticket = await _ticketRepository.FindByIdAsync((int)webHookData.orderCode);
+            var ticket = await _ticketRepository.FindByIdAsync(int.Parse(webHookData.description));
             if (ticket == null)
             {
                 return await Task.FromResult(false);

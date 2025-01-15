@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using UltraBusAPI.Attributes;
 using UltraBusAPI.Models;
 using UltraBusAPI.Services;
 
@@ -17,9 +18,41 @@ namespace UltraBusAPI.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetAll()
+        [Authorize]
+        [Permission("TicketManager")]
+        public async Task<IActionResult> GetAll([FromQuery] SearchTicketModel model)
         {
-            return Ok();
+            var result = await _ticketService.SearchTickets(model);
+            return Ok(
+                new ApiResponse()
+                {
+                    Message = "Get all tickets successfully",
+                    Success = true,
+                    Data = result
+                }
+            );
+        }
+
+        [HttpGet("for-me")]
+        [Authorize]
+        public async Task<IActionResult> GetForMe()
+        {
+            var userIdClaim = User.FindFirst("Id");
+            if (userIdClaim == null)
+            {
+                return Unauthorized();
+            }
+            int userId = int.Parse(userIdClaim.Value);
+
+            var result = await _ticketService.GetTicketByUserId(userId);
+            return Ok(
+                new ApiResponse()
+                {
+                    Message = "Get all tickets successfully",
+                    Success = true,
+                    Data = result
+                }
+            );
         }
 
         [HttpGet("{id}")]

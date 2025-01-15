@@ -17,5 +17,10 @@ namespace UltraBusAPI.Repositories.Repo
         {
             return await _dbSet.Where(x => x.BusRouteTripDateId == id).ToListAsync();
         }
+
+        public async Task<List<Ticket>> GetByUserId(int userId)
+        {
+            return await _dbSet.Where(x => x.UserId == userId).ToListAsync();
+        }
     }
 }
